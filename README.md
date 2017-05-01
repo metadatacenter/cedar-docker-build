@@ -4,12 +4,12 @@ CEDAR docker components
 # Steps to run CEDAR
 
 ## Create a user for CEDAR
-CEDAR can be launched by any user, but we recommenc creating a dedicated service user for it.
+CEDAR can be launched by any user, but we recommend creating a dedicated service user for it.
 You should name this user ``cedar``.
 
-On development machines it is ok to run the system under the current user.
+On developer machines it is ok to run CEDAR under the current user.
 
-If you are running CEDAR under your own user, please disregard the parts of this guide which talk about the ``cedar`` user)!
+**Remark:** If you are running CEDAR under your own user, please disregard the parts of this guide which talk about the ``cedar`` user)!
 
 ## Create a working directory for CEDAR
 CEDAR uses several components with persistent storage. These components will need a base folder under which they will store the data.
