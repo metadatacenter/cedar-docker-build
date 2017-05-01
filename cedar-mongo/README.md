@@ -4,9 +4,9 @@ Docker version of MongoDB to be used with CEDAR
 
 ## Run it the first time
 
-You need to set the evironment variables first.
+**Remark:**You need to set the evironment variables first! Please see the README in the parent folder for details.
 
-Please see the README in the parent folder for details.
+Execute the following command
 
 ````
 docker run -d \
@@ -22,17 +22,17 @@ docker run -d \
 metadatacenter/cedar-mongo:latest
 ````
 
-## Start it
+## Start the container
 
     docker start mongo
 
-## Stop it
+## Stop the container
 
     docker stop mongo
 
 ## Check the logs
 
-....docker logs -f mongo
+    docker logs -f mongo
 
 ## Connect to the machine
 
@@ -42,7 +42,7 @@ metadatacenter/cedar-mongo:latest
 
 ## Build
 
-    docker build -t cedar-mongo .
+    docker build -t metadatacenter/cedar-mongo .
 
 ## Push to DockerHub
 
