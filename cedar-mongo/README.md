@@ -47,6 +47,8 @@ metadatacenter/cedar-mongo:latest
 ## Push to DockerHub
 
 ````
+docker login
+
 docker tag metadatacenter/cedar-mongo metadatacenter/cedar-mongo:${CEDAR_DOCKER_VERSION}
 docker push metadatacenter/cedar-mongo:${CEDAR_DOCKER_VERSION}
 
