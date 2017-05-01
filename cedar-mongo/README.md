@@ -2,9 +2,9 @@ Docker version of MongoDB to be used with CEDAR
 
 # For end-users
 
-## Run it the first time
+## Run the image for the first time
 
-**Remark:**You need to set the evironment variables first! Please see the README in the parent folder for details.
+**Remark:** You need to set the evironment variables first! Please see the README in the parent folder for details.
 
 Execute the following command
 
@@ -30,21 +30,21 @@ metadatacenter/cedar-mongo:latest
 
     docker stop mongo
 
-## Check the logs
+## Check the logs of the container
 
     docker logs -f mongo
 
-## Connect to the machine
+## Connect to the container
 
     docker exec -it mongo bash
 
 # For developers
 
-## Build
+## Build the image
 
     docker build -t metadatacenter/cedar-mongo .
 
-## Push to DockerHub
+## Push the image to DockerHub
 
 ````
 docker login
