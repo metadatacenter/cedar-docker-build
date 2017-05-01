@@ -6,7 +6,7 @@ Docker version of MongoDB to be used with CEDAR
 
 **Remark:** You need to set the evironment variables first! Please see the README in the parent folder for details.
 
-Execute the following command
+Execute the following command:
 
 ````
 docker run -d \
@@ -22,13 +22,13 @@ docker run -d \
 metadatacenter/cedar-mongo:latest
 ````
 
-## Start the container
-
-    docker start mongo
-
 ## Stop the container
 
     docker stop mongo
+
+## Start the container
+
+    docker start mongo
 
 ## Check the logs of the container
 
