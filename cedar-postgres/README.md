@@ -12,7 +12,8 @@ Execute the following command:
 docker run -d \
 --name postgres \
 --net cedarnet \
--v ${CEDAR_DOCKER_HOME}data/postgres/:/var/lib/postgresql/data/pgdata \
+-v ${CEDAR_DOCKER_HOME}/data/postgres/:/var/lib/postgresql/data/pgdata \
+-v ${CEDAR_DOCKER_HOME}/log/postgres/:/var/log/postgresql \
 -p 5432:5432 \
 -e POSTGRES_USER=${CEDAR_POSTGRES_USER} \
 -e POSTGRES_PASSWORD=${CEDAR_POSTGRES_PASSWORD} \

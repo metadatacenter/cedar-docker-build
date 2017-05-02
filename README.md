@@ -1,4 +1,3 @@
-# cedar-docker
 CEDAR docker components
 
 # Steps to run CEDAR
