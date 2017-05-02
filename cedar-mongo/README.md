@@ -13,6 +13,7 @@ docker run -d \
 --name mongo \
 --net cedarnet \
 -v ${CEDAR_DOCKER_HOME}/data/mongo/:/data/db \
+-v ${CEDAR_DOCKER_HOME}/log/mongo/:/data/log \
 -p 27017:27017 \
 -e CEDAR_MONGO_ROOT_USER_NAME \
 -e CEDAR_MONGO_ROOT_USER_PASSWORD \

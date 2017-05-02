@@ -21,6 +21,10 @@ if [ ! -d "$MONGO_DB_PATH" ]; then
   mkdir -p $MONGO_DB_PATH
 fi
 
+mkdir -p $MONGO_LOG_PATH
+
+cmd="$cmd --logpath $MONGO_LOG_PATH/mongo.log"
+
 chown -R mongodb:mongodb $MONGO_DB_PATH
 
 $cmd --dbpath $MONGO_DB_PATH &
