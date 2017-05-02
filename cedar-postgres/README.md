@@ -18,7 +18,7 @@ docker run -d \
 -e POSTGRES_USER=${CEDAR_POSTGRES_USER} \
 -e POSTGRES_PASSWORD=${CEDAR_POSTGRES_PASSWORD} \
 -e PGDATA=/var/lib/postgresql/data/pgdata \
-metadatacenter/cedar-postgres:latest
+metadatacenter/cedar-postgres
 ````
 
 ## Stop the container

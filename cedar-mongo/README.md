@@ -20,7 +20,7 @@ docker run -d \
 -e CEDAR_MONGO_APP_USER_NAME \
 -e CEDAR_MONGO_APP_USER_PASSWORD \
 -e CEDAR_MONGO_APP_DATABASE_NAME \
-metadatacenter/cedar-mongo:latest
+metadatacenter/cedar-mongo
 ````
 
 ## Stop the container

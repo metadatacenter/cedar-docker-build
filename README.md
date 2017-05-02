@@ -10,6 +10,19 @@ On developer machines it is ok to run CEDAR under the current user.
 
 **Remark:** If you are running CEDAR under your own user, please disregard the parts of this guide which talk about the ``cedar`` user)!
 
+## Install Docker CE
+
+Download and install Docker. This can be done in several ways (brew, apt-get, downloading and installing)
+
+Please check their download page: https://www.docker.com/community-edition
+
+
+## Creat a Docker network.
+
+Execute the following command:
+
+    docker network create --subnet=192.168.0.0/16 --gateway 192.168.0.1 cedarnet
+
 ## Create a working directory for CEDAR
 CEDAR uses several components with persistent storage. These components will need a base folder under which they will store the data.
 

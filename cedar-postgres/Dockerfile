@@ -65,5 +65,7 @@ COPY docker-entrypoint.sh /usr/local/bin/
 RUN ln -s usr/local/bin/docker-entrypoint.sh / # backwards compat
 ENTRYPOINT ["docker-entrypoint.sh"]
 
+ENV POSTGRES_DB keycloak
+
 EXPOSE 5432
 CMD ["postgres", "--log_destination=csvlog,stderr", "--log_directory=/var/log/postgresql", "--log_filename=postgres.log", "--logging_collector=on"]
