@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e
 
+POSTGRES_USER="${CEDAR_POSTGRES_USER}"
+POSTGRES_PASSWORD="${CEDAR_POSTGRES_PASSWORD}"
+
 # usage: file_env VAR [DEFAULT]
 #    ie: file_env 'XYZ_DB_PASSWORD' 'example'
 # (will allow for "$XYZ_DB_PASSWORD_FILE" to fill in the value of

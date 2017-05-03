@@ -20,3 +20,7 @@ export CEDAR_MONGO_APP_DATABASE_NAME=cedar
 # Postgres CEDAR app user data for Keycloak persistence
 export CEDAR_POSTGRES_USER=cedarPostgresUser
 export CEDAR_POSTGRES_PASSWORD=cedarPostgresPassword
+
+
+# Port assignment
+export CEDAR_PORT_POSTGRES=5432
