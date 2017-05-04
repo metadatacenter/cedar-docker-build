@@ -25,6 +25,7 @@ export CEDAR_POSTGRES_PASSWORD=cedarPostgresPassword
 # Port assignment
 export CEDAR_PORT_POSTGRES=5432
 export CEDAR_PORT_KEYCLOAK=8080
+export CEDAR_PORT_MONGO=27017
 
 # Docker network
 export CEDAR_NET_GATEWAY=192.168.0.1
