@@ -9,7 +9,7 @@ Docker version of Keycloak to be used with CEDAR
 Execute the following command:
 
 ````
-docker run \
+docker run -d \
 --name keycloak \
 --net cedarnet \
 -v ${CEDAR_DOCKER_HOME}/log/keycloak:/opt/jboss/keycloak/standalone/log \
@@ -17,6 +17,7 @@ docker run \
 -e CEDAR_POSTGRES_USER \
 -e CEDAR_POSTGRES_PASSWORD \
 -e CEDAR_NET_GATEWAY \
+-e CEDAR_PORT_POSTGRES \
 -e CEDAR_KEYCLOAK_ADMIN_USER \
 -e CEDAR_KEYCLOAK_ADMIN_PASSWORD \
 -e CEDAR_RESOURCE_SERVER_USER_CALLBACK_URL \
