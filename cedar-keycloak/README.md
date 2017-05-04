@@ -13,12 +13,12 @@ docker run \
 --name keycloak \
 --net cedarnet \
 -v ${CEDAR_DOCKER_HOME}/log/keycloak:/opt/jboss/keycloak/standalone/log \
--p 8081:8080 \
--e POSTGRES_USER=${CEDAR_POSTGRES_USER} \
--e POSTGRES_PASSWORD=${CEDAR_POSTGRES_PASSWORD} \
--e POSTGRES_PORT_5432_TCP_ADDR=192.168.0.1 \
--e KEYCLOAK_USER=${CEDAR_KEYCLOAK_ADMIN_USER} \
--e KEYCLOAK_PASSWORD=${CEDAR_KEYCLOAK_ADMIN_PASSWORD} \
+-p ${CEDAR_PORT_KEYCLOAK}:8080 \
+-e CEDAR_POSTGRES_USER \
+-e CEDAR_POSTGRES_PASSWORD \
+-e CEDAR_NET_GATEWAY \
+-e CEDAR_KEYCLOAK_ADMIN_USER \
+-e CEDAR_KEYCLOAK_ADMIN_PASSWORD \
 -e CEDAR_RESOURCE_SERVER_USER_CALLBACK_URL \
 -e CEDAR_RESOURCE_SERVER_ADMIN_CALLBACK_URL \
 -e CEDAR_LD_USER_BASE \
@@ -42,7 +42,7 @@ metadatacenter/cedar-keycloak
 
 ## Connect to the container
 
-    docker exec -it keycloak bash
+     	
 
 # For developers
 
