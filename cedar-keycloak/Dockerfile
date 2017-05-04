@@ -4,8 +4,8 @@ RUN mkdir -p /opt/jboss/keycloak/modules/system/layers/base/org/postgresql/jdbc/
 
 USER root
 
-RUN yum -y install deltarpm
-RUN yum -y update
+#RUN yum -y install deltarpm
+#RUN yum -y update
 RUN yum -y install wget
 RUN wget -P /opt/jboss/keycloak/modules/system/layers/base/org/postgresql/jdbc/main "http://central.maven.org/maven2/org/postgresql/postgresql/9.3-1102-jdbc3/postgresql-9.3-1102-jdbc3.jar"
 RUN wget -P /opt/jboss/keycloak/providers "https://nexus.bmir.stanford.edu/content/repositories/releases/org/metadatacenter/cedar-keycloak-event-listener/1.0.6/cedar-keycloak-event-listener-1.0.6-jar-with-dependencies.jar"
