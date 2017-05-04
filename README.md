@@ -29,14 +29,14 @@ CEDAR uses several components with persistent storage. These components will nee
 Please create a directory with write permission for the ``cedar`` user.
 
 ## Edit the environment file
-You should open the ``cedar-set-env.sh`` file, and edit at least the value of the variable called ``CEDAR_DOCKER_HOME``. You set it to the newly created working directory.
+You should open the ``set-env.sh`` file, and edit at least the value of the variable called ``CEDAR_DOCKER_HOME``. You set it to the newly created working directory.
 
 The other variables can also be customized, if you would like to do so.
 
 ## Setting the environment variables
-Source the ``cedar-set-env.sh`` file:
+Source the ``set-env.sh`` file:
 
-    source ./cedar-set-env.sh
+    source ./set-env.sh
     
 ## Run the components
 At this moment you need to start the components one by one.
