@@ -17,7 +17,7 @@ Download and install Docker. This can be done in several ways (brew, apt-get, do
 Please check their download page: https://www.docker.com/community-edition
 
 
-## Creat a Docker network.
+## Create a Docker network
 
 Execute the following command:
 
