@@ -43,7 +43,7 @@ metadatacenter/cedar-keycloak
 
 ## Connect to the container
 
-     	
+    docker exec -it keycloak bash
 
 # For developers
 
