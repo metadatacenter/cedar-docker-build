@@ -13,6 +13,7 @@ docker run -d \
 --name redis-commander \
 --net cedarnet \
 -p ${CEDAR_PORT_REDIS_COMMANDER}:8081 \
+-e CEDAR_NET_GATEWAY \
 metadatacenter/cedar-redis-commander
 ````
 
@@ -37,6 +38,7 @@ metadatacenter/cedar-redis-commander
 ## Build the image
 
 ````
+chmod a+x scripts/docker-entrypoint.sh
 docker build -t metadatacenter/cedar-redis-commander .
 ````
 

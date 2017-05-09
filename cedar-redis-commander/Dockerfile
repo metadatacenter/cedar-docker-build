@@ -1,12 +1,12 @@
-FROM tenstartups/alpine:latest
+FROM node:7.10
 
-RUN \
-  apk --update add nodejs && \
-  rm -rf /var/cache/apk/*
+ENV REDIS_COMMANDER_VERSION=0.4.3
 
-RUN npm install -g redis-commander
-RUN echo '{}' > /root/.redis-commander
+RUN npm config set registry http://registry.npmjs.org/ && \
+	npm i -g --unsafe-perm --no-optional redis-commander@$REDIS_COMMANDER_VERSION
 
-ENTRYPOINT ["redis-commander"]
+ADD scripts/docker-entrypoint.sh /
 
 EXPOSE 8081
+
+ENTRYPOINT [ "/docker-entrypoint.sh" ]
