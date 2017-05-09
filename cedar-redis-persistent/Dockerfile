@@ -56,6 +56,8 @@ RUN set -ex \
 	&& make -C /usr/src/redis \
 	&& make -C /usr/src/redis install \
 	\
+	&& cp /usr/src/redis/redis.conf /tmp \
+	\
 	&& rm -r /usr/src/redis \
 	\
 	&& apt-get purge -y --auto-remove $buildDeps
