@@ -21,6 +21,10 @@ export CEDAR_MONGO_APP_DATABASE_NAME=cedar
 export CEDAR_POSTGRES_USER=cedarPostgresUser
 export CEDAR_POSTGRES_PASSWORD=cedarPostgresPassword
 
+# Neo4j user data - do not change the user name
+export CEDAR_NEO4J_USER_NAME=neo4j
+export CEDAR_NEO4J_USER_PASSWORD=neo4jPassword
+
 
 # Port assignment
 export CEDAR_PORT_POSTGRES=5432
@@ -30,6 +34,8 @@ export CEDAR_PORT_ELASTICSEARCH=9200
 export CEDAR_PORT_KIBANA=5601
 export CEDAR_PORT_REDIS_PERSISTENT=6379
 export CEDAR_PORT_REDIS_COMMANDER=8081
+export CEDAR_PORT_NEO4J_REST=7474
+export CEDAR_PORT_NEO4J_BOLT=7687
 
 # Docker network
 export CEDAR_NET_GATEWAY=192.168.0.1
