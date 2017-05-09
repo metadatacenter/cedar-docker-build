@@ -56,8 +56,6 @@ RUN set -ex \
 	&& make -C /usr/src/redis \
 	&& make -C /usr/src/redis install \
 	\
-	&& cp /usr/src/redis/redis.conf /tmp \
-	\
 	&& rm -r /usr/src/redis \
 	\
 	&& apt-get purge -y --auto-remove $buildDeps
@@ -66,8 +64,13 @@ RUN mkdir /data && chown redis:redis /data
 VOLUME /data
 WORKDIR /data
 
+RUN mkdir /log && chown redis:redis /log
+VOLUME /log
+
+ADD config/redis.conf /etc/redis/redis.conf
+
 COPY scripts/docker-entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["docker-entrypoint.sh"]
 
 EXPOSE 6379
-CMD [ "redis-server" ]
+CMD [ "redis-server", "/etc/redis/redis.conf" ]
