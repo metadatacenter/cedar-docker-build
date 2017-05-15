@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Set it to the latest stable version
+# Set it to the latest stable version, used when pushing the docker images
 export CEDAR_DOCKER_VERSION=1.1.0
 
 # Set it to an existing directory with write permission for the current user
@@ -36,6 +36,7 @@ export CEDAR_PORT_REDIS_PERSISTENT=6379
 export CEDAR_PORT_REDIS_COMMANDER=8081
 export CEDAR_PORT_NEO4J_REST=7474
 export CEDAR_PORT_NEO4J_BOLT=7687
+export CEDAR_PORT_EDITOR=4200
 
 # Docker network
 export CEDAR_NET_GATEWAY=192.168.0.1
