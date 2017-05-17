@@ -14,6 +14,7 @@ docker run -d \
 --net cedarnet \
 -v ${CEDAR_DOCKER_HOME}/log/:/etc/nginx/log \
 -v ${CEDAR_DOCKER_HOME}/cert/:/usr/local/etc/certificates \
+-p ${CEDAR_PORT_NGINX_HTTP}:80 \
 -p ${CEDAR_PORT_NGINX_HTTPS}:443 \
 -e CEDAR_HOST \
 -e CEDAR_NET_GATEWAY \
