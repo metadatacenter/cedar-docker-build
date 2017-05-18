@@ -21,7 +21,14 @@ Please check their download page: https://www.docker.com/community-edition
 
 Execute the following command:
 
-    docker network create --subnet=192.168.0.0/16 --gateway 192.168.0.1 cedarnet
+    docker network create --subnet=192.168.17.0/24 --gateway 192.168.17.1 cedarnet
+
+You can inspect the network later:
+
+````
+docker network ls
+docker inspect cedarnet
+````
 
 ## Create a working directory for CEDAR
 CEDAR uses several components with persistent storage. These components will need a base folder under which they will store the data.
