@@ -40,5 +40,9 @@ export CEDAR_PORT_EDITOR=4200
 export CEDAR_PORT_NGINX_HTTP=80
 export CEDAR_PORT_NGINX_HTTPS=443
 
-# Docker network
-export CEDAR_NET_GATEWAY=192.168.0.1
+# Docker network, IP address
+export CEDAR_NET_GATEWAY=192.168.17.1
+
+# Used to connect from inside the Docker images into microservices
+# Your real IP address comes here
+export CEDAR_DOCKER_HOST=171.65.32.121
