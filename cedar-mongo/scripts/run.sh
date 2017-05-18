@@ -3,6 +3,8 @@ set -m
 
 $MONGO_SCRIPTS_DIR/mongo_setup_users.sh
 
+$MONGO_SCRIPTS_DIR/mongo_create_cedar_objects.sh
+
 cmd="gosu mongodb mongod --storageEngine $MONGO_STORAGE_ENGINE --keyFile $MONGO_KEYFILE"
 
 if [ "$MONGO_AUTH" == true ]; then
