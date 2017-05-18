@@ -33,6 +33,10 @@ metadatacenter/cedar-redis-commander
 
     docker exec -it redis-commander bash
 
+## Access it from the browser
+
+[http://localhost:8081]()
+
 # For developers
 
 ## Build the image
