@@ -20,6 +20,10 @@ docker run -d \
 -e CEDAR_MONGO_APP_USER_NAME \
 -e CEDAR_MONGO_APP_USER_PASSWORD \
 -e CEDAR_MONGO_APP_DATABASE_NAME \
+-e CEDAR_LD_USER_BASE \
+-e CEDAR_HOST \
+-e CEDAR_ADMIN_USER_API_KEY \
+
 metadatacenter/cedar-mongo
 ````
 
