@@ -66,7 +66,6 @@ metadatacenter/cedar-redis-persistent
 ## Build the image
 
 ````
-chmod a+x scripts/docker-entrypoint.sh
 docker build -t metadatacenter/cedar-redis-persistent .
 ````
 
