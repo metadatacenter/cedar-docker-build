@@ -23,7 +23,6 @@ docker run -d \
 -e CEDAR_LD_USER_BASE \
 -e CEDAR_HOST \
 -e CEDAR_ADMIN_USER_API_KEY \
-
 metadatacenter/cedar-mongo
 ````
 
