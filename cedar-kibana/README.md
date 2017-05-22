@@ -37,7 +37,6 @@ metadatacenter/cedar-kibana
 ## Build the image
 
 ````
-chmod a+x scripts/docker-entrypoint.sh
 chmod a+x scripts/install-plugin-and-run.sh
 docker build -t metadatacenter/cedar-kibana .
 ````
