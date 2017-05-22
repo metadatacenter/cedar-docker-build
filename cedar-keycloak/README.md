@@ -12,6 +12,7 @@ Execute the following command:
 docker run -d \
 --name keycloak \
 --net cedarnet \
+--add-host "resource.${CEDAR_HOST}:${CEDAR_DOCKER_HOST}" \
 -v ${CEDAR_DOCKER_HOME}/log/keycloak:/opt/jboss/keycloak/standalone/log \
 -p ${CEDAR_PORT_KEYCLOAK}:8080 \
 -e CEDAR_POSTGRES_USER \
