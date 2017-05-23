@@ -49,8 +49,8 @@ RUN mkdir -pv "/etc/nginx/cedar/"
 ADD config/ssl.conf /etc/nginx/cedar/
 
 # Add 502 error file
-RUN mkdir -pv "/etc/nginx/cedar/static/"
-ADD config/502.json /etc/nginx/cedar/static/
+RUN mkdir -pv "/etc/nginx/cedar/static/errors/"
+ADD config/502.json /etc/nginx/cedar/static/errors/
 
 # Set up log folder
 ENV LOGDIR /etc/nginx/log

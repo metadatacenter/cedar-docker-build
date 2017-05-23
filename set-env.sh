@@ -40,9 +40,18 @@ export CEDAR_PORT_EDITOR=4200
 export CEDAR_PORT_NGINX_HTTP=80
 export CEDAR_PORT_NGINX_HTTPS=443
 
+export CEDAR_PORT_SCHEMA=9003
+
 # Docker network, IP address
 export CEDAR_NET_GATEWAY=192.168.17.1
+
+
+export CEDAR_MONGO_HOST=${CEDAR_NET_GATEWAY}
 
 # Used to connect from inside the Docker images into microservices
 # Your real IP address comes here
 export CEDAR_DOCKER_HOST=171.65.32.121
+
+export CEDAR_MICROSERVICE_HOST=${CEDAR_NET_GATEWAY}
+export CEDAR_KEYCLOAK_HOST=${CEDAR_NET_GATEWAY}
+export CEDAR_FRONTEND_HOST=${CEDAR_NET_GATEWAY}

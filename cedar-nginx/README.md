@@ -17,7 +17,9 @@ docker run -d \
 -p ${CEDAR_PORT_NGINX_HTTP}:80 \
 -p ${CEDAR_PORT_NGINX_HTTPS}:443 \
 -e CEDAR_HOST \
--e CEDAR_NET_GATEWAY \
+-e CEDAR_MICROSERVICE_HOST \
+-e CEDAR_KEYCLOAK_HOST \
+-e CEDAR_FRONTEND_HOST \
 metadatacenter/cedar-nginx
 ````
 
