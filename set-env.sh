@@ -36,7 +36,7 @@ export CEDAR_MONGO_HOST=${CEDAR_NET_GATEWAY}
 export CEDAR_POSTGRES_USER=cedarPostgresUser
 export CEDAR_POSTGRES_PASSWORD=cedarPostgresPassword
 export CEDAR_POSTGRES_HOST=${CEDAR_NET_GATEWAY}
-export CEDAR_POSTGRES_PORT=5445
+export CEDAR_POSTGRES_PORT=5432
 
 # Neo4j user amd connection data - do not change the user name
 export CEDAR_NEO4J_USER_NAME=neo4j
