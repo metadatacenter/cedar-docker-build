@@ -20,6 +20,7 @@ docker run -d \
 -e CEDAR_MONGO_HOST \
 -e CEDAR_LD_USER_BASE \
 -e CEDAR_PORT_MONGO \
+-e CEDAR_PORT_SCHEMA \
 -p ${CEDAR_PORT_SCHEMA}:${CEDAR_PORT_SCHEMA} \
 -v ${CEDAR_DOCKER_HOME}/log/cedar-schema-server/:/cedar/log/cedar-schema-server/ \
 metadatacenter/cedar-schema-server
