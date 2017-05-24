@@ -40,7 +40,7 @@ docker run -d \
 --net cedarnet \
 -v ${CEDAR_DOCKER_HOME}/data/redis/:/data \
 -v ${CEDAR_DOCKER_HOME}/log/redis/:/log \
--p ${CEDAR_PORT_REDIS_PERSISTENT}:6379 \
+-p ${CEDAR_REDIS_PERSISTENT_PORT}:6379 \
 --sysctl=net.core.somaxconn=512 \
 metadatacenter/cedar-redis-persistent
 ````
