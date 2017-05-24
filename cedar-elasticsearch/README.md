@@ -14,7 +14,7 @@ docker run -d \
 --net cedarnet \
 -v ${CEDAR_DOCKER_HOME}/data/elasticsearch:/usr/share/elasticsearch/data \
 -v ${CEDAR_DOCKER_HOME}/log/elasticsearch:/usr/share/elasticsearch/logs \
--p ${CEDAR_PORT_ELASTICSEARCH}:9200 \
+-p ${CEDAR_ELASTICSEARCH_REST_PORT}:9200 \
 metadatacenter/cedar-elasticsearch
 ````
 
