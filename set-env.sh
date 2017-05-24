@@ -6,52 +6,76 @@ export CEDAR_DOCKER_VERSION=1.1.0
 # Set it to an existing directory with write permission for the current user
 export CEDAR_DOCKER_HOME=~/Development/git_repos/CEDAR-docker
 
-# Mongo root user data
+# Docker network, IP address
+export CEDAR_NET_GATEWAY=192.168.17.1
+
+# Keycloak admin user and connection data
+export CEDAR_KEYCLOAK_ADMIN_USER=administrator
+export CEDAR_KEYCLOAK_ADMIN_PASSWORD=password
+export CEDAR_KEYCLOAK_HOST=${CEDAR_NET_GATEWAY}
+export CEDAR_KEYCLOAK_PORT=8080
+
+#Keycloak event listener
+export CEDAR_KEYCLOAK_CLIENT_ID="cedar-angular-app"
+export CEDAR_RESOURCE_SERVER_USER_CALLBACK_URL="https://resource.${CEDAR_HOST}/command/auth-user-callback"
+export CEDAR_RESOURCE_SERVER_ADMIN_CALLBACK_URL="https://resource.${CEDAR_HOST}command/auth-admin-callback"
+
+# cedar-admin user data
+export CEDAR_ADMIN_USER_API_KEY="24825a44c11b43a43c43793d93d1c04603714132308c226d2817cab592e98836"
+export CEDAR_ADMIN_USER_PASSWORD="Password123"
+
+# Mongo user and connection data
 export CEDAR_MONGO_ROOT_USER_NAME=mongoRootUser
 export CEDAR_MONGO_ROOT_USER_PASSWORD=mongoRootPassword
-
-# Mongo CEDAR app user data
 export CEDAR_MONGO_APP_USER_NAME=cedarMongoUser
 export CEDAR_MONGO_APP_USER_PASSWORD=cedarMongoPassword
-
-# Mongo database name for CEDAR
 export CEDAR_MONGO_APP_DATABASE_NAME=cedar
+export CEDAR_MONGO_HOST=${CEDAR_NET_GATEWAY}
 
 # Postgres CEDAR app user data for Keycloak persistence
 export CEDAR_POSTGRES_USER=cedarPostgresUser
 export CEDAR_POSTGRES_PASSWORD=cedarPostgresPassword
+export CEDAR_POSTGRES_HOST=${CEDAR_NET_GATEWAY}
+export CEDAR_POSTGRES_PORT=5445
 
-# Neo4j user data - do not change the user name
+# Neo4j user amd connection data - do not change the user name
 export CEDAR_NEO4J_USER_NAME=neo4j
 export CEDAR_NEO4J_USER_PASSWORD=neo4jPassword
-
+export CEDAR_NEO4J_HOST=${CEDAR_NET_GATEWAY}
+export CEDAR_NEO4J_REST_PORT=7474
+export CEDAR_NEO4J_BOLT_PORT=7687
 
 # Port assignment
-export CEDAR_PORT_POSTGRES=5432
-export CEDAR_PORT_KEYCLOAK=8080
 export CEDAR_PORT_MONGO=27017
-export CEDAR_PORT_ELASTICSEARCH=9200
 export CEDAR_PORT_KIBANA=5601
-export CEDAR_PORT_REDIS_PERSISTENT=6379
 export CEDAR_PORT_REDIS_COMMANDER=8081
-export CEDAR_PORT_NEO4J_REST=7474
-export CEDAR_PORT_NEO4J_BOLT=7687
-export CEDAR_PORT_EDITOR=4200
 export CEDAR_PORT_NGINX_HTTP=80
 export CEDAR_PORT_NGINX_HTTPS=443
 
+# Microservices host
+export CEDAR_MICROSERVICE_HOST=${CEDAR_NET_GATEWAY}
+
+# Microservice ports
 export CEDAR_PORT_SCHEMA=9003
 
-# Docker network, IP address
-export CEDAR_NET_GATEWAY=192.168.17.1
-
-
-export CEDAR_MONGO_HOST=${CEDAR_NET_GATEWAY}
-
-# Used to connect from inside the Docker images into microservices
-# Your real IP address comes here
-export CEDAR_DOCKER_HOST=171.65.32.121
-
-export CEDAR_MICROSERVICE_HOST=${CEDAR_NET_GATEWAY}
-export CEDAR_KEYCLOAK_HOST=${CEDAR_NET_GATEWAY}
+# Frontend
 export CEDAR_FRONTEND_HOST=${CEDAR_NET_GATEWAY}
+export CEDAR_FRONTEND_PORT=4200
+
+# Redis
+export CEDAR_REDIS_PERSISTENT_HOST=${CEDAR_NET_GATEWAY}
+export CEDAR_REDIS_PERSISTENT_PORT=6379
+export CEDAR_REDIS_NONPERSISTENT_HOST=${CEDAR_NET_GATEWAY}
+export CEDAR_REDIS_NONPERSISTENT_PORT=6380
+
+# Bioportal
+export CEDAR_BIOPORTAL_REST_BASE="http://data.bioontology.org/"
+
+# Elasticsearch
+export CEDAR_ELASTICSEARCH_HOST=${CEDAR_NET_GATEWAY}
+export CEDAR_ELASTICSEARCH_REST_PORT=9200
+export CEDAR_ELASTICSEARCH_TRANSPORT_PORT=9300
+
+# Data
+export CEDAR_EVERYBODY_GROUP_NAME="Everybody" 
+
