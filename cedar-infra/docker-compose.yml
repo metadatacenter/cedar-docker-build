@@ -35,20 +35,20 @@ services:
     sysctls:
       - net.core.somaxconn=512
 
-  postgres:
-    container_name: postgres
-    image: "metadatacenter/cedar-postgres"
-    build: ../cedar-postgres
+  mysql:
+    container_name: mysql
+    image: "metadatacenter/cedar-mysql"
+    build: ../cedar-mysql
     networks:
       - cedarnet
     ports:
-      - ${CEDAR_POSTGRES_PORT}:5445
+      - ${CEDAR_MYSQL_PORT}:3306
     volumes:
-      - ${CEDAR_DOCKER_HOME}/data/postgres/:/var/lib/postgresql/data
-      - ${CEDAR_DOCKER_HOME}/log/postgres/:/var/log/postgresql
+      - ${CEDAR_DOCKER_HOME}/data/mysql/:/var/lib/mysql
     environment:
-      - CEDAR_POSTGRES_USER
-      - CEDAR_POSTGRES_PASSWORD
+      - CEDAR_MYSQL_ROOT_PASSWORD
+      - CEDAR_MYSQL_USER
+      - CEDAR_MYSQL_PASSWORD
 
   keycloak:
     container_name: keycloak
@@ -63,10 +63,10 @@ services:
     extra_hosts:
       - "resource.${CEDAR_HOST}:${CEDAR_DOCKER_HOST}"
     environment:
-      - CEDAR_POSTGRES_USER
-      - CEDAR_POSTGRES_PASSWORD
-      - CEDAR_POSTGRES_PORT
-      - CEDAR_POSTGRES_HOST
+      - CEDAR_MYSQL_USER
+      - CEDAR_MYSQL_PASSWORD
+      - CEDAR_MYSQL_PORT
+      - CEDAR_MYSQL_HOST
       - CEDAR_KEYCLOAK_ADMIN_USER
       - CEDAR_KEYCLOAK_ADMIN_PASSWORD
       - CEDAR_RESOURCE_SERVER_USER_CALLBACK_URL
@@ -103,6 +103,24 @@ services:
     environment:
       - CEDAR_NEO4J_USER_NAME
       - CEDAR_NEO4J_USER_PASSWORD
+
+  nginx:
+    container_name: nginx
+    image: "metadatacenter/cedar-nginx"
+    build: ../cedar-nginx
+    networks:
+      - cedarnet
+    ports:
+      - ${CEDAR_NGINX_HTTP_PORT}:80
+      - ${CEDAR_NGINX_HTTPS_PORT}:443
+    volumes:
+      - ${CEDAR_DOCKER_HOME}/log/:/etc/nginx/log
+      - ${CEDAR_DOCKER_HOME}/cert/:/usr/local/etc/certificates
+    environment:
+      - CEDAR_HOST
+      - CEDAR_MICROSERVICE_HOST
+      - CEDAR_KEYCLOAK_HOST
+      - CEDAR_FRONTEND_HOST
 
 
 networks:
