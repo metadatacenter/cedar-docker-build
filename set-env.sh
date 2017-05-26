@@ -18,7 +18,7 @@ export CEDAR_KEYCLOAK_PORT=8080
 #Keycloak event listener
 export CEDAR_KEYCLOAK_CLIENT_ID="cedar-angular-app"
 export CEDAR_RESOURCE_SERVER_USER_CALLBACK_URL="https://resource.${CEDAR_HOST}/command/auth-user-callback"
-export CEDAR_RESOURCE_SERVER_ADMIN_CALLBACK_URL="https://resource.${CEDAR_HOST}command/auth-admin-callback"
+export CEDAR_RESOURCE_SERVER_ADMIN_CALLBACK_URL="https://resource.${CEDAR_HOST}/command/auth-admin-callback"
 
 # cedar-admin user data
 export CEDAR_ADMIN_USER_API_KEY="24825a44c11b43a43c43793d93d1c04603714132308c226d2817cab592e98836"
@@ -32,11 +32,12 @@ export CEDAR_MONGO_APP_USER_PASSWORD=cedarMongoPassword
 export CEDAR_MONGO_APP_DATABASE_NAME=cedar
 export CEDAR_MONGO_HOST=${CEDAR_NET_GATEWAY}
 
-# Postgres CEDAR app user data for Keycloak persistence
-export CEDAR_POSTGRES_USER=cedarPostgresUser
-export CEDAR_POSTGRES_PASSWORD=cedarPostgresPassword
-export CEDAR_POSTGRES_HOST=${CEDAR_NET_GATEWAY}
-export CEDAR_POSTGRES_PORT=5432
+# MySQL CEDAR app user data for Keycloak persistence
+export CEDAR_MYSQL_ROOT_PASSWORD=cedarMySQLRootPassword
+export CEDAR_MYSQL_USER=cedarMySQLUser
+export CEDAR_MYSQL_PASSWORD=cedarMySQLPassword
+export CEDAR_MYSQL_HOST=${CEDAR_NET_GATEWAY}
+export CEDAR_MYSQL_PORT=3306
 
 # Neo4j user amd connection data - do not change the user name
 export CEDAR_NEO4J_USER_NAME=neo4j
@@ -49,8 +50,6 @@ export CEDAR_NEO4J_BOLT_PORT=7687
 export CEDAR_PORT_MONGO=27017
 export CEDAR_PORT_KIBANA=5601
 export CEDAR_PORT_REDIS_COMMANDER=8081
-export CEDAR_PORT_NGINX_HTTP=80
-export CEDAR_PORT_NGINX_HTTPS=443
 
 # Microservices host
 export CEDAR_MICROSERVICE_HOST=${CEDAR_NET_GATEWAY}
@@ -75,6 +74,10 @@ export CEDAR_BIOPORTAL_REST_BASE="http://data.bioontology.org/"
 export CEDAR_ELASTICSEARCH_HOST=${CEDAR_NET_GATEWAY}
 export CEDAR_ELASTICSEARCH_REST_PORT=9200
 export CEDAR_ELASTICSEARCH_TRANSPORT_PORT=9300
+
+# Nginx
+export CEDAR_NGINX_HTTP_PORT=80
+export CEDAR_NGINX_HTTPS_PORT=443
 
 # Data
 export CEDAR_EVERYBODY_GROUP_NAME="Everybody" 
