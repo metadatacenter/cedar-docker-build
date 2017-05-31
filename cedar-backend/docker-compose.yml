@@ -68,6 +68,30 @@ services:
       - CEDAR_LD_USER_BASE
       - CEDAR_PORT_SUBMISSION
       - CEDAR_NCBI_SRA_FTP_PASSWORD
+  group-server:
+    depends_on:
+        - cedar-microservice
+    container_name: group-server
+    image: "metadatacenter/cedar-group-server"
+    build: ../cedar-group-server
+    networks:
+      - cedarnet
+    ports:
+      - "${CEDAR_PORT_GROUP}:${CEDAR_PORT_GROUP}"
+    volumes:
+      - ${CEDAR_DOCKER_HOME}/log/cedar-group-server/:/cedar/log/cedar-group-server/
+    environment:
+      - CEDAR_HOST
+      - CEDAR_KEYCLOAK_CLIENT_ID
+      - CEDAR_MONGO_APP_USER_NAME
+      - CEDAR_MONGO_APP_USER_PASSWORD
+      - CEDAR_MONGO_HOST
+      - CEDAR_MONGO_PORT
+      - CEDAR_NEO4J_USER_NAME
+      - CEDAR_NEO4J_USER_PASSWORD
+      - CEDAR_LD_USER_BASE
+      - CEDAR_EVERYBODY_GROUP_NAME
+      - CEDAR_PORT_GROUP
 
 
 networks:
