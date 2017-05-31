@@ -165,6 +165,53 @@ services:
       - CEDAR_ELASTICSEARCH_HOST
       - CEDAR_ELASTICSEARCH_TRANSPORT_PORT
       - CEDAR_PORT_WORKER
+  valuerecommender-server:
+    depends_on:
+        - cedar-microservice
+    container_name: valuerecommender-server
+    image: "metadatacenter/cedar-valuerecommender-server"
+    build: ../cedar-valuerecommender-server
+    networks:
+      - cedarnet
+    ports:
+      - "${CEDAR_PORT_VALUERECOMMENDER}:${CEDAR_PORT_VALUERECOMMENDER}"
+    volumes:
+      - ${CEDAR_DOCKER_HOME}/log/cedar-valuerecommender-server/:/cedar/log/cedar-valuerecommender-server/
+    environment:
+      - CEDAR_HOST
+      - CEDAR_KEYCLOAK_CLIENT_ID
+      - CEDAR_MONGO_APP_USER_NAME
+      - CEDAR_MONGO_APP_USER_PASSWORD
+      - CEDAR_MONGO_HOST
+      - CEDAR_MONGO_PORT
+      - CEDAR_LD_USER_BASE
+      - CEDAR_PORT_VALUERECOMMENDER
+  terminology-server:
+    depends_on:
+        - cedar-microservice
+    container_name: terminology-server
+    image: "metadatacenter/cedar-terminology-server"
+    build: ../cedar-terminology-server
+    networks:
+      - cedarnet
+    ports:
+      - "${CEDAR_PORT_TERMINOLOGY}:${CEDAR_PORT_TERMINOLOGY}"
+    volumes:
+      - ${CEDAR_DOCKER_HOME}/log/cedar-terminology-server/:/cedar/log/cedar-terminology-server/
+      - ${CEDAR_DOCKER_HOME}/data/cache/terminology/:/cedar/data/cache/terminology/
+    environment:
+      - CEDAR_HOST
+      - CEDAR_KEYCLOAK_CLIENT_ID
+      - CEDAR_MONGO_APP_USER_NAME
+      - CEDAR_MONGO_APP_USER_PASSWORD
+      - CEDAR_MONGO_HOST
+      - CEDAR_MONGO_PORT
+      - CEDAR_LD_USER_BASE
+      - CEDAR_BIOPORTAL_API_KEY
+      - CEDAR_BIOPORTAL_REST_BASE
+      - CEDAR_TEST_USER1_ID
+      - CEDAR_PORT_TERMINOLOGY
+
 
 networks:
   cedarnet:
