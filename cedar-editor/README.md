@@ -13,7 +13,7 @@ docker run -d \
 --name editor \
 --net cedarnet \
 -v ${CEDAR_DOCKER_HOME}/log/editor:/log \
--p ${CEDAR_PORT_EDITOR}:4200 \
+-p ${CEDAR_FRONTEND_PORT}:4200 \
 -e CEDAR_HOST \
 metadatacenter/cedar-editor
 ````
