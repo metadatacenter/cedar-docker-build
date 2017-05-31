@@ -92,7 +92,79 @@ services:
       - CEDAR_LD_USER_BASE
       - CEDAR_EVERYBODY_GROUP_NAME
       - CEDAR_PORT_GROUP
-
+  folder-server:
+    depends_on:
+        - cedar-microservice
+    container_name: folder-server
+    image: "metadatacenter/cedar-folder-server"
+    build: ../cedar-folder-server
+    networks:
+      - cedarnet
+    ports:
+      - "${CEDAR_PORT_FOLDER}:${CEDAR_PORT_FOLDER}"
+    volumes:
+      - ${CEDAR_DOCKER_HOME}/log/cedar-folder-server/:/cedar/log/cedar-folder-server/
+    environment:
+      - CEDAR_HOST
+      - CEDAR_KEYCLOAK_CLIENT_ID
+      - CEDAR_MONGO_APP_USER_NAME
+      - CEDAR_MONGO_APP_USER_PASSWORD
+      - CEDAR_MONGO_HOST
+      - CEDAR_MONGO_PORT
+      - CEDAR_NEO4J_USER_NAME
+      - CEDAR_NEO4J_USER_PASSWORD
+      - CEDAR_LD_USER_BASE
+      - CEDAR_EVERYBODY_GROUP_NAME
+      - CEDAR_PORT_FOLDER
+  template-server:
+    depends_on:
+        - cedar-microservice
+    container_name: template-server
+    image: "metadatacenter/cedar-template-server"
+    build: ../cedar-template-server
+    networks:
+      - cedarnet
+    ports:
+      - "${CEDAR_PORT_TEMPLATE}:${CEDAR_PORT_TEMPLATE}"
+    volumes:
+      - ${CEDAR_DOCKER_HOME}/log/cedar-template-server/:/cedar/log/cedar-template-server/
+    environment:
+      - CEDAR_HOST
+      - CEDAR_KEYCLOAK_CLIENT_ID
+      - CEDAR_MONGO_APP_USER_NAME
+      - CEDAR_MONGO_APP_USER_PASSWORD
+      - CEDAR_MONGO_HOST
+      - CEDAR_MONGO_PORT
+      - CEDAR_LD_USER_BASE
+      - CEDAR_PORT_TEMPLATE
+      - CEDAR_TEST_USER1_ID
+  worker-server:
+    depends_on:
+        - cedar-microservice
+    container_name: worker-server
+    image: "metadatacenter/cedar-worker-server"
+    build: ../cedar-worker-server
+    networks:
+      - cedarnet
+    ports:
+      - "${CEDAR_PORT_WORKER}:${CEDAR_PORT_WORKER}"
+    volumes:
+      - ${CEDAR_DOCKER_HOME}/log/cedar-worker-server/:/cedar/log/cedar-worker-server/
+    environment:
+      - CEDAR_HOST
+      - CEDAR_KEYCLOAK_CLIENT_ID
+      - CEDAR_MONGO_APP_USER_NAME
+      - CEDAR_MONGO_APP_USER_PASSWORD
+      - CEDAR_MONGO_HOST
+      - CEDAR_MONGO_PORT
+      - CEDAR_LD_USER_BASE
+      - CEDAR_ADMIN_USER_API_KEY
+      - CEDAR_NEO4J_USER_NAME
+      - CEDAR_NEO4J_USER_PASSWORD
+      - CEDAR_EVERYBODY_GROUP_NAME
+      - CEDAR_ELASTICSEARCH_HOST
+      - CEDAR_ELASTICSEARCH_TRANSPORT_PORT
+      - CEDAR_PORT_WORKER
 
 networks:
   cedarnet:
