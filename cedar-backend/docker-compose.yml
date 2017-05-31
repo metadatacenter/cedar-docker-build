@@ -17,7 +17,6 @@ services:
     volumes:
       - ${CEDAR_DOCKER_HOME}/log/cedar-schema-server/:/cedar/log/cedar-schema-server/
     environment:
-      - CEDAR_HOME
       - CEDAR_HOST
       - CEDAR_KEYCLOAK_CLIENT_ID
       - CEDAR_MONGO_APP_USER_NAME
@@ -26,6 +25,49 @@ services:
       - CEDAR_MONGO_PORT
       - CEDAR_LD_USER_BASE
       - CEDAR_PORT_SCHEMA
+  user-server:
+    depends_on:
+        - cedar-microservice
+    container_name: user-server
+    image: "metadatacenter/cedar-user-server"
+    build: ../cedar-user-server
+    networks:
+      - cedarnet
+    ports:
+      - "${CEDAR_PORT_USER}:${CEDAR_PORT_USER}"
+    volumes:
+      - ${CEDAR_DOCKER_HOME}/log/cedar-user-server/:/cedar/log/cedar-user-server/
+    environment:
+      - CEDAR_HOST
+      - CEDAR_KEYCLOAK_CLIENT_ID
+      - CEDAR_MONGO_APP_USER_NAME
+      - CEDAR_MONGO_APP_USER_PASSWORD
+      - CEDAR_MONGO_HOST
+      - CEDAR_MONGO_PORT
+      - CEDAR_LD_USER_BASE
+      - CEDAR_PORT_USER
+  submission-server:
+    depends_on:
+        - cedar-microservice
+    container_name: submission-server
+    image: "metadatacenter/cedar-submission-server"
+    build: ../cedar-submission-server
+    networks:
+      - cedarnet
+    ports:
+      - "${CEDAR_PORT_SUBMISSION}:${CEDAR_PORT_SUBMISSION}"
+    volumes:
+      - ${CEDAR_DOCKER_HOME}/log/cedar-submission-server/:/cedar/log/cedar-submission-server/
+    environment:
+      - CEDAR_HOST
+      - CEDAR_KEYCLOAK_CLIENT_ID
+      - CEDAR_MONGO_APP_USER_NAME
+      - CEDAR_MONGO_APP_USER_PASSWORD
+      - CEDAR_MONGO_HOST
+      - CEDAR_MONGO_PORT
+      - CEDAR_LD_USER_BASE
+      - CEDAR_PORT_SUBMISSION
+      - CEDAR_NCBI_SRA_FTP_PASSWORD
 
 
 networks:

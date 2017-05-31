@@ -7,7 +7,7 @@ services:
     networks:
       - cedarnet
     ports:
-      - "${CEDAR_PORT_MONGO}:27017"
+      - "${CEDAR_MONGO_PORT}:27017"
     volumes:
       - ${CEDAR_DOCKER_HOME}/data/mongo/:/data/db
       - ${CEDAR_DOCKER_HOME}/log/mongo/:/data/log
