@@ -1,0 +1,34 @@
+version: '3'
+services:
+  cedar-microservice:
+    container_name: cedar-microservice
+    image: "metadatacenter/cedar-microservice"
+    build: ../cedar-microservice
+  schema-server:
+    depends_on:
+        - cedar-microservice
+    container_name: schema-server
+    image: "metadatacenter/cedar-schema-server"
+    build: ../cedar-schema-server
+    networks:
+      - cedarnet
+    ports:
+      - "${CEDAR_PORT_SCHEMA}:${CEDAR_PORT_SCHEMA}"
+    volumes:
+      - ${CEDAR_DOCKER_HOME}/log/cedar-schema-server/:/cedar/log/cedar-schema-server/
+    environment:
+      - CEDAR_HOME
+      - CEDAR_HOST
+      - CEDAR_KEYCLOAK_CLIENT_ID
+      - CEDAR_MONGO_APP_USER_NAME
+      - CEDAR_MONGO_APP_USER_PASSWORD
+      - CEDAR_MONGO_HOST
+      - CEDAR_MONGO_PORT
+      - CEDAR_LD_USER_BASE
+      - CEDAR_PORT_SCHEMA
+
+
+networks:
+  cedarnet:
+    external:
+      name: cedarnet
