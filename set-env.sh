@@ -31,6 +31,7 @@ export CEDAR_MONGO_APP_USER_NAME=cedarMongoUser
 export CEDAR_MONGO_APP_USER_PASSWORD=cedarMongoPassword
 export CEDAR_MONGO_APP_DATABASE_NAME=cedar
 export CEDAR_MONGO_HOST=${CEDAR_NET_GATEWAY}
+export CEDAR_MONGO_PORT=27017
 
 # MySQL CEDAR app user data for Keycloak persistence
 export CEDAR_MYSQL_ROOT_PASSWORD=cedarMySQLRootPassword
@@ -47,7 +48,6 @@ export CEDAR_NEO4J_REST_PORT=7474
 export CEDAR_NEO4J_BOLT_PORT=7687
 
 # Port assignment
-export CEDAR_PORT_MONGO=27017
 export CEDAR_PORT_KIBANA=5601
 export CEDAR_PORT_REDIS_COMMANDER=8081
 
