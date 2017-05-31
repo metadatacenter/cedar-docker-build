@@ -12,7 +12,6 @@ Execute the following command:
 docker run -d \
 --name schema-server \
 --net cedarnet \
--e CEDAR_HOME \
 -e CEDAR_HOST \
 -e CEDAR_KEYCLOAK_CLIENT_ID \
 -e CEDAR_MONGO_APP_USER_NAME \
