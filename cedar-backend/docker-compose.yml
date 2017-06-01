@@ -211,6 +211,58 @@ services:
       - CEDAR_BIOPORTAL_REST_BASE
       - CEDAR_TEST_USER1_ID
       - CEDAR_PORT_TERMINOLOGY
+  repo-server:
+    depends_on:
+        - cedar-microservice
+    container_name: repo-server
+    image: "metadatacenter/cedar-repo-server"
+    build: ../cedar-repo-server
+    networks:
+      - cedarnet
+    ports:
+      - "${CEDAR_PORT_REPO}:${CEDAR_PORT_REPO}"
+    volumes:
+      - ${CEDAR_DOCKER_HOME}/log/cedar-repo-server/:/cedar/log/cedar-repo-server/
+    environment:
+      - CEDAR_HOST
+      - CEDAR_KEYCLOAK_CLIENT_ID
+      - CEDAR_MONGO_APP_USER_NAME
+      - CEDAR_MONGO_APP_USER_PASSWORD
+      - CEDAR_MONGO_HOST
+      - CEDAR_MONGO_PORT
+      - CEDAR_LD_USER_BASE
+      - CEDAR_PORT_REPO
+  resource-server:
+    depends_on:
+        - cedar-microservice
+    container_name: resource-server
+    image: "metadatacenter/cedar-resource-server"
+    build: ../cedar-resource-server
+    networks:
+      - cedarnet
+    ports:
+      - "${CEDAR_PORT_RESOURCE}:${CEDAR_PORT_RESOURCE}"
+    volumes:
+      - ${CEDAR_DOCKER_HOME}/log/cedar-resource-server/:/cedar/log/cedar-resource-server/
+      - ${CEDAR_DOCKER_HOME}/ca/:/cedar/ca
+    extra_hosts:
+      - "folder.${CEDAR_HOST}:${CEDAR_DOCKER_HOST}"
+    environment:
+      - CEDAR_HOST
+      - CEDAR_KEYCLOAK_CLIENT_ID
+      - CEDAR_MONGO_APP_USER_NAME
+      - CEDAR_MONGO_APP_USER_PASSWORD
+      - CEDAR_MONGO_HOST
+      - CEDAR_MONGO_PORT
+      - CEDAR_LD_USER_BASE
+      - CEDAR_PORT_RESOURCE
+      - CEDAR_ADMIN_USER_API_KEY
+      - CEDAR_NEO4J_USER_NAME
+      - CEDAR_NEO4J_USER_PASSWORD
+      - CEDAR_SALT_API_KEY
+      - CEDAR_EVERYBODY_GROUP_NAME
+      - CEDAR_ELASTICSEARCH_HOST
+      - CEDAR_ELASTICSEARCH_TRANSPORT_PORT
 
 
 networks:

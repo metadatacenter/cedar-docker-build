@@ -12,4 +12,8 @@ ADD include/install_deps.sh ${CEDAR_HOME}/
 RUN mkdir -p ${CEDAR_HOME}/app
 WORKDIR ${CEDAR_HOME}/app/
 
+ENV CADIR=${CEDAR_HOME}/ca/
+RUN mkdir -p ${CADIR}
+VOLUME ${CADIR}
+
 CMD ["/cedar/docker-entrypoint.sh"]
