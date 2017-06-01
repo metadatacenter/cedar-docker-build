@@ -6,7 +6,7 @@ ENV LOGDIR=${CEDAR_HOME}/log/cedar-${CEDAR_SERVER_NAME}-server/
 RUN mkdir -p ${LOGDIR}
 VOLUME ${LOGDIR}
 
-ENV CACHEDIR=${CEDAR_HOME}/data/cache/terminology/
+ENV CACHEDIR=${CEDAR_HOME}/cache/terminology/
 RUN mkdir -p ${CACHEDIR}
 VOLUME ${CACHEDIR}
 

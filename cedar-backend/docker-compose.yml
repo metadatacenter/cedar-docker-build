@@ -198,7 +198,7 @@ services:
       - "${CEDAR_PORT_TERMINOLOGY}:${CEDAR_PORT_TERMINOLOGY}"
     volumes:
       - ${CEDAR_DOCKER_HOME}/log/cedar-terminology-server/:/cedar/log/cedar-terminology-server/
-      - ${CEDAR_DOCKER_HOME}/data/cache/terminology/:/cedar/data/cache/terminology/
+      - ${CEDAR_DOCKER_HOME}/data/cache/terminology/:/cedar/cache/terminology/
     environment:
       - CEDAR_HOST
       - CEDAR_KEYCLOAK_CLIENT_ID
