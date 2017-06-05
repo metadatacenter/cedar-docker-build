@@ -19,9 +19,10 @@ docker run -d \
 -e CEDAR_MONGO_HOST \
 -e CEDAR_MONGO_PORT \
 -e CEDAR_LD_USER_BASE \
--e CEDAR_PORT_TEMPLATE \
 -e CEDAR_TEST_USER1_ID \
--p ${CEDAR_PORT_TEMPLATE}:${CEDAR_PORT_TEMPLATE} \
+-p ${CEDAR_TEMPLATE_HTTP_PORT}:9001 \
+-p ${CEDAR_TEMPLATE_MANAGEMENT_PORT}:9101 \
+-p ${CEDAR_TEMPLATE_STOP_PORT}:9201 \
 -v ${CEDAR_DOCKER_HOME}/log/cedar-template-server/:/cedar/log/cedar-template-server/ \
 metadatacenter/cedar-template-server
 ````
