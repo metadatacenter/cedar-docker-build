@@ -13,14 +13,11 @@ docker run -d \
 --name schema-server \
 --net cedarnet \
 -e CEDAR_HOST \
--e CEDAR_KEYCLOAK_CLIENT_ID \
 -e CEDAR_MONGO_APP_USER_NAME \
 -e CEDAR_MONGO_APP_USER_PASSWORD \
 -e CEDAR_MONGO_HOST \
 -e CEDAR_MONGO_PORT \
--e CEDAR_LD_USER_BASE \
--e CEDAR_PORT_SCHEMA \
--p ${CEDAR_PORT_SCHEMA}:${CEDAR_PORT_SCHEMA} \
+-p ${CEDAR_SCHEMA_PORT}:9003 \
 -v ${CEDAR_DOCKER_HOME}/log/cedar-schema-server/:/cedar/log/cedar-schema-server/ \
 metadatacenter/cedar-schema-server
 ````

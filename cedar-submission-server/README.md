@@ -13,15 +13,12 @@ docker run -d \
 --name submission-server \
 --net cedarnet \
 -e CEDAR_HOST \
--e CEDAR_KEYCLOAK_CLIENT_ID \
 -e CEDAR_MONGO_APP_USER_NAME \
 -e CEDAR_MONGO_APP_USER_PASSWORD \
 -e CEDAR_MONGO_HOST \
 -e CEDAR_MONGO_PORT \
--e CEDAR_LD_USER_BASE \
 -e CEDAR_NCBI_SRA_FTP_PASSWORD \
--e CEDAR_PORT_SUBMISSION \
--p ${CEDAR_PORT_SUBMISSION}:${CEDAR_PORT_SUBMISSION} \
+-p ${CEDAR_SUBMISSION_PORT}:9010 \
 -v ${CEDAR_DOCKER_HOME}/log/cedar-submission-server/:/cedar/log/cedar-submission-server/ \
 metadatacenter/cedar-submission-server
 ````

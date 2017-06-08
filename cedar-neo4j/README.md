@@ -16,7 +16,6 @@ docker run -d \
 -v ${CEDAR_DOCKER_HOME}/log/neo4j/:/logs \
 -p ${CEDAR_NEO4J_REST_PORT}:7474 \
 -p ${CEDAR_NEO4J_BOLT_PORT}:7687 \
--e CEDAR_NEO4J_USER_NAME \
 -e CEDAR_NEO4J_USER_PASSWORD \
 metadatacenter/cedar-neo4j
 ````

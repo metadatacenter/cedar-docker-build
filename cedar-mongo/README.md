@@ -14,13 +14,11 @@ docker run -d \
 --net cedarnet \
 -v ${CEDAR_DOCKER_HOME}/data/mongo/:/data/db \
 -v ${CEDAR_DOCKER_HOME}/log/mongo/:/data/log \
--p ${CEDAR_PORT_MONGO}:27017 \
+-p ${CEDAR_MONGO_PORT}:27017 \
 -e CEDAR_MONGO_ROOT_USER_NAME \
 -e CEDAR_MONGO_ROOT_USER_PASSWORD \
 -e CEDAR_MONGO_APP_USER_NAME \
 -e CEDAR_MONGO_APP_USER_PASSWORD \
--e CEDAR_MONGO_APP_DATABASE_NAME \
--e CEDAR_LD_USER_BASE \
 -e CEDAR_HOST \
 -e CEDAR_ADMIN_USER_API_KEY \
 metadatacenter/cedar-mongo

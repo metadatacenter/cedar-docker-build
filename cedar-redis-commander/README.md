@@ -12,7 +12,7 @@ Execute the following command:
 docker run -d \
 --name redis-commander \
 --net cedarnet \
--p ${CEDAR_PORT_REDIS_COMMANDER}:8081 \
+-p ${CEDAR_REDIS_COMMANDER_PORT}:8081 \
 -e CEDAR_NET_GATEWAY \
 metadatacenter/cedar-redis-commander
 ````

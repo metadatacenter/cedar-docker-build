@@ -13,17 +13,12 @@ docker run -d \
 --name folder-server \
 --net cedarnet \
 -e CEDAR_HOST \
--e CEDAR_KEYCLOAK_CLIENT_ID \
 -e CEDAR_MONGO_APP_USER_NAME \
 -e CEDAR_MONGO_APP_USER_PASSWORD \
 -e CEDAR_MONGO_HOST \
 -e CEDAR_MONGO_PORT \
--e CEDAR_NEO4J_USER_NAME \
 -e CEDAR_NEO4J_USER_PASSWORD \
--e CEDAR_LD_USER_BASE \
--e CEDAR_EVERYBODY_GROUP_NAME \
--e CEDAR_PORT_FOLDER \
--p ${CEDAR_PORT_FOLDER}:${CEDAR_PORT_FOLDER} \
+-p ${CEDAR_FOLDER_PORT}:9008 \
 -v ${CEDAR_DOCKER_HOME}/log/cedar-folder-server/:/cedar/log/cedar-folder-server/ \
 metadatacenter/cedar-folder-server
 ````

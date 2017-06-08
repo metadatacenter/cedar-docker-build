@@ -112,10 +112,10 @@
             <formatter name="COLOR-PATTERN">
                 <pattern-formatter pattern="%K{level}%d{HH:mm:ss,SSS} %-5p [%c] (%t) %s%e%n"/>
             </formatter>
-        <log:logger xmlns:log="urn:jboss:domain:logging:3.0" xmlns="" category="org.keycloak">
-            <log:level name="${env.KEYCLOAK_LOGLEVEL:INFO}"/>
-         </log:logger>
-      </subsystem>
+            <log:logger xmlns:log="urn:jboss:domain:logging:3.0" xmlns="" category="org.keycloak">
+                <log:level name="${env.KEYCLOAK_LOGLEVEL:INFO}"/>
+            </log:logger>
+        </subsystem>
         <subsystem xmlns="urn:jboss:domain:bean-validation:1.0"/>
         <subsystem xmlns="urn:jboss:domain:datasources:4.0">
             <datasources>
@@ -491,12 +491,12 @@
                 <provider name="CEDAR-event-listener" enabled="true">
                     <properties>
                         <property name="userEventList" value="[&quot;LOGIN&quot;]"/>
-                        <property name="userEventCallbackURL" value="${env.CEDAR_RESOURCE_SERVER_USER_CALLBACK_URL}"/>
+                        <property name="userEventCallbackURL" value="https://resource.${env.CEDAR_HOST}/command/auth-user-callback"/>
                         <property name="adminResourceList" value="[&quot;USER&quot;]"/>
-                        <property name="adminResourceCallbackURL" value="${env.CEDAR_RESOURCE_SERVER_ADMIN_CALLBACK_URL}"/>
-                        <property name="linkedDataUserBase" value="${env.CEDAR_LD_USER_BASE}"/>
+                        <property name="adminResourceCallbackURL" value="https://resource.${env.CEDAR_HOST}/command/auth-admin-callback"/>
+                        <property name="linkedDataUserBase" value="https://metadatacenter.org/users/"/>
                         <property name="apiKey" value="${env.CEDAR_ADMIN_USER_API_KEY}"/>
-                        <property name="clientId" value="${env.CEDAR_KEYCLOAK_CLIENT_ID}"/>
+                        <property name="clientId" value="cedar-angular-app"/>
                     </properties>
                 </provider>
             </spi>
@@ -510,12 +510,9 @@
             <inet-address value="${jboss.bind.address:127.0.0.1}"/>
         </interface>
     </interfaces>
-    <socket-binding-group name="standard-sockets" default-interface="public"
-                         port-offset="${jboss.socket.binding.port-offset:0}">
-        <socket-binding name="management-http" interface="management"
-                      port="${jboss.management.http.port:9990}"/>
-        <socket-binding name="management-https" interface="management"
-                      port="${jboss.management.https.port:9993}"/>
+    <socket-binding-group name="standard-sockets" default-interface="public" port-offset="${jboss.socket.binding.port-offset:0}">
+        <socket-binding name="management-http" interface="management" port="${jboss.management.http.port:9990}"/>
+        <socket-binding name="management-https" interface="management" port="${jboss.management.https.port:9993}"/>
         <socket-binding name="ajp" port="${jboss.ajp.port:8009}"/>
         <socket-binding name="http" port="${jboss.http.port:8080}"/>
         <socket-binding name="https" port="${jboss.https.port:8443}"/>

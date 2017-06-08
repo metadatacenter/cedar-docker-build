@@ -12,7 +12,7 @@ Execute the following command:
 docker run -d \
 --name kibana \
 --net cedarnet \
--p ${CEDAR_PORT_KIBANA}:5601 \
+-p ${CEDAR_KIBANA_PORT}:5601 \
 metadatacenter/cedar-kibana
 ````
 

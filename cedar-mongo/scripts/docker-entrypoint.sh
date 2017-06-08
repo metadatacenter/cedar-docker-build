@@ -3,9 +3,6 @@ set -e
 
 echo "Executing sed"
 
-CEDAR_LD_USER_BASE_ESCAPED=`echo $CEDAR_LD_USER_BASE | sed 's/\//\\\\\//g'`
-sed -i 's/<cedar.CEDAR_LD_USER_BASE>/'${CEDAR_LD_USER_BASE_ESCAPED}'/g' ${MONGO_CONFIG_DIR}/cedar-admin.json
-
 sed -i 's/<cedar.CEDAR_HOST>/'${CEDAR_HOST}'/g' ${MONGO_CONFIG_DIR}/cedar-admin.json
 
 sed -i 's/<cedar.CEDAR_ADMIN_USER_API_KEY>/'${CEDAR_ADMIN_USER_API_KEY}'/g' ${MONGO_CONFIG_DIR}/cedar-admin.json
