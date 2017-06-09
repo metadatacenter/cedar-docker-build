@@ -1,5 +1,7 @@
 FROM debian:stretch-slim
 
+ENV CEDAR_VERSION 1.2.1-SNAPSHOT
+
 ENV NGINX_VERSION 1.13.0-1~stretch
 ENV NJS_VERSION   1.13.0.0.1.10-1~stretch
 
@@ -64,7 +66,6 @@ npm install -g 'gulpjs/gulp.git#4.0'
 
 ENV CEDAR_HOME /srv/cedar
 ENV CEDAR_TEMPLATE_EDITOR_HOME ${CEDAR_HOME}/cedar-template-editor/
-ENV CEDAR_VERSION 1.2.0
 
 # Make CEDAR appplication home directory
 RUN mkdir -p ${CEDAR_TEMPLATE_EDITOR_HOME}
@@ -72,8 +73,11 @@ RUN mkdir -p ${CEDAR_TEMPLATE_EDITOR_HOME}
 # Make CEDAR home the default work directory
 WORKDIR ${CEDAR_TEMPLATE_EDITOR_HOME}
 
-ENV EDITOR_TARBALL release-${CEDAR_VERSION}.tar.gz
-ENV EDITOR_URI=https://github.com/metadatacenter/cedar-template-editor/archive/release-${CEDAR_VERSION}.tar.gz
+ENV EDITOR_TARBALL cedar-template-editor-${CEDAR_VERSION}.tar.gz
+#ENV EDITOR_TARBALL release-${CEDAR_VERSION}.tar.gz
+ENV CEDAR_MICROSERVICE_JAR_BASE https://cedar.metadatacenter.net/jars
+ENV EDITOR_URI ${CEDAR_MICROSERVICE_JAR_BASE}/${EDITOR_TARBALL}
+#ENV EDITOR_URI=https://github.com/metadatacenter/cedar-template-editor/archive/release-${CEDAR_VERSION}.tar.gz
 
 # Download and extract the frontend source
 RUN \

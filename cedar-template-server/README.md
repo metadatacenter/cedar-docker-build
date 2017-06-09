@@ -22,6 +22,7 @@ docker run -d \
 -p ${CEDAR_TEMPLATE_MANAGEMENT_PORT}:9101 \
 -p ${CEDAR_TEMPLATE_STOP_PORT}:9201 \
 -v ${CEDAR_DOCKER_HOME}/log/cedar-template-server/:/cedar/log/cedar-template-server/ \
+-v ${CEDAR_DOCKER_HOME}/ca/:/cedar/ca \
 metadatacenter/cedar-template-server
 ````
 

@@ -17,8 +17,11 @@ docker run -d \
 -e CEDAR_MONGO_APP_USER_PASSWORD \
 -e CEDAR_MONGO_HOST \
 -e CEDAR_MONGO_PORT \
--p ${CEDAR_USER_PORT}:9005 \
+-p ${CEDAR_USER_HTTP_PORT}:9005 \
+-p ${CEDAR_USER_ADMIN_PORT}:9105 \
+-p ${CEDAR_USER_STOP_PORT}:9205 \
 -v ${CEDAR_DOCKER_HOME}/log/cedar-user-server/:/cedar/log/cedar-user-server/ \
+-v ${CEDAR_DOCKER_HOME}/ca/:/cedar/ca \
 metadatacenter/cedar-user-server
 ````
 
