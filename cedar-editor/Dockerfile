@@ -64,7 +64,7 @@ npm install -g 'gulpjs/gulp.git#4.0'
 
 ENV CEDAR_HOME /srv/cedar
 ENV CEDAR_TEMPLATE_EDITOR_HOME ${CEDAR_HOME}/cedar-template-editor/
-ENV CEDAR_VERSION 1.1.0
+ENV CEDAR_VERSION 1.2.0
 
 # Make CEDAR appplication home directory
 RUN mkdir -p ${CEDAR_TEMPLATE_EDITOR_HOME}

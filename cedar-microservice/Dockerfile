@@ -2,7 +2,7 @@ FROM openjdk:8u131-jdk
 
 ENV CEDAR_HOME=/cedar
 
-ENV CEDAR_VERSION=1.1.1-SNAPSHOT
+ENV CEDAR_VERSION=1.2.1-SNAPSHOT
 ENV CEDAR_MICROSERVICE_JAR_BASE=https://cedar.metadatacenter.net/jars
 
 ADD scripts/docker-entrypoint.sh ${CEDAR_HOME}/
