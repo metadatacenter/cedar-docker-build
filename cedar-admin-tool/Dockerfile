@@ -21,6 +21,11 @@ ENV CADIR=${CEDAR_HOME}/ca/
 RUN mkdir -p ${CADIR}
 VOLUME ${CADIR}
 
+RUN apt-get update
+RUN apt-get install -y vim curl
+
+RUN echo 'alias cedarat="/cedar/app/cedarat.sh"' >> ~/.bashrc
+
 RUN ${CEDAR_HOME}/install_deps.sh
 
 CMD ["bash", "-C", "/cedar/docker-entrypoint.sh"]

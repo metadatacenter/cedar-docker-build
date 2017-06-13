@@ -6,7 +6,6 @@ echo
 echo "Waiting for the miracle"
 while true
 do
-  echo "waiting ..."
   sleep 10
 done
 echo "Waiting has ended"
