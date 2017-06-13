@@ -10,7 +10,7 @@ USER root
 #RUN yum -y update
 RUN yum -y install wget nc
 RUN wget -P /opt/jboss/keycloak/modules/system/layers/base/com/mysql/jdbc/main "http://central.maven.org/maven2/mysql/mysql-connector-java/5.1.42/mysql-connector-java-5.1.42.jar"
-RUN wget -P /opt/jboss/keycloak/providers "https://cedar.metadatacenter.net/jars/cedar-keycloak-event-listener-jar-with-dependencies--${CEDAR_VERSION}.jar"
+RUN wget -P /opt/jboss/keycloak/providers "https://cedar.metadatacenter.net/jars/cedar-keycloak-event-listener-jar-with-dependencies-${CEDAR_VERSION}.jar"
 RUN yum clean all
 
 USER jboss
@@ -19,7 +19,7 @@ ADD config/module.xml /opt/jboss/keycloak/modules/system/layers/base/com/mysql/j
 
 ADD config/standalone.xml /opt/jboss/keycloak/standalone/configuration/
 
-ADD config/themes/cedar /opt/jboss/keycloak/themes/
+ADD config/themes/cedar /opt/jboss/keycloak/themes/cedar
 
 RUN mkdir -p /opt/jboss/realm-import
 ADD config/cedar.realm.json /opt/jboss/realm-import/

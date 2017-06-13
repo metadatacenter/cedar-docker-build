@@ -255,7 +255,8 @@
     "email" : "cedar-admin@<cedar.CEDAR_HOST>",
     "credentials" : [ {
       "type" : "password",
-      "value" : "<cedar.CEDAR_ADMIN_USER_PASSWORD>",
+      "hashedSaltedValue" : "QkpIXKXs23Z3MBkNmxthSLvPS0MEhAFd6vmEexpvnA0ls8S5mKuaoDTxBoNMz0pkYlIXo9QJcmlVB+3UxyNb5g==",
+      "salt" : "GW1T3HCPbESkDe79obh+FQ==",
       "hashIterations" : 20000,
       "counter" : 0,
       "algorithm" : "pbkdf2",
@@ -324,7 +325,7 @@
       "config" : { }
     } ],
     "disableableCredentialTypes" : [ "password" ],
-    "requiredActions" : [ "UPDATE_PASSWORD" ],
+    "requiredActions" : [ ],
     "realmRoles" : [ "uma_authorization", "offline_access", "normal" ],
     "clientRoles" : {
       "account" : [ "view-profile", "manage-account" ]

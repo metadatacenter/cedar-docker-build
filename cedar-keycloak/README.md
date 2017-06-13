@@ -23,6 +23,8 @@ docker run -d \
 -e CEDAR_KEYCLOAK_ADMIN_PASSWORD \
 -e CEDAR_ADMIN_USER_API_KEY \
 -e CEDAR_HOST \
+-e CEDAR_NET_GATEWAY \
+-e CEDAR_RESOURCE_HTTP_PORT \
 metadatacenter/cedar-keycloak
 ````
 
