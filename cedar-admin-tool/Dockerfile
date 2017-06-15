@@ -22,7 +22,7 @@ RUN mkdir -p ${CADIR}
 VOLUME ${CADIR}
 
 RUN apt-get update
-RUN apt-get install -y vim curl
+RUN apt-get install -y vim curl telnet
 
 RUN echo 'alias cedarat="/cedar/app/cedarat.sh"' >> ~/.bashrc
 
