@@ -7,6 +7,8 @@ RUN npm config set registry http://registry.npmjs.org/ && \
 
 ADD scripts/docker-entrypoint.sh /
 
+ADD config/.redis-commander /root/
+
 EXPOSE 8081
 
 ENTRYPOINT [ "/docker-entrypoint.sh" ]
