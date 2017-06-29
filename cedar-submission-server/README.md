@@ -18,8 +18,11 @@ docker run -d \
 -e CEDAR_MONGO_HOST \
 -e CEDAR_MONGO_PORT \
 -e CEDAR_NCBI_SRA_FTP_PASSWORD \
--p ${CEDAR_SUBMISSION_PORT}:9010 \
+-p ${CEDAR_SUBMISSION_HTTP_PORT}:9010 \
+-p ${CEDAR_SUBMISSION_ADMIN_PORT}:9110 \
+-p ${CEDAR_SUBMISSION_STOP_PORT}:9210 \
 -v ${CEDAR_DOCKER_HOME}/log/cedar-submission-server/:/cedar/log/cedar-submission-server/ \
+-v ${CEDAR_DOCKER_HOME}/ca/:/cedar/ca \
 metadatacenter/cedar-submission-server
 ````
 
@@ -44,7 +47,6 @@ metadatacenter/cedar-submission-server
 ## Build the image
 
 ````
-chmod a+x scripts/docker-entrypoint.sh
 docker build -t metadatacenter/cedar-submission-server .
 ````
 

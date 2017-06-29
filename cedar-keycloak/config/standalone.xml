@@ -491,9 +491,9 @@
                 <provider name="CEDAR-event-listener" enabled="true">
                     <properties>
                         <property name="userEventList" value="[&quot;LOGIN&quot;]"/>
-                        <property name="userEventCallbackURL" value="https://resource.${env.CEDAR_HOST}/command/auth-user-callback"/>
+                        <property name="userEventCallbackURL" value="http://${env.CEDAR_NET_GATEWAY}:${env.CEDAR_RESOURCE_HTTP_PORT}/command/auth-user-callback"/>
                         <property name="adminResourceList" value="[&quot;USER&quot;]"/>
-                        <property name="adminResourceCallbackURL" value="https://resource.${env.CEDAR_HOST}/command/auth-admin-callback"/>
+                        <property name="adminResourceCallbackURL" value="http://${env.CEDAR_NET_GATEWAY}:${env.CEDAR_RESOURCE_HTTP_PORT}/command/auth-admin-callback"/>
                         <property name="linkedDataUserBase" value="https://metadatacenter.org/users/"/>
                         <property name="apiKey" value="${env.CEDAR_ADMIN_USER_API_KEY}"/>
                         <property name="clientId" value="cedar-angular-app"/>

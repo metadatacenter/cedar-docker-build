@@ -18,11 +18,18 @@ docker run -d \
 -e CEDAR_MONGO_HOST \
 -e CEDAR_MONGO_PORT \
 -e CEDAR_ADMIN_USER_API_KEY \
+-e CEDAR_NEO4J_HOST \
+-e CEDAR_NEO4J_REST_PORT \
 -e CEDAR_NEO4J_USER_PASSWORD \
+-e CEDAR_REDIS_PERSISTENT_HOST \
+-e CEDAR_REDIS_PERSISTENT_PORT \
 -e CEDAR_ELASTICSEARCH_HOST \
 -e CEDAR_ELASTICSEARCH_TRANSPORT_PORT \
--p ${CEDAR_WORKER_PORT}:9011 \
+-p ${CEDAR_WORKER_HTTP_PORT}:9011 \
+-p ${CEDAR_WORKER_ADMIN_PORT}:9111 \
+-p ${CEDAR_WORKER_STOP_PORT}:9211 \
 -v ${CEDAR_DOCKER_HOME}/log/cedar-worker-server/:/cedar/log/cedar-worker-server/ \
+-v ${CEDAR_DOCKER_HOME}/ca/:/cedar/ca \
 metadatacenter/cedar-worker-server
 ````
 
@@ -47,7 +54,6 @@ metadatacenter/cedar-worker-server
 ## Build the image
 
 ````
-chmod a+x scripts/docker-entrypoint.sh
 docker build -t metadatacenter/cedar-worker-server .
 ````
 

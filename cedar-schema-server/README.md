@@ -17,8 +17,11 @@ docker run -d \
 -e CEDAR_MONGO_APP_USER_PASSWORD \
 -e CEDAR_MONGO_HOST \
 -e CEDAR_MONGO_PORT \
--p ${CEDAR_SCHEMA_PORT}:9003 \
+-p ${CEDAR_SCHEMA_HTTP_PORT}:9003 \
+-p ${CEDAR_SCHEMA_ADMIN_PORT}:9103 \
+-p ${CEDAR_SCHEMA_STOP_PORT}:9203 \
 -v ${CEDAR_DOCKER_HOME}/log/cedar-schema-server/:/cedar/log/cedar-schema-server/ \
+-v ${CEDAR_DOCKER_HOME}/ca/:/cedar/ca \
 metadatacenter/cedar-schema-server
 ````
 
@@ -43,7 +46,6 @@ metadatacenter/cedar-schema-server
 ## Build the image
 
 ````
-chmod a+x scripts/docker-entrypoint.sh
 docker build -t metadatacenter/cedar-schema-server .
 ````
 

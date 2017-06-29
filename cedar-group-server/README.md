@@ -17,9 +17,16 @@ docker run -d \
 -e CEDAR_MONGO_APP_USER_PASSWORD \
 -e CEDAR_MONGO_HOST \
 -e CEDAR_MONGO_PORT \
+-e CEDAR_NEO4J_HOST \
+-e CEDAR_NEO4J_REST_PORT \
 -e CEDAR_NEO4J_USER_PASSWORD \
--p ${CEDAR_GROUP_PORT}:9009 \
+-e CEDAR_REDIS_PERSISTENT_HOST \
+-e CEDAR_REDIS_PERSISTENT_PORT \
+-p ${CEDAR_GROUP_HTTP_PORT}:9009 \
+-p ${CEDAR_GROUP_ADMIN_PORT}:9109 \
+-p ${CEDAR_GROUP_STOP_PORT}:9209 \
 -v ${CEDAR_DOCKER_HOME}/log/cedar-group-server/:/cedar/log/cedar-group-server/ \
+-v ${CEDAR_DOCKER_HOME}/ca/:/cedar/ca \
 metadatacenter/cedar-group-server
 ````
 
@@ -44,7 +51,6 @@ metadatacenter/cedar-group-server
 ## Build the image
 
 ````
-chmod a+x scripts/docker-entrypoint.sh
 docker build -t metadatacenter/cedar-group-server .
 ````
 
