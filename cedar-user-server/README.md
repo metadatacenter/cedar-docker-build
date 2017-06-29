@@ -46,7 +46,6 @@ metadatacenter/cedar-user-server
 ## Build the image
 
 ````
-chmod a+x scripts/docker-entrypoint.sh
 docker build -t metadatacenter/cedar-user-server .
 ````
 
