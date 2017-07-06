@@ -5,8 +5,9 @@ echo "Creating log folders"
 cd "${LOGDIR}"
 mkdir -p nginx-global
 mkdir -p nginx-frontend
-mkdir -p nginx-folder
+mkdir -p nginx-workspace
 mkdir -p nginx-group
+mkdir -p nginx-messaging
 mkdir -p nginx-repo
 mkdir -p nginx-resource
 mkdir -p nginx-schema
