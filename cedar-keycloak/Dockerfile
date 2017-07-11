@@ -1,6 +1,6 @@
 FROM jboss/keycloak:3.1.0.Final
 
-ENV CEDAR_VERSION=1.3.1
+ENV CEDAR_VERSION=1.3.2-SNAPSHOT
 ENV CEDAR_MICROSERVICE_JAR_BASE=https://nexus.bmir.stanford.edu/service/local/repositories/releases/content
 
 RUN mkdir -p /opt/jboss/keycloak/modules/system/layers/base/com/mysql/jdbc/main
