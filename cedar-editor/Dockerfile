@@ -1,6 +1,6 @@
 FROM debian:stretch-slim
 
-ENV CEDAR_VERSION=1.3.2-SNAPSHOT
+ENV CEDAR_VERSION=1.3.2
 ENV CEDAR_MICROSERVICE_JAR_BASE=https://nexus.bmir.stanford.edu/content/repositories/npm-cedar
 
 ENV NGINX_VERSION 1.13.0-1~stretch
