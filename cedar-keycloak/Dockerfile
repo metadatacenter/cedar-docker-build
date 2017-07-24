@@ -1,7 +1,7 @@
 FROM jboss/keycloak:3.1.0.Final
 
 ENV CEDAR_VERSION=1.3.3-SNAPSHOT
-ENV CEDAR_MICROSERVICE_JAR_BASE=https://nexus.bmir.stanford.edu/service/local/repositories/releases/content
+ENV MYSQL_CONNECTOR_VERSION=5.1.43
 
 RUN mkdir -p /opt/jboss/keycloak/modules/system/layers/base/com/mysql/jdbc/main
 
@@ -9,9 +9,12 @@ USER root
 
 #RUN yum -y install deltarpm
 #RUN yum -y update
-RUN yum -y install wget nc
-RUN wget -P /opt/jboss/keycloak/modules/system/layers/base/com/mysql/jdbc/main "http://central.maven.org/maven2/mysql/mysql-connector-java/5.1.42/mysql-connector-java-5.1.42.jar"
-RUN wget -P /opt/jboss/keycloak/providers "${CEDAR_MICROSERVICE_JAR_BASE}/org/metadatacenter/cedar-keycloak-event-listener/${CEDAR_VERSION}/cedar-keycloak-event-listener-${CEDAR_VERSION}-jar-with-dependencies.jar"
+RUN yum -y install wget nc maven
+
+ADD config/m2/settings.xml /root/.m2/
+
+RUN mvn org.apache.maven.plugins:maven-dependency-plugin:2.8:copy -Dartifact=mysql:mysql-connector-java:${MYSQL_CONNECTOR_VERSION}:jar -DoutputDirectory=/opt/jboss/keycloak/modules/system/layers/base/com/mysql/jdbc/main -Dmdep.useBaseVersion=true
+RUN mvn org.apache.maven.plugins:maven-dependency-plugin:2.8:copy -Dartifact=org.metadatacenter:cedar-keycloak-event-listener:${CEDAR_VERSION}:jar:jar-with-dependencies -DoutputDirectory=/opt/jboss/keycloak/providers -Dmdep.useBaseVersion=true
 RUN yum clean all
 
 USER jboss

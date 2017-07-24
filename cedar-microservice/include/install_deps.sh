@@ -3,14 +3,16 @@
 echo "Current working directory:"
 pwd
 
+FILE_NAME=cedar-${CEDAR_SERVER_NAME}-server-application
+
 echo "Downloading microservice jar:"
-JAR_URL=${CEDAR_MICROSERVICE_JAR_BASE}/org/metadatacenter/cedar-${CEDAR_SERVER_NAME}-server-application/${CEDAR_VERSION}/cedar-${CEDAR_SERVER_NAME}-server-application-${CEDAR_VERSION}.jar
-echo ${JAR_URL}
-curl -o cedar-server.jar ${JAR_URL}
-echo "Contents:"
+mvn org.apache.maven.plugins:maven-dependency-plugin:2.8:copy -Dartifact=org.metadatacenter:${FILE_NAME}:${CEDAR_VERSION}:jar -DoutputDirectory=. -Dmdep.useBaseVersion=true -Dmdep.stripVersion=true
+echo "Renaming microservice jar:"
+mv ./${FILE_NAME}.jar ./cedar-server.jar
+echo "Contents of current directory:"
 ls -ls
 
 echo "Extracting configuration file:"
 jar xf cedar-server.jar config.yml
-echo "Contents:"
+echo "Contents of current directory:"
 ls -ls
