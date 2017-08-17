@@ -3,9 +3,10 @@
 echo "Current working directory:"
 pwd
 
+ARTIFACT=cedar-admin-tool
+
 echo "Downloading microservice jar:"
-JAR_URL=${CEDAR_MICROSERVICE_JAR_BASE}/org/metadatacenter/cedar-admin-tool/${CEDAR_VERSION}/cedar-admin-tool-${CEDAR_VERSION}.jar
-echo ${JAR_URL}
-curl -o cedar-admin-tool.jar ${JAR_URL}
+mvn org.apache.maven.plugins:maven-dependency-plugin:2.8:copy -Dartifact=org.metadatacenter:${ARTIFACT}:${CEDAR_VERSION}:jar -DoutputDirectory=. -Dmdep.useBaseVersion=true -Dmdep.stripVersion=true
+mv ./${ARTIFACT}-${CEDAR_VERSION}.jar cedar-admin-tool.jar
 echo "Contents:"
 ls -ls
