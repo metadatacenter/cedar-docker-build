@@ -1,7 +1,7 @@
 FROM debian:stretch-slim
 
 ENV CEDAR_VERSION=1.4.1-SNAPSHOT
-ENV CEDAR_MICROSERVICE_JAR_BASE=https://nexus.bmir.stanford.edu/repository/npm-cedar
+ENV CEDAR_MICROSERVICE_REPO=https://nexus.bmir.stanford.edu/repository/npm-cedar
 
 ENV NGINX_VERSION 1.13.0-1~stretch
 ENV NJS_VERSION   1.13.0.0.1.10-1~stretch
@@ -75,7 +75,7 @@ RUN mkdir -p ${CEDAR_TEMPLATE_EDITOR_HOME}
 WORKDIR ${CEDAR_TEMPLATE_EDITOR_HOME}
 
 ENV EDITOR_TARBALL cedar-template-editor-${CEDAR_VERSION}.tgz
-ENV EDITOR_URI ${CEDAR_MICROSERVICE_JAR_BASE}/cedar-template-editor/-/${EDITOR_TARBALL}
+ENV EDITOR_URI ${CEDAR_MICROSERVICE_REPO}/cedar-template-editor/-/${EDITOR_TARBALL}
 
 # Download and extract the frontend source
 RUN \
