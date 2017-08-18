@@ -3,7 +3,7 @@ FROM openjdk:8u131-jdk
 ENV CEDAR_HOME=/cedar
 
 ENV CEDAR_VERSION=1.4.1-SNAPSHOT
-ENV CEDAR_MICROSERVICE_JAR_BASE=https://nexus.bmir.stanford.edu/service/local/repositories/releases/content
+ENV CEDAR_MICROSERVICE_JAR_BASE=https://nexus.bmir.stanford.edu//repository/releases
 
 ENV CEDAR_RESOURCE_HTTP_PORT=9007
 
