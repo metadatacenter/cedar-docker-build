@@ -3,7 +3,6 @@ FROM openjdk:8u131-jdk
 ENV CEDAR_HOME=/cedar
 
 ENV CEDAR_VERSION=1.4.1-SNAPSHOT
-ENV CEDAR_MICROSERVICE_JAR_BASE=https://nexus.bmir.stanford.edu//repository/releases
 
 ENV CEDAR_RESOURCE_HTTP_PORT=9007
 
@@ -22,7 +21,7 @@ RUN mkdir -p ${CADIR}
 VOLUME ${CADIR}
 
 RUN apt-get update
-RUN apt-get install -y vim curl telnet
+RUN apt-get install -y vim curl telnet maven
 
 RUN echo 'alias cedarat="/cedar/app/cedarat.sh"' >> ~/.bashrc
 
