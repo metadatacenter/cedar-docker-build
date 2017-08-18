@@ -23,6 +23,8 @@ VOLUME ${CADIR}
 RUN apt-get update
 RUN apt-get install -y vim curl telnet maven
 
+ADD config/m2/settings.xml /root/.m2/
+
 RUN echo 'alias cedarat="/cedar/app/cedarat.sh"' >> ~/.bashrc
 
 RUN ${CEDAR_HOME}/install_deps.sh
