@@ -1,6 +1,6 @@
 FROM jboss/keycloak:3.1.0.Final
 
-ENV CEDAR_VERSION=1.4.1-SNAPSHOT
+ENV CEDAR_VERSION=1.4.1
 ENV MYSQL_CONNECTOR_VERSION=5.1.43
 
 RUN mkdir -p /opt/jboss/keycloak/modules/system/layers/base/com/mysql/jdbc/main
