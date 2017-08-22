@@ -3,12 +3,12 @@
 echo "Current working directory:"
 pwd
 
-FILE_NAME=cedar-${CEDAR_SERVER_NAME}-server-application
+ARTIFACT=cedar-${CEDAR_SERVER_NAME}-server-application
 
 echo "Downloading microservice jar:"
-mvn org.apache.maven.plugins:maven-dependency-plugin:2.8:copy -Dartifact=org.metadatacenter:${FILE_NAME}:${CEDAR_VERSION}:jar -DoutputDirectory=. -Dmdep.useBaseVersion=true -Dmdep.stripVersion=true
+mvn org.apache.maven.plugins:maven-dependency-plugin:2.8:copy -Dartifact=org.metadatacenter:${ARTIFACT}:${CEDAR_VERSION}:jar -DoutputDirectory=. -Dmdep.useBaseVersion=true -Dmdep.stripVersion=true
 echo "Renaming microservice jar:"
-mv ./${FILE_NAME}.jar ./cedar-server.jar
+mv ./${ARTIFACT}.jar ./cedar-server.jar
 echo "Contents of current directory:"
 ls -ls
 
