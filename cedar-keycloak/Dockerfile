@@ -11,6 +11,8 @@ USER root
 #RUN yum -y update
 RUN yum -y install wget nc maven
 
+RUN yum -y install python-pip libmysqlclient libmysqlclient-dev MySQL-python
+
 ADD config/m2/settings.xml /root/.m2/
 
 RUN mvn org.apache.maven.plugins:maven-dependency-plugin:2.8:copy -Dartifact=mysql:mysql-connector-java:${MYSQL_CONNECTOR_VERSION}:jar -DoutputDirectory=/opt/jboss/keycloak/modules/system/layers/base/com/mysql/jdbc/main -Dmdep.useBaseVersion=true
@@ -29,6 +31,8 @@ RUN mkdir -p /opt/jboss/realm-import
 ADD config/cedar.realm.json /opt/jboss/realm-import/
 
 ADD scripts/docker-entrypoint.sh /opt/jboss/
+
+ADD scripts/wait-for-mysql.py /opt/jboss/
 
 ENTRYPOINT [ "/opt/jboss/docker-entrypoint.sh" ]
 
