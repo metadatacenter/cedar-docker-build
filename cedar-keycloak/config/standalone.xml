@@ -135,14 +135,14 @@
                            use-java-context="true"
                            pool-name="CedarKeycloakDS"
                            use-ccm="true">
-               <ds:connection-url>jdbc:mysql://${env.CEDAR_KEYCLOAK_MYSQL_HOST}:${env.CEDAR_KEYCLOAK_MYSQL_PORT}/cedar_keycloak</ds:connection-url>
+               <ds:connection-url>jdbc:mysql://${env.CEDAR_KEYCLOAK_MYSQL_HOST}:${env.CEDAR_KEYCLOAK_MYSQL_PORT}/${env.CEDAR_KEYCLOAK_MYSQL_DB}</ds:connection-url>
                <ds:driver>mysql</ds:driver>
                <ds:security>
                   <ds:user-name>${env.CEDAR_KEYCLOAK_MYSQL_USER}</ds:user-name>
                   <ds:password>${env.CEDAR_KEYCLOAK_MYSQL_PASSWORD}</ds:password>
                </ds:security>
                <ds:validation>
-                  <ds:check-valid-connection-sql>SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = 'cedar_keycloak'</ds:check-valid-connection-sql>
+                  <ds:check-valid-connection-sql>SELECT 1</ds:check-valid-connection-sql>
                   <ds:background-validation>true</ds:background-validation>
                   <ds:background-validation-millis>60000</ds:background-validation-millis>
                </ds:validation>
