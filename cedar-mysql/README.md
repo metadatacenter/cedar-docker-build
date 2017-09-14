@@ -13,10 +13,10 @@ docker run -d \
 --name mysql \
 --net cedarnet \
 -v ${CEDAR_DOCKER_HOME}/data/mysql/:/var/lib/mysql \
+-v ${CEDAR_DOCKER_HOME}/log/mysql/:/var/log/mysql \
 -p ${CEDAR_KEYCLOAK_MYSQL_PORT}:3306 \
--e CEDAR_KEYCLOAK_MYSQL_ROOT_PASSWORD \
--e CEDAR_KEYCLOAK_MYSQL_USER \
--e CEDAR_KEYCLOAK_MYSQL_PASSWORD \
+-e CEDAR_MYSQL_ROOT_PASSWORD \
+-e CEDAR_NET_GATEWAY \
 metadatacenter/cedar-mysql
 ````
 
