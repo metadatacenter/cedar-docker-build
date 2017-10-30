@@ -13,15 +13,6 @@ if [ ! -f ${INIT_DONE_FLAG} ]; then
   echo "Starting Neo4j"
   ./bin/neo4j start
 
-  export NEO_FILE="/data/databases/graph.db/neostore"
-
-  echo "Waiting for Neo4j to start. Watching file:${NEO_FILE}"
-  while [ ! -f  ${NEO_FILE} ] ;
-  do
-    echo "File not present yet! Waiting for it:${NEO_FILE} ..."
-    sleep 1
-  done
-
   echo "Waiting for Neo4j to be available on the REST port 7474"
   while ! nc -z localhost 7474; do
     echo "Port not open yet!Waiting ..."
