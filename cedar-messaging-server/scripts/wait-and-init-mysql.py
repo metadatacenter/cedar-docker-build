@@ -2,7 +2,6 @@
 import os
 
 import MySQLdb
-import sys
 import time
 from MySQLdb import OperationalError
 
@@ -60,27 +59,30 @@ def create_database():
 def create_application_user_core(connection):
     cursor = connection.cursor()
 
+    print "Dropping application user if exists ..."
     drop_user_query = "DROP USER IF EXISTS '{user}'@'{host}'"
     q1 = drop_user_query.format(user=application_user, host=localhost)
     q2 = drop_user_query.format(user=application_user, host=mysql_host)
-    #print q1
-    #print q2
+    # print q1
+    # print q2
     cursor.execute(q1)
     cursor.execute(q2)
 
+    print "Creating application user ..."
     create_user_query = "CREATE USER '{user}'@'{host}' IDENTIFIED BY '{passwd}'"
     q1 = create_user_query.format(user=application_user, host=localhost, passwd=application_password)
     q2 = create_user_query.format(user=application_user, host=mysql_host, passwd=application_password)
-    #print q1
-    #print q2
+    # print q1
+    # print q2
     cursor.execute(q1)
     cursor.execute(q2)
 
+    print "Granting all privileges to application user ..."
     grant_query = "GRANT ALL PRIVILEGES ON {database}.* TO '{user}'@'{host}'"
     q1 = grant_query.format(user=application_user, host=localhost, database=application_database)
     q2 = grant_query.format(user=application_user, host=mysql_host, database=application_database)
-    #print q1
-    #print q2
+    # print q1
+    # print q2
     cursor.execute(q1)
     cursor.execute(q2)
 
@@ -91,21 +93,26 @@ def create_application_user():
 
 
 print "Reading environment variables"
-mysql_host = os.environ.get('CEDAR_KEYCLOAK_MYSQL_HOST')
-mysql_port = int(os.environ.get('CEDAR_KEYCLOAK_MYSQL_PORT'))
+mysql_host = os.environ.get('CEDAR_MESSAGING_MYSQL_HOST')
+mysql_port = int(os.environ.get('CEDAR_MESSAGING_MYSQL_PORT'))
 mysql_root_user = "root"
 mysql_root_password = os.environ.get('CEDAR_MYSQL_ROOT_PASSWORD')
-application_user = os.environ.get('CEDAR_KEYCLOAK_MYSQL_USER')
-application_password = os.environ.get('CEDAR_KEYCLOAK_MYSQL_PASSWORD')
-application_database = os.environ.get('CEDAR_KEYCLOAK_MYSQL_DB')
+application_user = os.environ.get('CEDAR_MESSAGING_MYSQL_USER')
+application_password = os.environ.get('CEDAR_MESSAGING_MYSQL_PASSWORD')
+application_database = os.environ.get('CEDAR_MESSAGING_MYSQL_DB')
 localhost = '127.0.0.1'
 
 number_of_tries = 5
 sleep_seconds = 1
 
-print "Server info:"
-print "Host:" + mysql_host
-print "Port:" + str(mysql_port)
+print "---- Server info ----"
+print "MySQL server host   :" + mysql_host
+print "MySQL server port   :" + str(mysql_port)
+print "Root user           :" + mysql_root_user
+# print "Root password       :" + mysql_root_password
+print "Application user    :" + application_user
+# print "Application password:" + application_password
+print "Application database:" + application_database
 
 print "Wait for MySQL server to be available"
 

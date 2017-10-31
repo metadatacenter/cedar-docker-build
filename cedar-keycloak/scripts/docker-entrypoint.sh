@@ -11,7 +11,7 @@ if [ $CEDAR_KEYCLOAK_ADMIN_USER ] && [ $CEDAR_KEYCLOAK_ADMIN_PASSWORD ]; then
 fi
 
 python --version
-python -u /opt/jboss/wait-for-mysql.py
+python -u /opt/jboss/wait-and-init-mysql.py
 
 exec /opt/jboss/keycloak/bin/standalone.sh $@
 exit $?

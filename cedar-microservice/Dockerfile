@@ -7,11 +7,12 @@ ENV CEDAR_VERSION=1.4.3-SNAPSHOT
 ENV CEDAR_USER_HTTP_PORT=9005
 
 RUN apt-get update
-RUN apt-get install -y maven
+RUN apt-get install -y maven python-pymongo
 
 ADD config/m2/settings.xml /root/.m2/
 
 ADD scripts/docker-entrypoint.sh ${CEDAR_HOME}/
+ADD scripts/wait-for-mongodb.py ${CEDAR_HOME}/
 # script to install jar
 ADD include/install_deps.sh ${CEDAR_HOME}/
 

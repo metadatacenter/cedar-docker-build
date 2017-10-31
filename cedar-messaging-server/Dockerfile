@@ -12,7 +12,7 @@ VOLUME ${LOGDIR}
 
 RUN apt-get install -y default-libmysqlclient-dev python-mysqldb
 
-ADD scripts/wait-for-mysql.py ${CEDAR_HOME}/
+ADD scripts/wait-and-init-mysql.py ${CEDAR_HOME}/
 ADD scripts/pre-docker-entrypoint.sh ${CEDAR_HOME}/
 
 EXPOSE ${CEDAR_MESSAGING_HTTP_PORT} ${CEDAR_MESSAGING_ADMIN_PORT} ${CEDAR_MESSAGING_STOP_PORT}

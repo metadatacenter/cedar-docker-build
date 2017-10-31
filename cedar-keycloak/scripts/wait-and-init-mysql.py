@@ -2,6 +2,7 @@
 import os
 
 import MySQLdb
+import sys
 import time
 from MySQLdb import OperationalError
 
@@ -16,6 +17,9 @@ def execute_db_code(title_message, code_to_execute, error_message):
     except OperationalError as e:
         print error_message
         print e
+        return False
+    except:
+        print "Unexpected error:", sys.exc_info()[0]
         return False
     finally:
         if connection is not None:
@@ -87,13 +91,13 @@ def create_application_user():
 
 
 print "Reading environment variables"
-mysql_host = os.environ.get('CEDAR_MESSAGING_MYSQL_HOST')
-mysql_port = int(os.environ.get('CEDAR_MESSAGING_MYSQL_PORT'))
+mysql_host = os.environ.get('CEDAR_KEYCLOAK_MYSQL_HOST')
+mysql_port = int(os.environ.get('CEDAR_KEYCLOAK_MYSQL_PORT'))
 mysql_root_user = "root"
 mysql_root_password = os.environ.get('CEDAR_MYSQL_ROOT_PASSWORD')
-application_user = os.environ.get('CEDAR_MESSAGING_MYSQL_USER')
-application_password = os.environ.get('CEDAR_MESSAGING_MYSQL_PASSWORD')
-application_database = os.environ.get('CEDAR_MESSAGING_MYSQL_DB')
+application_user = os.environ.get('CEDAR_KEYCLOAK_MYSQL_USER')
+application_password = os.environ.get('CEDAR_KEYCLOAK_MYSQL_PASSWORD')
+application_database = os.environ.get('CEDAR_KEYCLOAK_MYSQL_DB')
 localhost = '127.0.0.1'
 
 number_of_tries = 5

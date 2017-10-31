@@ -11,7 +11,7 @@ USER root
 #RUN yum -y update
 RUN yum -y install wget nc maven
 
-RUN yum -y install python-pip libmysqlclient libmysqlclient-dev MySQL-python
+RUN yum -y install libmysqlclient libmysqlclient-dev MySQL-python
 
 ADD config/m2/settings.xml /root/.m2/
 
@@ -32,7 +32,7 @@ ADD config/cedar.realm.json /opt/jboss/realm-import/
 
 ADD scripts/docker-entrypoint.sh /opt/jboss/
 
-ADD scripts/wait-for-mysql.py /opt/jboss/
+ADD scripts/wait-and-init-mysql.py /opt/jboss/
 
 ENTRYPOINT [ "/opt/jboss/docker-entrypoint.sh" ]
 
