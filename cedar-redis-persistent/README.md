@@ -38,8 +38,8 @@ Execute the following command:
 docker run -d \
 --name redis-persistent \
 --net cedarnet \
--v ${CEDAR_DOCKER_HOME}/data/redis/:/data \
--v ${CEDAR_DOCKER_HOME}/log/redis/:/log \
+-v ${CEDAR_DOCKER_PERSISTENCE_HOME}/data/redis/:/data \
+-v ${CEDAR_DOCKER_PERSISTENCE_HOME}/log/redis/:/log \
 -p ${CEDAR_REDIS_PERSISTENT_PORT}:6379 \
 --sysctl=net.core.somaxconn=512 \
 metadatacenter/cedar-redis-persistent

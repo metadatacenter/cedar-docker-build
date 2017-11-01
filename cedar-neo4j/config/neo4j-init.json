@@ -1,0 +1,82 @@
+{
+  "statements": [
+    {
+      "statement": "CREATE CONSTRAINT ON (n:CEDAR) ASSERT n.id IS UNIQUE"
+    },
+    {
+      "statement": "CREATE INDEX ON :CEDAR(ownedBy)"
+    },
+    {
+      "statement": "CREATE INDEX ON :CEDAR(nodeType)"
+    },
+    {
+      "statement": "CREATE INDEX ON :CEDAR(isUserHome)"
+    },
+    {
+      "statement": "CREATE INDEX ON :CEDAR(nodeSortOrder)"
+    },
+    {
+      "statement": "CREATE INDEX ON :CEDAR(displayName)"
+    },
+    {
+      "statement": "CREATE CONSTRAINT ON (n:Element) ASSERT n.id IS UNIQUE"
+    },
+    {
+      "statement": "CREATE CONSTRAINT ON (n:Folder) ASSERT n.id IS UNIQUE"
+    },
+    {
+      "statement": "CREATE INDEX ON :Folder(ownedBy)"
+    },
+    {
+      "statement": "CREATE INDEX ON :Folder(nodeType)"
+    },
+    {
+      "statement": "CREATE INDEX ON :Folder(isUserHome)"
+    },
+    {
+      "statement": "CREATE INDEX ON :Folder(nodeSortOrder)"
+    },
+    {
+      "statement": "CREATE INDEX ON :Folder(displayName)"
+    },
+    {
+      "statement": "CREATE CONSTRAINT ON (n:Group) ASSERT n.id IS UNIQUE"
+    },
+    {
+      "statement": "CREATE INDEX ON :Group(name)"
+    },
+    {
+      "statement": "CREATE INDEX ON :Group(displayName)"
+    },
+    {
+      "statement": "CREATE INDEX ON :Group(specialGroup)"
+    },
+    {
+      "statement": "CREATE CONSTRAINT ON (n:Resource) ASSERT n.id IS UNIQUE"
+    },
+    {
+      "statement": "CREATE INDEX ON :Resource(ownedBy)"
+    },
+    {
+      "statement": "CREATE INDEX ON :Resource(nodeType)"
+    },
+    {
+      "statement": "CREATE INDEX ON :Resource(isUserHome)"
+    },
+    {
+      "statement": "CREATE INDEX ON :Resource(nodeSortOrder)"
+    },
+    {
+      "statement": "CREATE INDEX ON :Resource(displayName)"
+    },
+    {
+      "statement": "CREATE CONSTRAINT ON (n:Instance) ASSERT n.id IS UNIQUE"
+    },
+    {
+      "statement": "CREATE CONSTRAINT ON (n:Template) ASSERT n.id IS UNIQUE"
+    },
+    {
+      "statement": "CREATE CONSTRAINT ON (n:User) ASSERT n.id IS UNIQUE"
+    }
+  ]
+}

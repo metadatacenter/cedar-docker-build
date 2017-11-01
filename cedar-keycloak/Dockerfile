@@ -1,6 +1,6 @@
 FROM jboss/keycloak:3.1.0.Final
 
-ENV CEDAR_VERSION=1.4.2
+ENV CEDAR_VERSION=1.5.0
 ENV MYSQL_CONNECTOR_VERSION=5.1.43
 
 RUN mkdir -p /opt/jboss/keycloak/modules/system/layers/base/com/mysql/jdbc/main
@@ -10,6 +10,8 @@ USER root
 #RUN yum -y install deltarpm
 #RUN yum -y update
 RUN yum -y install wget nc maven
+
+RUN yum -y install libmysqlclient libmysqlclient-dev MySQL-python
 
 ADD config/m2/settings.xml /root/.m2/
 
@@ -29,6 +31,8 @@ RUN mkdir -p /opt/jboss/realm-import
 ADD config/cedar.realm.json /opt/jboss/realm-import/
 
 ADD scripts/docker-entrypoint.sh /opt/jboss/
+
+ADD scripts/wait-and-init-mysql.py /opt/jboss/
 
 ENTRYPOINT [ "/opt/jboss/docker-entrypoint.sh" ]
 

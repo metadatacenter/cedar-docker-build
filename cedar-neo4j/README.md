@@ -42,6 +42,7 @@ metadatacenter/cedar-neo4j
 
 ````
 chmod a+x scripts/docker-entrypoint.sh
+chmod a+x scripts/neo4j-init.sh
 docker build -t metadatacenter/cedar-neo4j .
 ````
 

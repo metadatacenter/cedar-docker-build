@@ -10,18 +10,8 @@ if [ $CEDAR_KEYCLOAK_ADMIN_USER ] && [ $CEDAR_KEYCLOAK_ADMIN_PASSWORD ]; then
     keycloak/bin/add-user-keycloak.sh --user $CEDAR_KEYCLOAK_ADMIN_USER --password $CEDAR_KEYCLOAK_ADMIN_PASSWORD
 fi
 
-echo "Waiting for MySQL to initialize database"
-sleep 10
-echo "Initial waiting for MySQL done"
-
-echo "Waiting for MySQL to be available at ${CEDAR_KEYCLOAK_MYSQL_HOST}:${CEDAR_KEYCLOAK_MYSQL_PORT}}"
-while ! ncat ${CEDAR_KEYCLOAK_MYSQL_HOST} ${CEDAR_KEYCLOAK_MYSQL_PORT} </dev/null >/dev/null; do
-  echo "MySQL not available yet, waiting ..."
-  sleep 1
-done
-echo "MySQL is up, launching Keycloak"
-
-env
+python --version
+python -u /opt/jboss/wait-and-init-mysql.py
 
 exec /opt/jboss/keycloak/bin/standalone.sh $@
 exit $?

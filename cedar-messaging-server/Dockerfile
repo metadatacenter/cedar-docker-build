@@ -1,4 +1,4 @@
-FROM metadatacenter/cedar-microservice:1.4.2
+FROM metadatacenter/cedar-microservice:1.5.0
 
 ENV CEDAR_SERVER_NAME=messaging
 
@@ -9,6 +9,11 @@ ENV CEDAR_MESSAGING_STOP_PORT=9212
 ENV LOGDIR=${CEDAR_HOME}/log/cedar-${CEDAR_SERVER_NAME}-server/
 RUN mkdir -p ${LOGDIR}
 VOLUME ${LOGDIR}
+
+RUN apt-get install -y default-libmysqlclient-dev python-mysqldb
+
+ADD scripts/wait-and-init-mysql.py ${CEDAR_HOME}/
+ADD scripts/pre-docker-entrypoint.sh ${CEDAR_HOME}/
 
 EXPOSE ${CEDAR_MESSAGING_HTTP_PORT} ${CEDAR_MESSAGING_ADMIN_PORT} ${CEDAR_MESSAGING_STOP_PORT}
 
