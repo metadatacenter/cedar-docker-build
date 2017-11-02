@@ -23,9 +23,9 @@ docker run -d \
 -e CEDAR_KEYCLOAK_HOST \
 -e CEDAR_KEYCLOAK_PORT \
 -e CEDAR_TEST_USER1_ID \
--p ${CEDAR_TERMINOLOGY_HTTP_PORT}:9002 \
--p ${CEDAR_TERMINOLOGY_ADMIN_PORT}:9102 \
--p ${CEDAR_TERMINOLOGY_STOP_PORT}:9202 \
+-p ${CEDAR_TERMINOLOGY_HTTP_PORT}:9004 \
+-p ${CEDAR_TERMINOLOGY_ADMIN_PORT}:9104 \
+-p ${CEDAR_TERMINOLOGY_STOP_PORT}:9204 \
 -v ${CEDAR_DOCKER_HOME}/log/cedar-terminology-server/:/cedar/log/cedar-terminology-server/ \
 -v ${CEDAR_DOCKER_HOME}/data//cache/terminology/:/cedar/cache/terminology/ \
 -v ${CEDAR_DOCKER_HOME}/ca/:/cedar/ca \

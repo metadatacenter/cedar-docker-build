@@ -15,6 +15,7 @@ ADD scripts/docker-entrypoint.sh ${CEDAR_HOME}/
 ADD scripts/wait-for-mongodb.py ${CEDAR_HOME}/
 ADD scripts/wait-for-keycloak.py ${CEDAR_HOME}/
 ADD scripts/wait-for-neo4j.py ${CEDAR_HOME}/
+ADD scripts/wait-for-elasticsearch.py ${CEDAR_HOME}/
 # script to install jar
 ADD include/install_deps.sh ${CEDAR_HOME}/
 
