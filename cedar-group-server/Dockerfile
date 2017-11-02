@@ -10,6 +10,10 @@ ENV LOGDIR=${CEDAR_HOME}/log/cedar-${CEDAR_SERVER_NAME}-server/
 RUN mkdir -p ${LOGDIR}
 VOLUME ${LOGDIR}
 
+RUN apt-get install -y python-redis
+
+ADD scripts/pre-docker-entrypoint.sh ${CEDAR_HOME}/
+
 EXPOSE ${CEDAR_GROUP_HTTP_PORT} ${CEDAR_GROUP_ADMIN_PORT} ${CEDAR_GROUP_STOP_PORT}
 
 RUN ${CEDAR_HOME}/install_deps.sh

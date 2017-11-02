@@ -27,7 +27,7 @@ def connect_with_app_user():
 
 
 def wait_for_mongodb():
-    print "Wait for application user connection ..."
+    print "Wait for MongoDB application user connection ..."
     number_of_successes = 0
     number_of_failures = 0
     while number_of_successes < number_of_tries:
