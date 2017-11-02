@@ -27,7 +27,7 @@ def execute_db_code(title_message, code_to_execute, error_message):
 
 
 def connect_with_root():
-    return execute_db_code("Connecting with root user", None, "Connection not available yet")
+    return execute_db_code("Connecting to MySQL with root user", None, "Connection not available yet")
 
 
 def wait_for_root():
@@ -39,6 +39,7 @@ def wait_for_root():
             number_of_successes += 1
         else:
             number_of_failures += 1
+            number_of_successes = 0
         time.sleep(sleep_seconds)
         print "\tFailures:{},\tSuccesses:{}".format(number_of_failures, number_of_successes)
 

@@ -23,7 +23,7 @@ def check_db_connection(title_message, error_message):
 
 
 def connect_with_app_user():
-    return check_db_connection("Connecting with app user", "Connection not available yet")
+    return check_db_connection("Connecting to MongoDB with app user", "Connection not available yet")
 
 
 def wait_for_mongodb():

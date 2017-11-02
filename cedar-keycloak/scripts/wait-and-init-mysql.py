@@ -28,7 +28,7 @@ def execute_db_code(title_message, code_to_execute, error_message):
 
 
 def connect_with_root():
-    return execute_db_code("Connecting with root user", None, "Connection not available yet")
+    return execute_db_code("Connecting to MySQL with root user", None, "Connection not available yet")
 
 
 def wait_for_root():
@@ -40,6 +40,7 @@ def wait_for_root():
             number_of_successes += 1
         else:
             number_of_failures += 1
+            number_of_successes = 0
         time.sleep(sleep_seconds)
         print "\tFailures:{},\tSuccesses:{}".format(number_of_failures, number_of_successes)
 
@@ -60,6 +61,7 @@ def create_database():
 def create_application_user_core(connection):
     cursor = connection.cursor()
 
+    print "Dropping application user if exists ..."
     drop_user_query = "DROP USER IF EXISTS '{user}'@'{host}'"
     q1 = drop_user_query.format(user=application_user, host=localhost)
     q2 = drop_user_query.format(user=application_user, host=mysql_host)
@@ -68,6 +70,7 @@ def create_application_user_core(connection):
     cursor.execute(q1)
     cursor.execute(q2)
 
+    print "Creating application user ..."
     create_user_query = "CREATE USER '{user}'@'{host}' IDENTIFIED BY '{passwd}'"
     q1 = create_user_query.format(user=application_user, host=localhost, passwd=application_password)
     q2 = create_user_query.format(user=application_user, host=mysql_host, passwd=application_password)
@@ -76,6 +79,7 @@ def create_application_user_core(connection):
     cursor.execute(q1)
     cursor.execute(q2)
 
+    print "Granting all privileges to application user ..."
     grant_query = "GRANT ALL PRIVILEGES ON {database}.* TO '{user}'@'{host}'"
     q1 = grant_query.format(user=application_user, host=localhost, database=application_database)
     q2 = grant_query.format(user=application_user, host=mysql_host, database=application_database)
@@ -107,9 +111,9 @@ print "---- Server info ----"
 print "MySQL server host   :" + mysql_host
 print "MySQL server port   :" + str(mysql_port)
 print "Root user           :" + mysql_root_user
-#print "Root password       :" + mysql_root_password
+# print "Root password       :" + mysql_root_password
 print "Application user    :" + application_user
-#print "Application password:" + application_password
+# print "Application password:" + application_password
 print "Application database:" + application_database
 
 print "Wait for MySQL server to be available"

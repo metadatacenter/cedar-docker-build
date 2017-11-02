@@ -10,6 +10,8 @@ ENV LOGDIR=${CEDAR_HOME}/log/cedar-${CEDAR_SERVER_NAME}-server/
 RUN mkdir -p ${LOGDIR}
 VOLUME ${LOGDIR}
 
+ADD scripts/pre-docker-entrypoint.sh ${CEDAR_HOME}/
+
 EXPOSE ${CEDAR_USER_HTTP_PORT} ${CEDAR_USER_ADMIN_PORT} ${CEDAR_USER_STOP_PORT}
 
 RUN ${CEDAR_HOME}/install_deps.sh
