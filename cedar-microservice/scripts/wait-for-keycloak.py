@@ -43,7 +43,7 @@ def wait_for_keycloak():
 
 print "Reading environment variables"
 keycloak_host = os.environ.get('CEDAR_KEYCLOAK_HOST')
-keycloak_port = int(os.environ.get('CEDAR_KEYCLOAK_PORT'))
+keycloak_port = int(os.environ.get('CEDAR_KEYCLOAK_HTTP_PORT'))
 
 number_of_tries = 5
 sleep_seconds = 1

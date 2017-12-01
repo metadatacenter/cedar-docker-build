@@ -14,7 +14,8 @@ docker run -d \
 --net cedarnet \
 --add-host "resource.${CEDAR_HOST}:${CEDAR_DOCKER_HOST}" \
 -v ${CEDAR_DOCKER_HOME}/log/keycloak:/opt/jboss/keycloak/standalone/log \
--p ${CEDAR_KEYCLOAK_PORT}:8080 \
+-p ${CEDAR_KEYCLOAK_HTTPS_PORT}:8443 \
+-p ${CEDAR_KEYCLOAK_HTTP_PORT}:8080 \
 -e CEDAR_MYSQL_ROOT_PASSWORD \
 -e CEDAR_KEYCLOAK_MYSQL_USER \
 -e CEDAR_KEYCLOAK_MYSQL_PASSWORD \

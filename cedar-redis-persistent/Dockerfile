@@ -1,4 +1,4 @@
-FROM redis:3.2
+FROM redis:3.2.11
 
 RUN mkdir /log && chown redis:redis /log
 VOLUME /log
