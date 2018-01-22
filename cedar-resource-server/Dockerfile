@@ -1,4 +1,4 @@
-FROM metadatacenter/cedar-microservice:1.5.0
+FROM metadatacenter/cedar-microservice:1.6.0
 
 ENV CEDAR_SERVER_NAME=resource
 
@@ -12,6 +12,10 @@ ENV CEDAR_TEMPLATE_HTTP_PORT=9001
 ENV LOGDIR=${CEDAR_HOME}/log/cedar-${CEDAR_SERVER_NAME}-server/
 RUN mkdir -p ${LOGDIR}
 VOLUME ${LOGDIR}
+
+RUN yum install -y python-redis
+
+ADD scripts/pre-docker-entrypoint.sh ${CEDAR_HOME}/
 
 EXPOSE ${CEDAR_RESOURCE_HTTP_PORT} ${CEDAR_RESOURCE_ADMIN_PORT} ${CEDAR_RESOURCE_STOP_PORT}
 

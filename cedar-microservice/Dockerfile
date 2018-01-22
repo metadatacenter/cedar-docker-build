@@ -1,19 +1,22 @@
-FROM openjdk:8u131-jdk
+FROM metadatacenter/cedar-java:1.5.1-SNAPSHOT
 
 ENV CEDAR_HOME=/cedar
 
-ENV CEDAR_VERSION=1.5.0
+ENV CEDAR_VERSION=1.6.0
 
 ENV CEDAR_USER_HTTP_PORT=9005
 
-RUN apt-get update
-RUN apt-get install -y maven python-pymongo
+RUN yum install -y python-pymongo
 
 ADD config/m2/settings.xml /root/.m2/
 
 ADD scripts/docker-entrypoint.sh ${CEDAR_HOME}/
 ADD scripts/wait-for-mongodb.py ${CEDAR_HOME}/
 ADD scripts/wait-for-keycloak.py ${CEDAR_HOME}/
+ADD scripts/wait-for-neo4j.py ${CEDAR_HOME}/
+ADD scripts/wait-for-elasticsearch.py ${CEDAR_HOME}/
+ADD scripts/wait-for-redis.py ${CEDAR_HOME}/
+ADD scripts/wait-for-server.py ${CEDAR_HOME}/
 # script to install jar
 ADD include/install_deps.sh ${CEDAR_HOME}/
 

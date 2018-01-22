@@ -1,4 +1,4 @@
-FROM metadatacenter/cedar-microservice:1.5.0
+FROM metadatacenter/cedar-microservice:1.6.0
 
 ENV CEDAR_SERVER_NAME=messaging
 
@@ -10,7 +10,7 @@ ENV LOGDIR=${CEDAR_HOME}/log/cedar-${CEDAR_SERVER_NAME}-server/
 RUN mkdir -p ${LOGDIR}
 VOLUME ${LOGDIR}
 
-RUN apt-get install -y default-libmysqlclient-dev python-mysqldb
+RUN yum install -y MySQL-python
 
 ADD scripts/wait-and-init-mysql.py ${CEDAR_HOME}/
 ADD scripts/pre-docker-entrypoint.sh ${CEDAR_HOME}/

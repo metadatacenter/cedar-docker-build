@@ -1,4 +1,4 @@
-FROM metadatacenter/cedar-microservice:1.5.0
+FROM metadatacenter/cedar-microservice:1.6.0
 
 ENV CEDAR_SERVER_NAME=terminology
 
@@ -13,6 +13,8 @@ VOLUME ${LOGDIR}
 ENV CACHEDIR=${CEDAR_HOME}/cache/terminology/
 RUN mkdir -p ${CACHEDIR}
 VOLUME ${CACHEDIR}
+
+ADD scripts/pre-docker-entrypoint.sh ${CEDAR_HOME}/
 
 EXPOSE ${CEDAR_TERMINOLOGY_HTTP_PORT} ${CEDAR_TERMINOLOGY_ADMIN_PORT} ${CEDAR_TERMINOLOGY_STOP_PORT}
 

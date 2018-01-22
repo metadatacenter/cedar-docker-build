@@ -3,4 +3,4 @@ network.bind_host: 0
 
 cluster.name: elasticsearch_cedar
 
-script.engine.groovy.inline.search: on
+script.engine.groovy.inline.search: true

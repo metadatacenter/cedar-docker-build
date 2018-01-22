@@ -1,4 +1,4 @@
-FROM metadatacenter/cedar-microservice:1.5.0
+FROM metadatacenter/cedar-microservice:1.6.0
 
 ENV CEDAR_SERVER_NAME=valuerecommender
 
@@ -9,6 +9,8 @@ ENV CEDAR_VALUERECOMMENDER_STOP_PORT=9206
 ENV LOGDIR=${CEDAR_HOME}/log/cedar-${CEDAR_SERVER_NAME}-server/
 RUN mkdir -p ${LOGDIR}
 VOLUME ${LOGDIR}
+
+ADD scripts/pre-docker-entrypoint.sh ${CEDAR_HOME}/
 
 EXPOSE ${CEDAR_VALUERECOMMENDER_HTTP_PORT} ${CEDAR_VALUERECOMMENDER_ADMIN_PORT} ${CEDAR_VALUERECOMMENDER_STOP_PORT}
 

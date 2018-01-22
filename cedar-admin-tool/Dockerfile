@@ -1,8 +1,8 @@
-FROM openjdk:8u131-jdk
+FROM metadatacenter/cedar-java:1.5.1-SNAPSHOT
 
 ENV CEDAR_HOME=/cedar
 
-ENV CEDAR_VERSION=1.5.0
+ENV CEDAR_VERSION=1.6.0
 
 ENV CEDAR_RESOURCE_HTTP_PORT=9007
 
@@ -20,8 +20,7 @@ ENV CADIR=${CEDAR_HOME}/ca/
 RUN mkdir -p ${CADIR}
 VOLUME ${CADIR}
 
-RUN apt-get update
-RUN apt-get install -y vim curl telnet maven
+RUN yum install -y vim curl telnet maven
 
 ADD config/m2/settings.xml /root/.m2/
 

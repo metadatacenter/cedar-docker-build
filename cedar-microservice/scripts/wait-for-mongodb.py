@@ -23,11 +23,11 @@ def check_db_connection(title_message, error_message):
 
 
 def connect_with_app_user():
-    return check_db_connection("Connecting with app user", "Connection not available yet")
+    return check_db_connection("Connecting to MongoDB with app user", "Connection not available yet")
 
 
 def wait_for_mongodb():
-    print "Wait for application user connection ..."
+    print "Wait for MongoDB application user connection ..."
     number_of_successes = 0
     number_of_failures = 0
     while number_of_successes < number_of_tries:

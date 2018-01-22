@@ -1,4 +1,4 @@
-FROM neo4j:3.2.5
+FROM neo4j:3.2.8
 
 RUN apk --no-cache add curl netcat-openbsd
 
