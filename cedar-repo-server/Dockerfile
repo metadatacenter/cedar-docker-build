@@ -1,4 +1,4 @@
-FROM metadatacenter/cedar-microservice:1.8.0
+FROM metadatacenter/cedar-microservice:1.8.1-SNAPSHOT
 
 ENV CEDAR_SERVER_NAME=repo
 
