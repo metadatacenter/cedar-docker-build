@@ -45,8 +45,8 @@ def wait_for_neo4j():
 
 print "Reading environment variables"
 neo4j_host = os.environ.get('CEDAR_NEO4J_HOST')
-neo4j_port = int(os.environ.get('CEDAR_NEO4J_REST_PORT'))
-neo4j_user = 'neo4j'
+neo4j_port = int(os.environ.get('CEDAR_NEO4J_BOLT_PORT'))
+neo4j_user = os.environ.get('CEDAR_NEO4J_USER_NAME')
 neo4j_password = os.environ.get('CEDAR_NEO4J_USER_PASSWORD')
 
 number_of_tries = 5
