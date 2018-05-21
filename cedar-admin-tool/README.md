@@ -21,7 +21,7 @@ docker run -d \
 -e CEDAR_ADMIN_USER_PASSWORD \
 -e CEDAR_ADMIN_USER_API_KEY \
 -e CEDAR_NEO4J_HOST \
--e CEDAR_NEO4J_REST_PORT \
+-e CEDAR_NEO4J_BOLT_PORT \
 -e CEDAR_SALT_API_KEY \
 -v ${CEDAR_DOCKER_CA_HOME}/:/cedar/ca \
 metadatacenter/cedar-admin-tool
