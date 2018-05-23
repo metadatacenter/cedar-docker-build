@@ -4,7 +4,7 @@ Docker version of Neo4j to be used with CEDAR
 
 ## Run the image for the first time
 
-**Remark:** You need to set the evironment variables first! Please see the README in the parent folder for details.
+**Remark:** You need to set the environment variables first! Please see the README in the parent folder for details.
 
 Execute the following command:
 
@@ -14,6 +14,7 @@ docker run -d \
 --net cedarnet \
 -v ${CEDAR_DOCKER_HOME}/data/neo4j/:/data \
 -v ${CEDAR_DOCKER_HOME}/log/neo4j/:/logs \
+-p ${CEDAR_NEO4J_REST_PORT}:7474 \
 -p ${CEDAR_NEO4J_BOLT_PORT}:7687 \
 -e CEDAR_NEO4J_USER_NAME \
 -e CEDAR_NEO4J_USER_PASSWORD \
