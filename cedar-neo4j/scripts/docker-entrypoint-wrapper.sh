@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 
-export INIT_DONE_FLAG="/cedar-neo4j-init.done"
+export INIT_DONE_FLAG="/state/cedar-neo4j-init.done"
 
 export NEO4J_AUTH="${CEDAR_NEO4J_USER_NAME}/${CEDAR_NEO4J_USER_PASSWORD}"
 
@@ -20,7 +20,7 @@ if [ ! -f ${INIT_DONE_FLAG} ]; then
   done
 
   echo "Neo4j started, create the indices and constraints"
-  export NEO4J_REST_AUTH="Basic `echo -n "neo4j:${CEDAR_NEO4J_USER_PASSWORD}" | base64`"
+  export NEO4J_REST_AUTH="Basic `echo -n "${CEDAR_NEO4J_USER_NAME}:${CEDAR_NEO4J_USER_PASSWORD}" | base64`"
   /neo4j-init.sh
 
   echo "Stopping Neo4j"

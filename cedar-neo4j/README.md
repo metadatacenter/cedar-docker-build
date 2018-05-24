@@ -12,8 +12,9 @@ Execute the following command:
 docker run -d \
 --name neo4j \
 --net cedarnet \
--v ${CEDAR_DOCKER_HOME}/data/neo4j/:/data \
--v ${CEDAR_DOCKER_HOME}/log/neo4j/:/logs \
+--mount 'type=volume,src=neo4j_log,dst=/logs' \
+--mount 'type=volume,src=neo4j_data,dst=/data' \
+--mount 'type=volume,src=neo4j_state,dst=/state' \
 -p ${CEDAR_NEO4J_REST_PORT}:7474 \
 -p ${CEDAR_NEO4J_BOLT_PORT}:7687 \
 -e CEDAR_NEO4J_USER_NAME \
@@ -42,7 +43,7 @@ metadatacenter/cedar-neo4j
 ## Build the image
 
 ````
-chmod a+x scripts/docker-entrypoint.sh
+chmod a+x scripts/docker-entrypoint-wrapper.sh
 chmod a+x scripts/neo4j-init.sh
 docker build -t metadatacenter/cedar-neo4j .
 ````
@@ -52,8 +53,8 @@ docker build -t metadatacenter/cedar-neo4j .
 ````
 docker login
 
-docker tag metadatacenter/cedar-neo4j metadatacenter/cedar-neo4j:${CEDAR_DOCKER_VERSION}
-docker push metadatacenter/cedar-neo4j:${CEDAR_DOCKER_VERSION}
+docker tag metadatacenter/cedar-neo4j metadatacenter/cedar-neo4j:${CEDAR_VERSION}
+docker push metadatacenter/cedar-neo4j:${CEDAR_VERSION}
 
 docker tag metadatacenter/cedar-neo4j metadatacenter/cedar-neo4j:latest
 docker push metadatacenter/cedar-neo4j:latest
