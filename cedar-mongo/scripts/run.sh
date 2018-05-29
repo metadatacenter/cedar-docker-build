@@ -1,9 +1,25 @@
 #!/bin/bash
 set -m
 
-$MONGO_SCRIPTS_DIR/mongo_setup_users.sh
+mkdir -p $MONGO_STATE_PATH && chown -R mongodb:mongodb $MONGO_STATE_PATH
 
-$MONGO_SCRIPTS_DIR/mongo_create_cedar_objects.sh
+export INIT_DONE_FLAG="$MONGO_STATE_PATH/cedar-mongo-init.done"
+
+if [ ! -f ${INIT_DONE_FLAG} ]; then
+  echo "Mongo database not yet initialized!"
+
+  echo "Setup users"
+  $MONGO_SCRIPTS_DIR/mongo_setup_users.sh
+
+  echo "Setup CEDAR objects"
+  $MONGO_SCRIPTS_DIR/mongo_create_cedar_objects.sh
+
+  echo "Creating done flag:${INIT_DONE_FLAG}"
+  touch ${INIT_DONE_FLAG}
+
+else
+  echo "Mongo database is already initialized!"
+fi
 
 cmd="gosu mongodb mongod --storageEngine $MONGO_STORAGE_ENGINE --keyFile $MONGO_KEYFILE"
 
@@ -23,7 +39,7 @@ if [ ! -d "$MONGO_DB_PATH" ]; then
   mkdir -p $MONGO_DB_PATH
 fi
 
-mkdir -p $MONGO_LOG_PATH
+mkdir -p $MONGO_LOG_PATH && chown -R mongodb:mongodb $MONGO_LOG_PATH
 
 cmd="$cmd --logpath $MONGO_LOG_PATH/mongo.log"
 

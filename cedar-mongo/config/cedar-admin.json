@@ -43,13 +43,15 @@
     "permission_not_readable_node_read",
     "permission_not_writable_node_permissions_update",
     "permission_not_writable_node_write",
+    "permission_process_message_create",
     "permission_search_index_create",
     "permission_template_create",
     "permission_template_delete",
     "permission_template_read",
     "permission_template_update",
     "permission_user_read",
-    "permission_user_update"
+    "permission_user_update",
+    "permission_post_submission_create"
   ],
   "uiPreferences": {
     "folderView": {
@@ -63,6 +65,12 @@
       "element": true,
       "template": true,
       "instance": true
+    },
+    "resourcePublicationStatusFilter": {
+      "publicationStatus": null
+    },
+    "resourceVersionFilter": {
+      "version": null
     },
     "infoPanel": {
       "opened": false

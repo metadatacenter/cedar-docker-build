@@ -30,7 +30,7 @@ kern.ipc.somaxconn: 512
 
 ## Run the image for the first time
 
-**Remark:** You need to set the evironment variables first! Please see the README in the parent folder for details.
+**Remark:** You need to set the environment variables first! Please see the README in the parent folder for details.
 
 Execute the following command:
 

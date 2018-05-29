@@ -4,7 +4,7 @@ Docker version of MongoDB to be used with CEDAR
 
 ## Run the image for the first time
 
-**Remark:** You need to set the evironment variables first! Please see the README in the parent folder for details.
+**Remark:** You need to set the environment variables first! Please see the README in the parent folder for details.
 
 Execute the following command:
 
@@ -12,8 +12,9 @@ Execute the following command:
 docker run -d \
 --name mongo \
 --net cedarnet \
--v ${CEDAR_DOCKER_HOME}/data/mongo/:/data/db \
--v ${CEDAR_DOCKER_HOME}/log/mongo/:/data/log \
+--mount 'type=volume,src=mongo_log,dst=/data/log' \
+--mount 'type=volume,src=mongo_data,dst=/data/db' \
+--mount 'type=volume,src=mongo_state,dst=/data/state' \
 -p ${CEDAR_MONGO_PORT}:27017 \
 -e CEDAR_MONGO_ROOT_USER_NAME \
 -e CEDAR_MONGO_ROOT_USER_PASSWORD \
