@@ -3,11 +3,11 @@ FROM jboss/base:latest
 USER root
 
 RUN yum -y install wget
-RUN wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/9.0.1+11/jdk-9.0.1_linux-x64_bin.rpm"
-RUN yum -y install jdk-9.0.1_linux-x64_bin.rpm
-RUN rm jdk-9.0.1_linux-x64_bin.rpm
+RUN wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/10.0.1+10/fb4372174a714e6b8c52526dc134031e/jdk-10.0.1_linux-x64_bin.rpm"
+RUN yum -y install jdk-10.0.1_linux-x64_bin.rpm
+RUN rm jdk-10.0.1_linux-x64_bin.rpm
 
-ENV JAVA_HOME /usr/java/jdk-9.0.1/
+ENV JAVA_HOME /usr/java/jdk-10.0.1/
 
 ENV KEYCLOAK_VERSION 3.3.0.Final
 # Enables signals getting passed from startup script to JVM
@@ -44,6 +44,8 @@ RUN mkdir -p /opt/jboss/realm-export
 RUN chown -R jboss:jboss /opt/jboss/realm-export
 ADD config/cedar.realm.json /opt/jboss/realm-import/
 RUN chown -R jboss:jboss /opt/jboss/realm-import
+RUN mkdir -p /opt/jboss/keycloak/standalone/log
+RUN chown -R jboss:jboss /opt/jboss/keycloak/standalone/log
 
 USER jboss
 
