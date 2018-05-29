@@ -4,7 +4,7 @@ Docker version of MySQL to be used with CEDAR
 
 ## Run the image for the first time
 
-**Remark:** You need to set the evironment variables first! Please see the README in the parent folder for details.
+**Remark:** You need to set the environment variables first! Please see the README in the parent folder for details.
 
 Execute the following command:
 
@@ -12,8 +12,8 @@ Execute the following command:
 docker run -d \
 --name mysql \
 --net cedarnet \
--v ${CEDAR_DOCKER_HOME}/data/mysql/:/var/lib/mysql \
--v ${CEDAR_DOCKER_HOME}/log/mysql/:/var/log/mysql \
+--mount 'type=volume,src=mysql_log,dst=/var/log/mysql' \
+--mount 'type=volume,src=mysql_data,dst=/var/lib/mysql' \
 -p ${CEDAR_KEYCLOAK_MYSQL_PORT}:3306 \
 -e CEDAR_MYSQL_ROOT_PASSWORD \
 -e CEDAR_NET_GATEWAY \
