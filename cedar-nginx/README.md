@@ -4,7 +4,7 @@ Docker version of Nginx for CEDAR
 
 ## Run the image for the first time
 
-**Remark:** You need to set the evironment variables first! Please see the README in the parent folder for details.
+**Remark:** You need to set the environment variables first! Please see the README in the parent folder for details.
 
 Execute the following command:
 
@@ -12,8 +12,8 @@ Execute the following command:
 docker run -d \
 --name nginx \
 --net cedarnet \
--v ${CEDAR_DOCKER_HOME}/log/:/etc/nginx/log \
--v ${CEDAR_DOCKER_HOME}/cert/:/usr/local/etc/certificates \
+--mount 'type=volume,src=nginx_log,dst=/etc/nginx/log' \
+--mount 'type=volume,src=cedar_cert,dst=/usr/local/etc/certificates' \
 -p ${CEDAR_NGINX_HTTP_PORT}:80 \
 -p ${CEDAR_NGINX_HTTPS_PORT}:443 \
 -e CEDAR_HOST \
