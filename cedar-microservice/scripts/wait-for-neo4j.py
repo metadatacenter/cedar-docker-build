@@ -10,7 +10,7 @@ def check_neo4j_connection(title_message, error_message):
     print(title_message + '...')
 
     try:
-        user_and_pass = b64encode((neo4j_user + ":" + neo4j_password).encode('ascii'))
+        user_and_pass = b64encode((neo4j_user + ":" + neo4j_password).encode('ascii')).decode("ascii")
         headers = {'Authorization': 'Basic %s' % user_and_pass}
         conn = http.client.HTTPConnection(neo4j_host, neo4j_port)
         conn.request("GET", "/db/data/", headers=headers)
