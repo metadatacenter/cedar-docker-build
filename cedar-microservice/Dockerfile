@@ -1,4 +1,4 @@
-FROM metadatacenter/cedar-java:1.5.1-SNAPSHOT
+FROM metadatacenter/cedar-java:1.8.2-SNAPSHOT
 
 ENV CEDAR_HOME=/cedar
 
@@ -6,7 +6,12 @@ ENV CEDAR_VERSION=1.8.2-SNAPSHOT
 
 ENV CEDAR_USER_HTTP_PORT=9005
 
-RUN yum install -y python-pymongo
+RUN yum -y update
+RUN yum -y install https://centos7.iuscommunity.org/ius-release.rpm
+RUN yum -y install python36u
+RUN yum -y install python36u-pip
+RUN python3.6 -m pip install --upgrade pip
+RUN python3.6 -m pip install pymongo==3.6.1
 
 ADD config/m2/settings.xml /root/.m2/
 

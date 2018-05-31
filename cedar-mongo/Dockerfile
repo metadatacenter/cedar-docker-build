@@ -1,4 +1,4 @@
-FROM debian:jessie
+FROM debian:jessie-20180426
 
 ENV MONGO_MAJOR 3.4
 ENV MONGO_VERSION 3.4.10
