@@ -4,7 +4,7 @@ Docker version of Keycloak to be used with CEDAR
 
 ## Run the image for the first time
 
-**Remark:** You need to set the evironment variables first! Please see the README in the parent folder for details.
+**Remark:** You need to set the environment variables first! Please see the README in the parent folder for details.
 
 Execute the following command:
 
@@ -13,7 +13,7 @@ docker run -d \
 --name keycloak \
 --net cedarnet \
 --add-host "resource.${CEDAR_HOST}:${CEDAR_DOCKER_HOST}" \
--v ${CEDAR_DOCKER_HOME}/log/keycloak:/opt/jboss/keycloak/standalone/log \
+--mount 'type=volume,src=keycloak_log,dst=/opt/jboss/keycloak/standalone/log' \
 -p ${CEDAR_KEYCLOAK_HTTPS_PORT}:8443 \
 -p ${CEDAR_KEYCLOAK_HTTP_PORT}:8080 \
 -e CEDAR_MYSQL_ROOT_PASSWORD \

@@ -1,16 +1,28 @@
-FROM metadatacenter/cedar-java:1.5.1-SNAPSHOT
+FROM metadatacenter/cedar-java:1.8.2
 
 ENV CEDAR_HOME=/cedar
 
-ENV CEDAR_VERSION=1.8.1
+ENV CEDAR_VERSION=1.8.2
 
 ENV CEDAR_USER_HTTP_PORT=9005
 
-RUN yum install -y python-pymongo
+RUN yum -y update
+RUN yum -y install https://centos7.iuscommunity.org/ius-release.rpm
+RUN yum -y install gcc
+RUN yum -y install python36u
+RUN yum -y install python36u-devel
+RUN yum -y install python36u-pip
+RUN yum -y install mysql-devel
+
+RUN python3.6 -m pip install --upgrade pip
+RUN python3.6 -m pip install pymongo==3.6.1
+RUN python3.6 -m pip install mysqlclient==1.3.12
+RUN python3.6 -m pip install redis==2.10.6
 
 ADD config/m2/settings.xml /root/.m2/
 
 ADD scripts/docker-entrypoint.sh ${CEDAR_HOME}/
+ADD scripts/wait-and-init-mysql.py ${CEDAR_HOME}/
 ADD scripts/wait-for-mongodb.py ${CEDAR_HOME}/
 ADD scripts/wait-for-keycloak.py ${CEDAR_HOME}/
 ADD scripts/wait-for-neo4j.py ${CEDAR_HOME}/

@@ -1,4 +1,4 @@
-FROM metadatacenter/cedar-microservice:1.8.1
+FROM metadatacenter/cedar-microservice:1.8.2
 
 ENV CEDAR_SERVER_NAME=messaging
 
@@ -10,9 +10,6 @@ ENV LOGDIR=${CEDAR_HOME}/log/cedar-${CEDAR_SERVER_NAME}-server/
 RUN mkdir -p ${LOGDIR}
 VOLUME ${LOGDIR}
 
-RUN yum install -y MySQL-python
-
-ADD scripts/wait-and-init-mysql.py ${CEDAR_HOME}/
 ADD scripts/pre-docker-entrypoint.sh ${CEDAR_HOME}/
 
 EXPOSE ${CEDAR_MESSAGING_HTTP_PORT} ${CEDAR_MESSAGING_ADMIN_PORT} ${CEDAR_MESSAGING_STOP_PORT}

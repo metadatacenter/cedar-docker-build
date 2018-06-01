@@ -4,7 +4,7 @@ Docker version of CEDAR Schema server
 
 ## Run the image for the first time
 
-**Remark:** You need to set the evironment variables first! Please see the README in the parent folder for details.
+**Remark:** You need to set the environment variables first! Please see the README in the parent folder for details.
 
 Execute the following command:
 
@@ -20,8 +20,8 @@ docker run -d \
 -p ${CEDAR_SCHEMA_HTTP_PORT}:9003 \
 -p ${CEDAR_SCHEMA_ADMIN_PORT}:9103 \
 -p ${CEDAR_SCHEMA_STOP_PORT}:9203 \
--v ${CEDAR_DOCKER_HOME}/log/cedar-schema-server/:/cedar/log/cedar-schema-server/ \
--v ${CEDAR_DOCKER_HOME}/ca/:/cedar/ca \
+--mount 'type=volume,src=schema_log,dst=/cedar/log/cedar-schema-server/' \
+--mount 'type=volume,src=cedar_ca,dst=/cedar/ca' \
 metadatacenter/cedar-schema-server
 ````
 

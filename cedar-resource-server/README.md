@@ -4,7 +4,7 @@ Docker version of CEDAR Resource server
 
 ## Run the image for the first time
 
-**Remark:** You need to set the evironment variables first! Please see the README in the parent folder for details.
+**Remark:** You need to set the environment variables first! Please see the README in the parent folder for details.
 
 Execute the following command:
 
@@ -23,7 +23,9 @@ docker run -d \
 -e CEDAR_KEYCLOAK_HTTP_PORT \
 -e CEDAR_ADMIN_USER_API_KEY \
 -e CEDAR_NEO4J_HOST \
+-e CEDAR_NEO4J_BOLT_PORT \
 -e CEDAR_NEO4J_REST_PORT \
+-e CEDAR_NEO4J_USER_NAME \
 -e CEDAR_NEO4J_USER_PASSWORD \
 -e CEDAR_SALT_API_KEY \
 -e CEDAR_ELASTICSEARCH_HOST \
@@ -38,8 +40,8 @@ docker run -d \
 -p ${CEDAR_RESOURCE_HTTP_PORT}:9010 \
 -p ${CEDAR_RESOURCE_ADMIN_PORT}:9110 \
 -p ${CEDAR_RESOURCE_STOP_PORT}:9210 \
--v ${CEDAR_DOCKER_HOME}/log/cedar-resource-server/:/cedar/log/cedar-resource-server/ \
--v ${CEDAR_DOCKER_HOME}/ca/:/cedar/ca \
+--mount 'type=volume,src=resource_log,dst=/cedar/log/cedar-resource-server/' \
+--mount 'type=volume,src=cedar_ca,dst=/cedar/ca' \
 metadatacenter/cedar-resource-server
 ````
 

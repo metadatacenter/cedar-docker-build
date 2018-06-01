@@ -4,7 +4,7 @@ Docker version of CEDAR Submission server
 
 ## Run the image for the first time
 
-**Remark:** You need to set the evironment variables first! Please see the README in the parent folder for details.
+**Remark:** You need to set the environment variables first! Please see the README in the parent folder for details.
 
 Execute the following command:
 
@@ -27,11 +27,12 @@ docker run -d \
 -e CEDAR_REDIS_PERSISTENT_HOST \
 -e CEDAR_REDIS_PERSISTENT_PORT \
 -e CEDAR_MESSAGING_HTTP_PORT \
+-e CEDAR_MESSAGING_ADMIN_PORT \
 -p ${CEDAR_SUBMISSION_HTTP_PORT}:9010 \
 -p ${CEDAR_SUBMISSION_ADMIN_PORT}:9110 \
 -p ${CEDAR_SUBMISSION_STOP_PORT}:9210 \
--v ${CEDAR_DOCKER_HOME}/log/cedar-submission-server/:/cedar/log/cedar-submission-server/ \
--v ${CEDAR_DOCKER_HOME}/ca/:/cedar/ca \
+--mount 'type=volume,src=submission_log,dst=/cedar/log/cedar-submission-server/' \
+--mount 'type=volume,src=cedar_ca,dst=/cedar/ca' \
 metadatacenter/cedar-submission-server
 ````
 

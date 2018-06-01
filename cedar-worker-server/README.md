@@ -4,7 +4,7 @@ Docker version of CEDAR Worker server
 
 ## Run the image for the first time
 
-**Remark:** You need to set the evironment variables first! Please see the README in the parent folder for details.
+**Remark:** You need to set the environment variables first! Please see the README in the parent folder for details.
 
 Execute the following command:
 
@@ -19,7 +19,9 @@ docker run -d \
 -e CEDAR_MONGO_PORT \
 -e CEDAR_ADMIN_USER_API_KEY \
 -e CEDAR_NEO4J_HOST \
+-e CEDAR_NEO4J_BOLT_PORT \
 -e CEDAR_NEO4J_REST_PORT \
+-e CEDAR_NEO4J_USER_NAME \
 -e CEDAR_NEO4J_USER_PASSWORD \
 -e CEDAR_REDIS_PERSISTENT_HOST \
 -e CEDAR_REDIS_PERSISTENT_PORT \
@@ -29,8 +31,8 @@ docker run -d \
 -p ${CEDAR_WORKER_HTTP_PORT}:9011 \
 -p ${CEDAR_WORKER_ADMIN_PORT}:9111 \
 -p ${CEDAR_WORKER_STOP_PORT}:9211 \
--v ${CEDAR_DOCKER_HOME}/log/cedar-worker-server/:/cedar/log/cedar-worker-server/ \
--v ${CEDAR_DOCKER_HOME}/ca/:/cedar/ca \
+--mount 'type=volume,src=worker_log,dst=/cedar/log/cedar-worker-server/' \
+--mount 'type=volume,src=cedar_ca,dst=/cedar/ca' \
 metadatacenter/cedar-worker-server
 ````
 

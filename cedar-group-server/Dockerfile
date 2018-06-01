@@ -1,4 +1,4 @@
-FROM metadatacenter/cedar-microservice:1.8.1
+FROM metadatacenter/cedar-microservice:1.8.2
 
 ENV CEDAR_SERVER_NAME=group
 
@@ -10,7 +10,7 @@ ENV LOGDIR=${CEDAR_HOME}/log/cedar-${CEDAR_SERVER_NAME}-server/
 RUN mkdir -p ${LOGDIR}
 VOLUME ${LOGDIR}
 
-RUN yum install -y python-redis
+RUN python3.6 -m pip install redis==2.10.6
 
 ADD scripts/pre-docker-entrypoint.sh ${CEDAR_HOME}/
 

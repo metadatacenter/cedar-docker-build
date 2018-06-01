@@ -10,16 +10,10 @@
       "statement": "CREATE INDEX ON :CEDAR(nodeType)"
     },
     {
-      "statement": "CREATE INDEX ON :CEDAR(isUserHome)"
-    },
-    {
       "statement": "CREATE INDEX ON :CEDAR(nodeSortOrder)"
     },
     {
-      "statement": "CREATE INDEX ON :CEDAR(displayName)"
-    },
-    {
-      "statement": "CREATE CONSTRAINT ON (n:Element) ASSERT n.id IS UNIQUE"
+      "statement": "CREATE INDEX ON :CEDAR(name)"
     },
     {
       "statement": "CREATE CONSTRAINT ON (n:Folder) ASSERT n.id IS UNIQUE"
@@ -31,13 +25,28 @@
       "statement": "CREATE INDEX ON :Folder(nodeType)"
     },
     {
-      "statement": "CREATE INDEX ON :Folder(isUserHome)"
-    },
-    {
       "statement": "CREATE INDEX ON :Folder(nodeSortOrder)"
     },
     {
-      "statement": "CREATE INDEX ON :Folder(displayName)"
+      "statement": "CREATE INDEX ON :Folder(name)"
+    },
+    {
+      "statement": "CREATE INDEX ON :Folder(createdOnTS)"
+    },
+    {
+      "statement": "CREATE INDEX ON :Folder(lastUpdatedOnTS)"
+    },
+    {
+      "statement": "CREATE INDEX ON :Folder(isRoot)"
+    },
+    {
+      "statement": "CREATE INDEX ON :Folder(isSystem)"
+    },
+    {
+      "statement": "CREATE INDEX ON :Folder(isUserHome)"
+    },
+    {
+      "statement": "CREATE INDEX ON :Folder(homeOf)"
     },
     {
       "statement": "CREATE CONSTRAINT ON (n:Group) ASSERT n.id IS UNIQUE"
@@ -46,10 +55,10 @@
       "statement": "CREATE INDEX ON :Group(name)"
     },
     {
-      "statement": "CREATE INDEX ON :Group(displayName)"
+      "statement": "CREATE INDEX ON :Group(specialGroup)"
     },
     {
-      "statement": "CREATE INDEX ON :Group(specialGroup)"
+      "statement": "CREATE CONSTRAINT ON (n:User) ASSERT n.id IS UNIQUE"
     },
     {
       "statement": "CREATE CONSTRAINT ON (n:Resource) ASSERT n.id IS UNIQUE"
@@ -61,22 +70,28 @@
       "statement": "CREATE INDEX ON :Resource(nodeType)"
     },
     {
-      "statement": "CREATE INDEX ON :Resource(isUserHome)"
-    },
-    {
       "statement": "CREATE INDEX ON :Resource(nodeSortOrder)"
     },
     {
-      "statement": "CREATE INDEX ON :Resource(displayName)"
+      "statement": "CREATE INDEX ON :Resource(name)"
     },
     {
-      "statement": "CREATE CONSTRAINT ON (n:Instance) ASSERT n.id IS UNIQUE"
+      "statement": "CREATE INDEX ON :Resource(createdOnTS)"
+    },
+    {
+      "statement": "CREATE INDEX ON :Resource(lastUpdatedOnTS)"
+    },
+    {
+      "statement": "CREATE CONSTRAINT ON (n:Field) ASSERT n.id IS UNIQUE"
+    },
+    {
+      "statement": "CREATE CONSTRAINT ON (n:Element) ASSERT n.id IS UNIQUE"
     },
     {
       "statement": "CREATE CONSTRAINT ON (n:Template) ASSERT n.id IS UNIQUE"
     },
     {
-      "statement": "CREATE CONSTRAINT ON (n:User) ASSERT n.id IS UNIQUE"
+      "statement": "CREATE CONSTRAINT ON (n:Instance) ASSERT n.id IS UNIQUE"
     }
   ]
 }

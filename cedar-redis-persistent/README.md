@@ -30,7 +30,7 @@ kern.ipc.somaxconn: 512
 
 ## Run the image for the first time
 
-**Remark:** You need to set the evironment variables first! Please see the README in the parent folder for details.
+**Remark:** You need to set the environment variables first! Please see the README in the parent folder for details.
 
 Execute the following command:
 
@@ -38,8 +38,8 @@ Execute the following command:
 docker run -d \
 --name redis-persistent \
 --net cedarnet \
--v ${CEDAR_DOCKER_PERSISTENCE_HOME}/data/redis/:/data \
--v ${CEDAR_DOCKER_PERSISTENCE_HOME}/log/redis/:/log \
+--mount 'type=volume,src=redis_log,dst=/log' \
+--mount 'type=volume,src=redis_data,dst=/data' \
 -p ${CEDAR_REDIS_PERSISTENT_PORT}:6379 \
 --sysctl=net.core.somaxconn=512 \
 metadatacenter/cedar-redis-persistent

@@ -4,7 +4,7 @@ Docker version of CEDAR User server
 
 ## Run the image for the first time
 
-**Remark:** You need to set the evironment variables first! Please see the README in the parent folder for details.
+**Remark:** You need to set the environment variables first! Please see the README in the parent folder for details.
 
 Execute the following command:
 
@@ -22,8 +22,8 @@ docker run -d \
 -p ${CEDAR_USER_HTTP_PORT}:9005 \
 -p ${CEDAR_USER_ADMIN_PORT}:9105 \
 -p ${CEDAR_USER_STOP_PORT}:9205 \
--v ${CEDAR_DOCKER_HOME}/log/cedar-user-server/:/cedar/log/cedar-user-server/ \
--v ${CEDAR_DOCKER_HOME}/ca/:/cedar/ca \
+--mount 'type=volume,src=user_log,dst=/cedar/log/cedar-user-server/' \
+--mount 'type=volume,src=cedar_ca,dst=/cedar/ca' \
 metadatacenter/cedar-user-server
 ````
 

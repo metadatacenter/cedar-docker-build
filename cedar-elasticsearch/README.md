@@ -4,7 +4,7 @@ Docker version of Elasticsearch to be used with CEDAR
 
 ## Run the image for the first time
 
-**Remark:** You need to set the evironment variables first! Please see the README in the parent folder for details.
+**Remark:** You need to set the environment variables first! Please see the README in the parent folder for details.
 
 Execute the following command:
 
@@ -12,8 +12,8 @@ Execute the following command:
 docker run -d \
 --name elasticsearch \
 --net cedarnet \
--v ${CEDAR_DOCKER_HOME}/data/elasticsearch:/usr/share/elasticsearch/data \
--v ${CEDAR_DOCKER_HOME}/log/elasticsearch:/usr/share/elasticsearch/logs \
+--mount 'type=volume,src=elasticsearch_log,dst=/usr/share/elasticsearch/logs' \
+--mount 'type=volume,src=elasticsearch_data,dst=/usr/share/elasticsearch/data' \
 -p ${CEDAR_ELASTICSEARCH_REST_PORT}:9200 \
 metadatacenter/cedar-elasticsearch
 ````

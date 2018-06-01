@@ -4,7 +4,7 @@ Docker version of CEDAR Template server
 
 ## Run the image for the first time
 
-**Remark:** You need to set the evironment variables first! Please see the README in the parent folder for details.
+**Remark:** You need to set the environment variables first! Please see the README in the parent folder for details.
 
 Execute the following command:
 
@@ -23,8 +23,8 @@ docker run -d \
 -p ${CEDAR_TEMPLATE_HTTP_PORT}:9001 \
 -p ${CEDAR_TEMPLATE_MANAGEMENT_PORT}:9101 \
 -p ${CEDAR_TEMPLATE_STOP_PORT}:9201 \
--v ${CEDAR_DOCKER_HOME}/log/cedar-template-server/:/cedar/log/cedar-template-server/ \
--v ${CEDAR_DOCKER_HOME}/ca/:/cedar/ca \
+--mount 'type=volume,src=template_log,dst=/cedar/log/cedar-template-server/' \
+--mount 'type=volume,src=cedar_ca,dst=/cedar/ca' \
 metadatacenter/cedar-template-server
 ````
 

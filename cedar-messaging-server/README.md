@@ -4,7 +4,7 @@ Docker version of CEDAR Messaging server
 
 ## Run the image for the first time
 
-**Remark:** You need to set the evironment variables first! Please see the README in the parent folder for details.
+**Remark:** You need to set the environment variables first! Please see the README in the parent folder for details.
 
 Execute the following command:
 
@@ -31,8 +31,8 @@ docker run -d \
 -p ${CEDAR_MESSAGING_HTTP_PORT}:9012 \
 -p ${CEDAR_MESSAGING_ADMIN_PORT}:9112 \
 -p ${CEDAR_MESSAGING_STOP_PORT}:9212 \
--v ${CEDAR_DOCKER_HOME}/log/cedar-messaging-server/:/cedar/log/cedar-messaging-server/ \
--v ${CEDAR_DOCKER_HOME}/ca/:/cedar/ca \
+--mount 'type=volume,src=messaging_log,dst=/cedar/log/cedar-messaging-server/' \
+--mount 'type=volume,src=cedar_ca,dst=/cedar/ca' \
 metadatacenter/cedar-messaging-server
 ````
 

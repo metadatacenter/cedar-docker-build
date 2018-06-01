@@ -4,7 +4,7 @@ Docker version of CEDAR Repo server
 
 ## Run the image for the first time
 
-**Remark:** You need to set the evironment variables first! Please see the README in the parent folder for details.
+**Remark:** You need to set the environment variables first! Please see the README in the parent folder for details.
 
 Execute the following command:
 
@@ -23,8 +23,8 @@ docker run -d \
 -p ${CEDAR_REPO_HTTP_PORT}:9002 \
 -p ${CEDAR_REPO_ADMIN_PORT}:9102 \
 -p ${CEDAR_REPO_STOP_PORT}:9202 \
--v ${CEDAR_DOCKER_HOME}/log/cedar-repo-server/:/cedar/log/cedar-repo-server/ \
--v ${CEDAR_DOCKER_HOME}/ca/:/cedar/ca \
+--mount 'type=volume,src=repo_log,dst=/cedar/log/cedar-repo-server/' \
+--mount 'type=volume,src=cedar_ca,dst=/cedar/ca' \
 metadatacenter/cedar-repo-server
 ````
 

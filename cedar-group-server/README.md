@@ -4,7 +4,7 @@ Docker version of CEDAR Group server
 
 ## Run the image for the first time
 
-**Remark:** You need to set the evironment variables first! Please see the README in the parent folder for details.
+**Remark:** You need to set the environment variables first! Please see the README in the parent folder for details.
 
 Execute the following command:
 
@@ -18,7 +18,9 @@ docker run -d \
 -e CEDAR_MONGO_HOST \
 -e CEDAR_MONGO_PORT \
 -e CEDAR_NEO4J_HOST \
+-e CEDAR_NEO4J_BOLT_PORT \
 -e CEDAR_NEO4J_REST_PORT \
+-e CEDAR_NEO4J_USER_NAME \
 -e CEDAR_NEO4J_USER_PASSWORD \
 -e CEDAR_KEYCLOAK_HOST \
 -e CEDAR_KEYCLOAK_HTTP_PORT \
@@ -27,8 +29,8 @@ docker run -d \
 -p ${CEDAR_GROUP_HTTP_PORT}:9009 \
 -p ${CEDAR_GROUP_ADMIN_PORT}:9109 \
 -p ${CEDAR_GROUP_STOP_PORT}:9209 \
--v ${CEDAR_DOCKER_HOME}/log/cedar-group-server/:/cedar/log/cedar-group-server/ \
--v ${CEDAR_DOCKER_HOME}/ca/:/cedar/ca \
+--mount 'type=volume,src=group_log,dst=/cedar/log/cedar-group-server/' \
+--mount 'type=volume,src=cedar_ca,dst=/cedar/ca' \
 metadatacenter/cedar-group-server
 ````
 

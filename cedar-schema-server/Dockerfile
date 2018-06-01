@@ -1,4 +1,4 @@
-FROM metadatacenter/cedar-microservice:1.8.1
+FROM metadatacenter/cedar-microservice:1.8.2
 
 ENV CEDAR_SERVER_NAME=schema
 
