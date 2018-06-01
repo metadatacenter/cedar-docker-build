@@ -1,4 +1,4 @@
-FROM metadatacenter/cedar-java:1.5.1-SNAPSHOT
+FROM metadatacenter/cedar-java:1.8.2-SNAPSHOT
 
 ENV CEDAR_HOME=/cedar
 

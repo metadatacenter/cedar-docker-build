@@ -17,6 +17,7 @@ RUN yum -y install mysql-devel
 RUN python3.6 -m pip install --upgrade pip
 RUN python3.6 -m pip install pymongo==3.6.1
 RUN python3.6 -m pip install mysqlclient==1.3.12
+RUN python3.6 -m pip install redis==2.10.6
 
 ADD config/m2/settings.xml /root/.m2/
 
