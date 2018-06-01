@@ -24,7 +24,7 @@ docker run -d \
 -e CEDAR_NEO4J_BOLT_PORT \
 -e CEDAR_NEO4J_REST_PORT \
 -e CEDAR_SALT_API_KEY \
--v ${CEDAR_DOCKER_CA_HOME}/:/cedar/ca \
+--mount 'type=volume,src=cedar_ca,dst=/cedar/ca' \
 metadatacenter/cedar-admin-tool
 ````
 

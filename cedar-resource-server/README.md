@@ -40,8 +40,8 @@ docker run -d \
 -p ${CEDAR_RESOURCE_HTTP_PORT}:9010 \
 -p ${CEDAR_RESOURCE_ADMIN_PORT}:9110 \
 -p ${CEDAR_RESOURCE_STOP_PORT}:9210 \
--v ${CEDAR_DOCKER_HOME}/log/cedar-resource-server/:/cedar/log/cedar-resource-server/ \
--v ${CEDAR_DOCKER_HOME}/ca/:/cedar/ca \
+--mount 'type=volume,src=resource_log,dst=/cedar/log/cedar-resource-server/' \
+--mount 'type=volume,src=cedar_ca,dst=/cedar/ca' \
 metadatacenter/cedar-resource-server
 ````
 

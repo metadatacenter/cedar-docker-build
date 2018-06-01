@@ -31,8 +31,8 @@ docker run -d \
 -p ${CEDAR_SUBMISSION_HTTP_PORT}:9010 \
 -p ${CEDAR_SUBMISSION_ADMIN_PORT}:9110 \
 -p ${CEDAR_SUBMISSION_STOP_PORT}:9210 \
--v ${CEDAR_DOCKER_HOME}/log/cedar-submission-server/:/cedar/log/cedar-submission-server/ \
--v ${CEDAR_DOCKER_HOME}/ca/:/cedar/ca \
+--mount 'type=volume,src=submission_log,dst=/cedar/log/cedar-submission-server/' \
+--mount 'type=volume,src=cedar_ca,dst=/cedar/ca' \
 metadatacenter/cedar-submission-server
 ````
 

@@ -12,7 +12,7 @@ Execute the following command:
 docker run -d \
 --name editor \
 --net cedarnet \
--v ${CEDAR_DOCKER_HOME}/log/editor:/log \
+--mount 'type=volume,src=frontend_log,dst=/log' \
 -p ${CEDAR_FRONTEND_PORT}:4200 \
 -e CEDAR_HOST \
 metadatacenter/cedar-editor

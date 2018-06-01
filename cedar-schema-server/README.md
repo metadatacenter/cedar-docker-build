@@ -20,8 +20,8 @@ docker run -d \
 -p ${CEDAR_SCHEMA_HTTP_PORT}:9003 \
 -p ${CEDAR_SCHEMA_ADMIN_PORT}:9103 \
 -p ${CEDAR_SCHEMA_STOP_PORT}:9203 \
--v ${CEDAR_DOCKER_HOME}/log/cedar-schema-server/:/cedar/log/cedar-schema-server/ \
--v ${CEDAR_DOCKER_HOME}/ca/:/cedar/ca \
+--mount 'type=volume,src=schema_log,dst=/cedar/log/cedar-schema-server/' \
+--mount 'type=volume,src=cedar_ca,dst=/cedar/ca' \
 metadatacenter/cedar-schema-server
 ````
 

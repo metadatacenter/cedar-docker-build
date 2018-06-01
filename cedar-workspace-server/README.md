@@ -29,8 +29,8 @@ docker run -d \
 -p ${CEDAR_WORKSPACE_HTTP_PORT}:9008 \
 -p ${CEDAR_WORKSPACE_ADMIN_PORT}:9108 \
 -p ${CEDAR_WORKSPACE_STOP_PORT}:9208 \
--v ${CEDAR_DOCKER_HOME}/log/cedar-workspace-server/:/cedar/log/cedar-workspace-server/ \
--v ${CEDAR_DOCKER_HOME}/ca/:/cedar/ca \
+--mount 'type=volume,src=workspace_log,dst=/cedar/log/cedar-workspace-server/' \
+--mount 'type=volume,src=cedar_ca,dst=/cedar/ca' \
 metadatacenter/cedar-workspace-server
 ````
 

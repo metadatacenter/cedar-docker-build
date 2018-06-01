@@ -31,8 +31,8 @@ docker run -d \
 -p ${CEDAR_MESSAGING_HTTP_PORT}:9012 \
 -p ${CEDAR_MESSAGING_ADMIN_PORT}:9112 \
 -p ${CEDAR_MESSAGING_STOP_PORT}:9212 \
--v ${CEDAR_DOCKER_HOME}/log/cedar-messaging-server/:/cedar/log/cedar-messaging-server/ \
--v ${CEDAR_DOCKER_HOME}/ca/:/cedar/ca \
+--mount 'type=volume,src=messaging_log,dst=/cedar/log/cedar-messaging-server/' \
+--mount 'type=volume,src=cedar_ca,dst=/cedar/ca' \
 metadatacenter/cedar-messaging-server
 ````
 
