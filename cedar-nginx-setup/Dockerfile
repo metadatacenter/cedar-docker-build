@@ -9,7 +9,6 @@ ADD config/default.conf /etc/nginx/conf.d/default.conf
 RUN apt-get update
 RUN apt-get install -y python-certbot-nginx
 
-RUN mkdir /etc/letsencrypt
 VOLUME /etc/letsencrypt
 
 CMD ["nginx", "-g", "daemon off;"]
