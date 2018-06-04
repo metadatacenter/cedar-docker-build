@@ -11,6 +11,7 @@ Execute the following command:
 ````
 docker run -d \
 --name nginx-setup \
+-v ${CEDAR_DOCKER_SRC_HOME}/letsencrypt:/etc/letsencrypt
 -e CEDAR_HOST \
 metadatacenter/cedar-nginx-setup
 ````
