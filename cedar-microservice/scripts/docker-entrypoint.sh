@@ -15,7 +15,7 @@ echo ---------------------------------------------------------------------------
 echo Starting CEDAR ${CEDAR_SERVER_NAME} server
 echo - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-java \
+exec java \
   -jar /cedar/app/cedar-server.jar \
   server \
   "/cedar/app/config.yml"
