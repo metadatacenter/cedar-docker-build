@@ -4,8 +4,9 @@ set -e
 echo "Creating log folders"
 cd "${LOGDIR}"
 mkdir -p nginx-global
+
+mkdir -p nginx-auth
 mkdir -p nginx-frontend
-mkdir -p nginx-workspace
 mkdir -p nginx-group
 mkdir -p nginx-messaging
 mkdir -p nginx-repo
@@ -17,7 +18,7 @@ mkdir -p nginx-terminology
 mkdir -p nginx-user
 mkdir -p nginx-valuerecommender
 mkdir -p nginx-worker 
-mkdir -p nginx-auth
+mkdir -p nginx-workspace
 
 
 echo "Executing sed"
