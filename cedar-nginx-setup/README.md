@@ -11,7 +11,7 @@ Execute the following command:
 ````
 docker run -d \
 --name nginx-setup \
--v ${CEDAR_DOCKER_SRC_HOME}/letsencrypt_live:/etc/letsencrypt/live
+--mount 'type=volume,src=cedar_cert,dst=/etc/letsencrypt/live' \
 -e CEDAR_HOST \
 -p 80:80 \
 metadatacenter/cedar-nginx-setup
