@@ -42,15 +42,15 @@ STOPSIGNAL SIGQUIT
 ADD scripts/docker-entrypoint.sh /
 
 # Add nginx config
-ADD config/default.conf /etc/nginx/conf.d/default.conf
+ADD config/*.conf /etc/nginx/conf.d/
 
 # Add nginx ssl config
 RUN mkdir -pv "/etc/nginx/cedar/"
-ADD config/ssl.conf /etc/nginx/cedar/
+ADD config/inc/ssl-common.conf /etc/nginx/cedar/inc/
 
 # Add 502 error file
 RUN mkdir -pv "/etc/nginx/cedar/static/errors/"
-ADD config/502.json /etc/nginx/cedar/static/errors/
+ADD config/errors/502.json /etc/nginx/cedar/static/errors/
 
 # Set up log folder
 ENV LOGDIR /etc/nginx/log

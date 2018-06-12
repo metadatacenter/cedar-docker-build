@@ -27,9 +27,12 @@ echo "Using CEDAR_MICROSERVICE_HOST :${CEDAR_MICROSERVICE_HOST}"
 echo "Using CEDAR_KEYCLOAK_HOST     :${CEDAR_KEYCLOAK_HOST}"
 echo "Using CEDAR_FRONTEND_HOST     :${CEDAR_FRONTEND_HOST}"
 
-sed -i 's/<cedar.CEDAR_HOST>/'${CEDAR_HOST}'/g' /etc/nginx/conf.d/default.conf
-sed -i 's/<cedar.CEDAR_MICROSERVICE_HOST>/'${CEDAR_MICROSERVICE_HOST}'/g' /etc/nginx/conf.d/default.conf
-sed -i 's/<cedar.CEDAR_KEYCLOAK_HOST>/'${CEDAR_KEYCLOAK_HOST}'/g' /etc/nginx/conf.d/default.conf
-sed -i 's/<cedar.CEDAR_FRONTEND_HOST>/'${CEDAR_FRONTEND_HOST}'/g' /etc/nginx/conf.d/default.conf
+for filename in /etc/nginx/conf.d/*cedar.conf; do
+  sed -i 's/<cedar.CEDAR_HOST>/'${CEDAR_HOST}'/g' $filename
+  sed -i 's/<cedar.CEDAR_MICROSERVICE_HOST>/'${CEDAR_MICROSERVICE_HOST}'/g' $filename
+done
+
+sed -i 's/<cedar.CEDAR_KEYCLOAK_HOST>/'${CEDAR_KEYCLOAK_HOST}'/g' /etc/nginx/conf.d/auth.cedar.conf
+sed -i 's/<cedar.CEDAR_FRONTEND_HOST>/'${CEDAR_FRONTEND_HOST}'/g' /etc/nginx/conf.d/frontend.cedar.conf
 
 exec "$@"
