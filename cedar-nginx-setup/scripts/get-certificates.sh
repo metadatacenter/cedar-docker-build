@@ -1,6 +1,13 @@
 #!/bin/bash
 
-: "${CERTBOT_EMAIL?Please set CERTBOT_EMAIL environment variable!}"
+if [ -z ${CERTBOT_EMAIL+x} ]
+then
+  echo "You need to set CERTBOT_EMAIL. Execute the following:"
+  echo "export CERTBOT_EMAIL='your@email.here'"
+  exit 1
+else
+  echo "Variable CERTBOT_EMAIL is set to:${CERTBOT_EMAIL}"
+fi
 
 certbot -n --email ${CERTBOT_EMAIL} --agree-tos -a webroot -i nginx -w /usr/share/nginx/_ -d ${CEDAR_HOST}
 certbot -n --email ${CERTBOT_EMAIL} --agree-tos -a webroot -i nginx -w /usr/share/nginx/auth -d auth.${CEDAR_HOST}
