@@ -39,6 +39,7 @@ metadatacenter/cedar-nginx-setup
 
 ````
 chmod a+x scripts/docker-entrypoint.sh
+chmod a+x scripts/get-certificates.sh
 docker build -t metadatacenter/cedar-nginx-setup .
 ````
 
