@@ -11,7 +11,9 @@ Execute the following command:
 ````
 docker run -d \
 --name nginx-setup \
--v ${CEDAR_DOCKER_SRC_HOME}/letsencrypt:/etc/letsencrypt
+--net cedarnet \
+--mount 'type=volume,src=nginx_log,dst=/etc/nginx/log' \
+--mount 'type=volume,src=cedar_cert,dst=/etc/letsencrypt' \
 -e CEDAR_HOST \
 -p 80:80 \
 metadatacenter/cedar-nginx-setup
@@ -39,6 +41,7 @@ metadatacenter/cedar-nginx-setup
 
 ````
 chmod a+x scripts/docker-entrypoint.sh
+chmod a+x scripts/get-certificates.sh
 docker build -t metadatacenter/cedar-nginx-setup .
 ````
 
