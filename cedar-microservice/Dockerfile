@@ -1,8 +1,8 @@
-FROM metadatacenter/cedar-java:1.8.4
+FROM metadatacenter/cedar-java:1.8.5
 
 ENV CEDAR_HOME=/cedar
 
-ENV CEDAR_VERSION=1.8.4
+ENV CEDAR_VERSION=1.8.5
 
 ENV CEDAR_USER_HTTP_PORT=9005
 
@@ -20,6 +20,9 @@ RUN python3.6 -m pip install mysqlclient==1.3.12
 RUN python3.6 -m pip install redis==2.10.6
 
 ADD config/m2/settings.xml /root/.m2/
+
+RUN mvn org.apache.maven.plugins:maven-dependency-plugin:3.1.1:get \
+-Dartifact=org.apache.maven.plugins:maven-dependency-plugin:2.8
 
 ADD scripts/docker-entrypoint.sh ${CEDAR_HOME}/
 ADD scripts/wait-and-init-mysql.py ${CEDAR_HOME}/
