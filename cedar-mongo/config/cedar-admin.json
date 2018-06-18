@@ -50,8 +50,7 @@
     "permission_template_read",
     "permission_template_update",
     "permission_user_read",
-    "permission_user_update",
-    "permission_post_submission_create"
+    "permission_user_update"
   ],
   "uiPreferences": {
     "folderView": {
