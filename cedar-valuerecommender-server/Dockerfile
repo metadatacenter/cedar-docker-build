@@ -1,4 +1,4 @@
-FROM metadatacenter/cedar-microservice:1.8.7
+FROM metadatacenter/cedar-microservice:1.8.8
 
 ENV CEDAR_SERVER_NAME=valuerecommender
 
