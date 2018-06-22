@@ -82,6 +82,21 @@
       "statement": "CREATE INDEX ON :Resource(lastUpdatedOnTS)"
     },
     {
+      "statement": "CREATE INDEX ON :Resource(isBasedOn)"
+    },
+    {
+      "statement": "CREATE INDEX ON :Resource(derivedFrom)"
+    },
+    {
+      "statement": "CREATE INDEX ON :Resource(version)"
+    },
+    {
+      "statement": "CREATE INDEX ON :Resource(publicationStatus)"
+    },
+    {
+      "statement": "CREATE INDEX ON :Resource(isLatestVersion)"
+    },
+    {
       "statement": "CREATE CONSTRAINT ON (n:Field) ASSERT n.id IS UNIQUE"
     },
     {
