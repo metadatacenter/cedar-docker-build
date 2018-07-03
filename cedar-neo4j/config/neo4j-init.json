@@ -1,7 +1,7 @@
 {
   "statements": [
     {
-      "statement": "CREATE CONSTRAINT ON (n:CEDAR) ASSERT n.id IS UNIQUE"
+      "statement": "CREATE CONSTRAINT ON (n:CEDAR) ASSERT n._id IS UNIQUE"
     },
     {
       "statement": "CREATE INDEX ON :CEDAR(ownedBy)"
@@ -13,10 +13,10 @@
       "statement": "CREATE INDEX ON :CEDAR(nodeSortOrder)"
     },
     {
-      "statement": "CREATE INDEX ON :CEDAR(name)"
+      "statement": "CREATE INDEX ON :CEDAR(schema_name)"
     },
     {
-      "statement": "CREATE CONSTRAINT ON (n:Folder) ASSERT n.id IS UNIQUE"
+      "statement": "CREATE CONSTRAINT ON (n:Folder) ASSERT n._id IS UNIQUE"
     },
     {
       "statement": "CREATE INDEX ON :Folder(ownedBy)"
@@ -28,7 +28,7 @@
       "statement": "CREATE INDEX ON :Folder(nodeSortOrder)"
     },
     {
-      "statement": "CREATE INDEX ON :Folder(name)"
+      "statement": "CREATE INDEX ON :Folder(schema_name)"
     },
     {
       "statement": "CREATE INDEX ON :Folder(createdOnTS)"
@@ -49,19 +49,19 @@
       "statement": "CREATE INDEX ON :Folder(homeOf)"
     },
     {
-      "statement": "CREATE CONSTRAINT ON (n:Group) ASSERT n.id IS UNIQUE"
+      "statement": "CREATE CONSTRAINT ON (n:Group) ASSERT n._id IS UNIQUE"
     },
     {
-      "statement": "CREATE INDEX ON :Group(name)"
+      "statement": "CREATE INDEX ON :Group(schema_name)"
     },
     {
       "statement": "CREATE INDEX ON :Group(specialGroup)"
     },
     {
-      "statement": "CREATE CONSTRAINT ON (n:User) ASSERT n.id IS UNIQUE"
+      "statement": "CREATE CONSTRAINT ON (n:User) ASSERT n._id IS UNIQUE"
     },
     {
-      "statement": "CREATE CONSTRAINT ON (n:Resource) ASSERT n.id IS UNIQUE"
+      "statement": "CREATE CONSTRAINT ON (n:Resource) ASSERT n._id IS UNIQUE"
     },
     {
       "statement": "CREATE INDEX ON :Resource(ownedBy)"
@@ -73,7 +73,7 @@
       "statement": "CREATE INDEX ON :Resource(nodeSortOrder)"
     },
     {
-      "statement": "CREATE INDEX ON :Resource(name)"
+      "statement": "CREATE INDEX ON :Resource(schema_name)"
     },
     {
       "statement": "CREATE INDEX ON :Resource(createdOnTS)"
@@ -82,16 +82,31 @@
       "statement": "CREATE INDEX ON :Resource(lastUpdatedOnTS)"
     },
     {
-      "statement": "CREATE CONSTRAINT ON (n:Field) ASSERT n.id IS UNIQUE"
+      "statement": "CREATE INDEX ON :Resource(schema_isBasedOn)"
     },
     {
-      "statement": "CREATE CONSTRAINT ON (n:Element) ASSERT n.id IS UNIQUE"
+      "statement": "CREATE INDEX ON :Resource(pav_derivedFrom)"
     },
     {
-      "statement": "CREATE CONSTRAINT ON (n:Template) ASSERT n.id IS UNIQUE"
+      "statement": "CREATE INDEX ON :Resource(pav_version)"
     },
     {
-      "statement": "CREATE CONSTRAINT ON (n:Instance) ASSERT n.id IS UNIQUE"
+      "statement": "CREATE INDEX ON :Resource(bibo_status)"
+    },
+    {
+      "statement": "CREATE INDEX ON :Resource(isLatestVersion)"
+    },
+    {
+      "statement": "CREATE CONSTRAINT ON (n:Field) ASSERT n._id IS UNIQUE"
+    },
+    {
+      "statement": "CREATE CONSTRAINT ON (n:Element) ASSERT n._id IS UNIQUE"
+    },
+    {
+      "statement": "CREATE CONSTRAINT ON (n:Template) ASSERT n._id IS UNIQUE"
+    },
+    {
+      "statement": "CREATE CONSTRAINT ON (n:Instance) ASSERT n._id IS UNIQUE"
     }
   ]
 }
