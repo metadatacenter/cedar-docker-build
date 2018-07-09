@@ -1,5 +1,5 @@
 {
-  "id": "https://metadatacenter.org/users/e8d90a8f-8563-4806-bbc8-dc0c0cef2fe3",
+  "@id": "https://metadatacenter.org/users/e8d90a8f-8563-4806-bbc8-dc0c0cef2fe3",
   "firstName": "CEDAR",
   "lastName": "Admin",
   "email": "cedar-admin@<cedar.CEDAR_HOST>",
@@ -60,7 +60,7 @@
       "viewMode": "grid"
     },
     "resourceTypeFilters": {
-      "field": false,
+      "field": true,
       "element": true,
       "template": true,
       "instance": true

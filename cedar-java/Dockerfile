@@ -10,5 +10,3 @@ ENV JAVA_HOME /usr/java/jdk-10.0.1/
 
 RUN yum install -y epel-release && yum install -y jq
 RUN yum -y install nc maven
-
-CMD ["bash", "-c", "while :; do echo 'Hit Ctrl+C to terminate'; sleep 1; done"]
