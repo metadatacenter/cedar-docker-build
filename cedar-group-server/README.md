@@ -56,7 +56,6 @@ metadatacenter/cedar-group-server
 
 With the current release version stored in the `CEDAR_RELEASE_VERSION` environment variable, the image can be built as follows:
 
-     docker build -t metadatacenter/cedar-group-server .
      docker build -t metadatacenter/cedar-group-server:${CEDAR_RELEASE_VERSION} .
 
 ## Pushing the image to CEDAR's DockerHub
