@@ -54,18 +54,18 @@ metadatacenter/cedar-group-server
 
 ## Build the image
 
-````
-docker build -t metadatacenter/cedar-group-server .
-````
+With the current release version stored in the `CEDAR_RELEASE_VERSION` environment variable the image can be built as follows:
 
-## Push the image to DockerHub
+     docker build -t metadatacenter/group-server:${CEDAR_RELEASE_VERSION} .
 
-````
-docker login
+## Push the image to CEDAR's DockerHub
 
-docker tag metadatacenter/cedar-group-server metadatacenter/cedar-group-server:${CEDAR_DOCKER_VERSION}
-docker push metadatacenter/cedar-group-server:${CEDAR_DOCKER_VERSION}
+Using the CEDAR DockerHub configuration instructions described [here](https://github.com/metadatacenter/cedar-conf/wiki/Configuring-Docker-to-use-the-CEDAR-Nexus-DockerHub) and with the `CEDAR_DOCKERHUB` environment variable pointing to Nexus host the image can be tagged and pushed as follows:
 
-docker tag metadatacenter/cedar-group-server metadatacenter/cedar-group-server:latest
-docker push metadatacenter/cedar-group-server:latest
-````
+     docker tag metadatacenter/group-server:${CEDAR_RELEASE_VERSION} ${CEDAR_DOCKERHUB}/group-server:${CEDAR_RELEASE_VERSION}
+
+     docker push ${CEDAR_DOCKERHUB}/group-server:${CEDAR_RELEASE_VERSION}
+
+The image can then be pulled as follows:
+
+     docker pull ${CEDAR_DOCKERHUB}/group-server:${CEDAR_RELEASE_VERSION}
