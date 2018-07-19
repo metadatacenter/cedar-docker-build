@@ -1,6 +1,6 @@
 # CEDAR Docker Images
 
-This repository contains Docker specifications to build all CEDAR Docker images.
+This repository contains Docker specifications for building all CEDAR Docker images.
 
 ### Building Images
 
@@ -32,7 +32,6 @@ The `IMAGE_VERSION` argument specified the version of the generated Docker image
 CEDAR's DockerHub repository is at `cedar-dockerhub.bmir.stanford.edu`, which is a proxy for BMIR's Nexus-based DockerHub repo for CEDAR.
 
 Note that Docker's `~/.docker/config.json` file must be configured to allow the invoking user to push images.
-
 For CEDAR's DockerHub, the relevant configuration instructions are [here](https://github.com/metadatacenter/cedar-conf/wiki/Configuring-Docker-to-use-the-CEDAR-Nexus-DockerHub).
 
 An example invocation could be:
@@ -41,4 +40,4 @@ An example invocation could be:
 
 ### Deploying
 
-The [CEDAR Docker Deploy](https://github.com/metadatacenter/cedar-docker-deploy) repo contains a deployment configuration 
+The [CEDAR Docker Deploy](https://github.com/metadatacenter/cedar-docker-deploy) repository contains a deployment configuration 
