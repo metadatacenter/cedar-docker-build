@@ -1,6 +1,6 @@
 # CEDAR Docker Images
 
-This repo contains Docker specifications to build all CEDAR Docker images.
+This repository contains Docker specifications to build all CEDAR Docker images.
 
 ### Building Images
 
@@ -12,6 +12,10 @@ It takes two arguments. Its invocation pattern is as follows:
 
 The `CEDAR_DOCKER_BUILD_HOME` argument should point to the download directory for this Git repository.
 The `IMAGE_VERSION` argument specifies the version of the generated Docker image.
+
+An example invocation could be:
+
+    ./bin/build-all-images ~/workspace/cedar/cedar-docker-build 1.9.1
 
 ### Releasing Images
 
@@ -30,6 +34,10 @@ CEDAR's DockerHub repository is at `cedar-dockerhub.bmir.stanford.edu`, which is
 Note that Docker's `~/.docker/config.json` file must be configured to allow the invoking user to push images.
 
 For CEDAR's DockerHub, the relevant configuration instructions are [here](https://github.com/metadatacenter/cedar-conf/wiki/Configuring-Docker-to-use-the-CEDAR-Nexus-DockerHub).
+
+An example invocation could be:
+
+    ./bin/release-all-images cedar-dockerhub.bmir.stanford.edu ~/workspace/cedar/cedar-docker-build 1.9.1
 
 ### Deploying
 
