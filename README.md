@@ -6,7 +6,7 @@ This repository contains Docker specifications for building all CEDAR Docker ima
 
 An included script called `./bin/build-all-images.sh` builds all images.
 
-It takes two arguments. Its invocation pattern is as follows:
+It takes two arguments and has the following invocation pattern:
 
     ./bin/build-all-images <CEDAR_DOCKER_BUILD_HOME> <IMAGE_VERSION>
 
@@ -21,7 +21,7 @@ An example invocation could be:
 
 An included script called `./bin/release-all-images.sh` tags and releases all images.
 
-It takes three arguments. Its invocation pattern is as follows:
+It takes three arguments and has the following invocation pattern:
 
     ./bin/release-all-images <DOCKERHUB> <CEDAR_DOCKER_BUILD_HOME> <IMAGE_VERSION>
 
