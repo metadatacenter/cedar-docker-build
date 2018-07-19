@@ -1,4 +1,4 @@
-# CEDAR docker components
+# CEDAR Docker Images
 
 This repo contains Docker specifications to build all CEDAR Docker images.
 
