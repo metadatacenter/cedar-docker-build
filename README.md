@@ -10,8 +10,8 @@ It takes two arguments. Its invocation pattern is as follows:
 
     ./bin/build-all-images <CEDAR_DOCKER_BUILD_HOME> <IMAGE_VERSION>
 
-The `CEDAR_DOCKER_BUILD_HOME` argument should point to download directory for this repo.
-The `IMAGE_VERSION` argument specified the version of the generated Docker image.
+The `CEDAR_DOCKER_BUILD_HOME` argument should point to the download directory for this Git repository.
+The `IMAGE_VERSION` argument specifies the version of the generated Docker image.
 
 ### Releasing Images
 
