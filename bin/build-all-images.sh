@@ -18,7 +18,7 @@ fi
 export CEDAR_DOCKER_BUILD_HOME=$1
 export IMAGE_VERSION=$2
 
-source ${CEDAR_DOCKER_BUILDHOME}/bin/cedar-images-base.sh
+source ${CEDAR_DOCKER_BUILD_HOME}/bin/cedar-images-base.sh
 
 build_image()
 {

@@ -1,9 +1,8 @@
 #!/bin/bash
 
-# Script containing configuration information for CEDAR Docker images.
-#
-# NOTE: Asumption here is image name is same as directory name containing Dockerfile for image with "metadatacenter/" prepended to it.
-#
+# Base script containing configuration information for CEDAR Docker images.
+# Lists all directories containing CEDAR Docker image specifications.
+# Asumption here is image name is same as directory name containing Dockerfile for image with "metadatacenter/" prepended to it.
 
 export CEDAR_IMAGE_PREFIX="metadatacenter"
 

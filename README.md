@@ -25,7 +25,7 @@ It takes three arguments and has the following invocation pattern:
 
     ./bin/release-all-images <DOCKERHUB> <CEDAR_DOCKER_BUILD_HOME> <IMAGE_VERSION>
 
-The `DOCKERHUB` variable points to the Docker repository that will reveive the pushed images.
+The `DOCKERHUB` variable points to the Docker repository that will receive the pushed images.
 The `CEDAR_DOCKER_BUILD_HOME` arguument should point to download directory for this repo.
 The `IMAGE_VERSION` argument specified the version of the generated Docker image.
 

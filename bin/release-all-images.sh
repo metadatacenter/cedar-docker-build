@@ -27,7 +27,7 @@ export DOCKERHUB=$1
 export CEDAR_DOCKER_BUILD_HOME=$2
 export IMAGE_VERSION=$3
 
-source ${CEDAR_DOCKER_BUILDHOME}/bin/cedar-images-base.sh
+source ${CEDAR_DOCKER_BUILD_HOME}/bin/cedar-images-base.sh
 
 tag_image()
 {
