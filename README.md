@@ -14,8 +14,8 @@ The `CEDAR_DOCKER_BUILD_HOME` argument should point to the download directory fo
 The `IMAGE_VERSION` argument specifies the version of the generated Docker image.
 
 Note that CEDAR artifacts with this version must have been previously generated and uploaded to
-(CEDAR's Nexus server)[https://nexus.bmir.stanford.edu/].
-CEDAR's (project repository)[https://github.com/metadatacenter/cedar-project] contains a Maven POM
+[CEDAR's Nexus server](https://nexus.bmir.stanford.edu/).
+CEDAR's [project repository](https://github.com/metadatacenter/cedar-project) contains a Maven POM
 for building all CEDAR artifacts.
 
 An example invocation could be:
