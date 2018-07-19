@@ -13,6 +13,11 @@ It takes two arguments and has the following invocation pattern:
 The `CEDAR_DOCKER_BUILD_HOME` argument should point to the download directory for this Git repository.
 The `IMAGE_VERSION` argument specifies the version of the generated Docker image.
 
+Note that CEDAR artifacts with this version must have been previously generated and uploaded to
+(CEDAR's Nexus server)[https://nexus.bmir.stanford.edu/].
+CEDAR's (project repository)[https://github.com/metadatacenter/cedar-project] contains a Maven POM
+for building all CEDAR artifacts.
+
 An example invocation could be:
 
     ./bin/build-all-images ~/workspace/cedar/cedar-docker-build 1.9.1
@@ -27,7 +32,7 @@ It takes three arguments and has the following invocation pattern:
 
 The `DOCKERHUB` variable points to the Docker repository that will receive the pushed images.
 The `CEDAR_DOCKER_BUILD_HOME` arguument should point to download directory for this repo.
-The `IMAGE_VERSION` argument specified the version of the generated Docker image.
+The `IMAGE_VERSION` argument specifies the version of the generated Docker image.
 
 CEDAR's DockerHub repository is at `cedar-dockerhub.bmir.stanford.edu`, which is a proxy for BMIR's Nexus-based DockerHub repo for CEDAR.
 
