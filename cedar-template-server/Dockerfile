@@ -1,4 +1,4 @@
-FROM metadatacenter/cedar-microservice:1.9.1-SNAPSHOT
+FROM metadatacenter/cedar-microservice:1.9.1
 
 ENV CEDAR_SERVER_NAME=template
 
