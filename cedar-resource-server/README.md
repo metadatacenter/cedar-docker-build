@@ -63,20 +63,20 @@ metadatacenter/cedar-resource-server
 
 # For developers
 
-## Build the image
+## Building the image
 
-````
-docker build -t metadatacenter/cedar-resource-server .
-````
+With the current release version stored in the `CEDAR_RELEASE_VERSION` environment variable, the image can be built as follows:
 
-## Push the image to DockerHub
+     docker build -t metadatacenter/cedar-resource-server:${CEDAR_RELEASE_VERSION} .
 
-````
-docker login
+## Pushing the image to CEDAR's DockerHub
 
-docker tag metadatacenter/cedar-resource-server metadatacenter/cedar-resource-server:${CEDAR_DOCKER_VERSION}
-docker push metadatacenter/cedar-resource-server:${CEDAR_DOCKER_VERSION}
+Using the CEDAR DockerHub configuration instructions described [here](https://github.com/metadatacenter/cedar-conf/wiki/Configuring-Docker-to-use-the-CEDAR-Nexus-DockerHub) and with the `CEDAR_DOCKERHUB` environment variable pointing to CEDAR Nexus DockerHub host, the image can be tagged and pushed as follows:
 
-docker tag metadatacenter/cedar-resource-server metadatacenter/cedar-resource-server:latest
-docker push metadatacenter/cedar-resource-server:latest
-````
+     docker tag metadatacenter/cedar-resource-server:${CEDAR_RELEASE_VERSION} ${CEDAR_DOCKERHUB}/metadatacenter/cedar-resource-server:${CEDAR_RELEASE_VERSION}
+
+     docker push ${CEDAR_DOCKERHUB}/metadatacenter/cedar-resource-server:${CEDAR_RELEASE_VERSION}
+
+The image can subsequently be pulled as follows:
+
+     docker pull ${CEDAR_DOCKERHUB}/metadatacenter/cedar-resource-server:${CEDAR_RELEASE_VERSION}

@@ -36,21 +36,22 @@ metadatacenter/cedar-editor
 
 # For developers
 
-## Build the image
 
-````
-chmod a+x scripts/docker-entrypoint.sh
-docker build -t metadatacenter/cedar-editor .
-````
+## Building the image
 
-## Push the image to DockerHub
+With the current release version stored in the `CEDAR_RELEASE_VERSION` environment variable, the image can be built as follows:
 
-````
-docker login
+     chmod a+x scripts/docker-entrypoint.sh
+     docker build -t metadatacenter/cedar-editor:${CEDAR_RELEASE_VERSION} .
 
-docker tag metadatacenter/cedar-editor metadatacenter/cedar-editor:${CEDAR_DOCKER_VERSION}
-docker push metadatacenter/cedar-editor:${CEDAR_DOCKER_VERSION}
+## Pushing the image to CEDAR's DockerHub
 
-docker tag metadatacenter/cedar-editor metadatacenter/cedar-editor:latest
-docker push metadatacenter/cedar-editor:latest
-````
+Using the CEDAR DockerHub configuration instructions described [here](https://github.com/metadatacenter/cedar-conf/wiki/Configuring-Docker-to-use-the-CEDAR-Nexus-DockerHub) and with the `CEDAR_DOCKERHUB` environment variable pointing to CEDAR Nexus DockerHub host, the image can be tagged and pushed as follows:
+
+     docker tag metadatacenter/cedar-editor:${CEDAR_RELEASE_VERSION} ${CEDAR_DOCKERHUB}/metadatacenter/cedar-editor:${CEDAR_RELEASE_VERSION}
+
+     docker push ${CEDAR_DOCKERHUB}/metadatacenter/cedar-editor:${CEDAR_RELEASE_VERSION}
+
+The image can subsequently be pulled as follows:
+
+     docker pull ${CEDAR_DOCKERHUB}/metadatacenter/cedar-editor:${CEDAR_RELEASE_VERSION}
