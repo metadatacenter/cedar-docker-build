@@ -20,7 +20,7 @@ for building all CEDAR artifacts.
 
 An example invocation could be:
 
-    ./bin/build-all-images ~/workspace/cedar/cedar-docker-build 1.9.1
+    ./bin/build-all-images.sh ~/workspace/cedar/server/cedar-docker-build 1.9.1
 
 ### Releasing Images
 
@@ -28,7 +28,7 @@ An included script called `./bin/release-all-images.sh` tags and releases all im
 
 It takes three arguments and has the following invocation pattern:
 
-    ./bin/release-all-images <DOCKERHUB> <CEDAR_DOCKER_BUILD_HOME> <IMAGE_VERSION>
+    ./bin/release-all-images.sh <DOCKERHUB> <CEDAR_DOCKER_BUILD_HOME> <IMAGE_VERSION>
 
 The `DOCKERHUB` variable points to the Docker repository that will receive the pushed images.
 The `CEDAR_DOCKER_BUILD_HOME` arguument should point to download directory for this repo.
@@ -41,7 +41,7 @@ For CEDAR's DockerHub, the relevant configuration instructions are [here](https:
 
 An example invocation could be:
 
-    ./bin/release-all-images cedar-dockerhub.bmir.stanford.edu ~/workspace/cedar/cedar-docker-build 1.9.1
+    ./bin/release-all-images.sh cedar-dockerhub.bmir.stanford.edu ~/workspace/cedar/server/cedar-docker-build 1.9.1
 
 ### Deploying
 
