@@ -43,6 +43,10 @@ An example invocation could be:
 
     ./bin/release-all-images.sh cedar-dockerhub.bmir.stanford.edu ~/workspace/cedar/server/cedar-docker-build 1.9.1
 
+BMIR's Nexus server can then be queried to verify that all images of the specified version are available, e.g.,
+
+    https://nexus.bmir.stanford.edu/#browse/search/docker=version%3D1.9.3
+
 ### Deploying
 
 The [CEDAR Docker Deploy](https://github.com/metadatacenter/cedar-docker-deploy) repository contains a deployment configuration 
