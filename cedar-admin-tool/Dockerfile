@@ -1,8 +1,8 @@
-FROM metadatacenter/cedar-java:1.9.3
+FROM metadatacenter/cedar-java:1.9.4-SNAPSHOT
 
 ENV CEDAR_HOME=/cedar
 
-ENV CEDAR_VERSION=1.9.3
+ENV CEDAR_VERSION=1.9.4-SNAPSHOT
 
 ENV CEDAR_RESOURCE_HTTP_PORT=9007
 
