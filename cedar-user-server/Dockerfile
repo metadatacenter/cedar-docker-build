@@ -1,4 +1,4 @@
-FROM metadatacenter/cedar-microservice:2.0.0
+FROM metadatacenter/cedar-microservice:2.0.1-SNAPSHOT
 
 ENV CEDAR_SERVER_NAME=user
 
