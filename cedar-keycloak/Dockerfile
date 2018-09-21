@@ -21,7 +21,7 @@ RUN yum -y install nc maven libmysqlclient libmysqlclient-dev MySQL-python
 
 RUN cd /opt/jboss/ && curl -L https://downloads.jboss.org/keycloak/$KEYCLOAK_VERSION/keycloak-$KEYCLOAK_VERSION.tar.gz | tar zx && mv /opt/jboss/keycloak-$KEYCLOAK_VERSION /opt/jboss/keycloak
 
-ENV CEDAR_VERSION=2.1.1-SNAPSHOT
+ENV CEDAR_VERSION=2.1.1
 ENV MYSQL_CONNECTOR_VERSION=5.1.43
 
 ADD config/m2/settings.xml /root/.m2/
