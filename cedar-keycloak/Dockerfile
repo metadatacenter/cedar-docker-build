@@ -3,7 +3,7 @@ FROM jboss/base:latest
 USER root
 
 RUN yum -y install wget
-RUN wget -c --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/11.0.1+13/90cf5d8f270a4347a95050320eef3fb7/jdk-11.0.1_linux-x64_bin.tar.gz
+RUN wget -c --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/11.0.1+13/90cf5d8f270a4347a95050320eef3fb7/jdk-11.0.1_linux-x64_bin.rpm
 RUN yum -y install jdk-11.0.1_linux-x64_bin.rpm
 RUN rm jdk-11.0.1_linux-x64_bin.rpm
 
