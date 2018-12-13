@@ -21,14 +21,14 @@ RUN yum -y install nc maven libmysqlclient libmysqlclient-dev MySQL-python
 
 RUN cd /opt/jboss/ && curl -L https://downloads.jboss.org/keycloak/$KEYCLOAK_VERSION/keycloak-$KEYCLOAK_VERSION.tar.gz | tar zx && mv /opt/jboss/keycloak-$KEYCLOAK_VERSION /opt/jboss/keycloak
 
-ENV CEDAR_VERSION=2.2.1
+ENV CEDAR_VERSION=2.2.3
 ENV MYSQL_CONNECTOR_VERSION=5.1.43
 
 ADD config/m2/settings.xml /root/.m2/
 
 RUN mvn org.apache.maven.plugins:maven-dependency-plugin:3.1.1:copy -Dartifact=mysql:mysql-connector-java:${MYSQL_CONNECTOR_VERSION}:jar -DoutputDirectory=/opt/jboss/keycloak/modules/system/layers/base/com/mysql/jdbc/main -Dmdep.useBaseVersion=true
 RUN mvn org.apache.maven.plugins:maven-dependency-plugin:3.1.1:get -DrepoUrl=https://nexus.bmir.stanford.edu/ -Dartifact=org.metadatacenter:cedar-keycloak-event-listener:${CEDAR_VERSION}
-RUN mvn org.apache.maven.plugins:maven-dependency-plugin:3.1.1:copy -Dartifact=org.metadatacenter:cedar-keycloak-event-listener:${CEDAR_VERSION}:jar:jar-with-dependencies -DoutputDirectory=/opt/jboss/keycloak/providers -Dmdep.useBaseVersion=true
+RUN mvn org.apache.maven.plugins:maven-dependency-plugin:3.1.1:copy -Dartifact=org.metadatacenter:cedar-keycloak-event-listener:${CEDAR_VERSION}:jar -DoutputDirectory=/opt/jboss/keycloak/providers -Dmdep.useBaseVersion=true
 RUN yum clean all && rm -rf /var/cache/yum
 
 RUN mkdir -p /opt/jboss/keycloak/modules/system/layers/base/com/mysql/jdbc/main
