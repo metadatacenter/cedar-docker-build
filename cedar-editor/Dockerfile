@@ -1,7 +1,7 @@
 FROM debian:stretch-slim
 
 ENV CEDAR_VERSION=2.2.4-SNAPSHOT
-ENV CEDAR_MICROSERVICE_REPO=https://nexus.bmir.stanford.edu/repository/npm-cedar
+ENV CEDAR_NPM_NEXUS_REPO=https://nexus.bmir.stanford.edu/repository/npm-cedar
 
 ENV NGINX_VERSION 1.13.0-1~stretch
 ENV NJS_VERSION   1.13.0.0.1.10-1~stretch
@@ -60,11 +60,6 @@ apt-get purge -y apt-transport-https && \
 apt-get autoremove -y && \
 apt-get clean all
 
-# Install git and global gulp from github
-RUN \
-apt-get install -y git && \
-npm install -g 'gulpjs/gulp.git#4.0'
-
 ENV CEDAR_HOME /srv/cedar
 ENV CEDAR_TEMPLATE_EDITOR_HOME ${CEDAR_HOME}/cedar-template-editor/
 
@@ -75,7 +70,7 @@ RUN mkdir -p ${CEDAR_TEMPLATE_EDITOR_HOME}
 WORKDIR ${CEDAR_TEMPLATE_EDITOR_HOME}
 
 ENV EDITOR_TARBALL cedar-template-editor-${CEDAR_VERSION}.tgz
-ENV EDITOR_URI ${CEDAR_MICROSERVICE_REPO}/cedar-template-editor/-/${EDITOR_TARBALL}
+ENV EDITOR_URI ${CEDAR_NPM_NEXUS_REPO}/cedar-template-editor/-/${EDITOR_TARBALL}
 
 # Download and extract the frontend source
 RUN \
