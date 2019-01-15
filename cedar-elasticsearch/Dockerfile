@@ -1,4 +1,4 @@
-FROM elasticsearch:5.6.4
+FROM elasticsearch:6.4.3
 
 ADD config/elasticsearch.yml /usr/share/elasticsearch/config/
 
