@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 import os
-import sys
-import time
 
 import MySQLdb
+import sys
+import time
 from MySQLdb import MySQLError
 
 
@@ -94,30 +94,47 @@ def create_application_user():
                            "Error while creating application user")
 
 
-print("Reading environment variables")
-mysql_host = os.environ.get('CEDAR_MESSAGING_MYSQL_HOST')
-mysql_port = int(os.environ.get('CEDAR_MESSAGING_MYSQL_PORT'))
+def init_app_level_database(env_selector):
+    global mysql_host
+    global mysql_port
+    global application_user
+    global application_password
+    global application_database
+    mysql_host = os.environ.get('CEDAR_' + env_selector + '_MYSQL_HOST')
+    mysql_port = int(os.environ.get('CEDAR_' + env_selector + '_MYSQL_PORT'))
+    application_user = os.environ.get('CEDAR_' + env_selector + '_MYSQL_USER')
+    application_password = os.environ.get('CEDAR_' + env_selector + '_MYSQL_PASSWORD')
+    application_database = os.environ.get('CEDAR_' + env_selector + '_MYSQL_DB')
+
+    print("---- Application Server Info ----")
+    print("MySQL server host   :" + mysql_host)
+    print("MySQL server port   :" + str(mysql_port))
+    print("Root user           :" + mysql_root_user)
+    print("Application user    :" + application_user)
+    print("Application database:" + application_database)
+
+    print("Wait for MySQL server to be available")
+    wait_for_root()
+    create_database()
+    create_application_user()
+
+
 mysql_root_user = "root"
 mysql_root_password = os.environ.get('CEDAR_MYSQL_ROOT_PASSWORD')
-application_user = os.environ.get('CEDAR_MESSAGING_MYSQL_USER')
-application_password = os.environ.get('CEDAR_MESSAGING_MYSQL_PASSWORD')
-application_database = os.environ.get('CEDAR_MESSAGING_MYSQL_DB')
 localhost = '127.0.0.1'
-
 number_of_tries = 5
 sleep_seconds = 1
 
-print("---- Server info ----")
-print("MySQL server host   :" + mysql_host)
-print("MySQL server port   :" + str(mysql_port))
-print("Root user           :" + mysql_root_user)
-# print "Root password       :" + mysql_root_password
-print("Application user    :" + application_user)
-# print "Application password:" + application_password
-print("Application database:" + application_database)
+mysql_host = None
+mysql_port = None
+application_user = None
+application_password = None
+application_database = None
 
-print("Wait for MySQL server to be available")
+cedar_server_name = os.environ.get('CEDAR_SERVER_NAME')
 
-wait_for_root()
-create_database()
-create_application_user()
+if cedar_server_name == "messaging":
+    init_app_level_database('MESSAGING')
+elif cedar_server_name == "worker":
+    init_app_level_database('MESSAGING')
+    init_app_level_database('LOG')
