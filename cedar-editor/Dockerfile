@@ -80,7 +80,8 @@ rm ${EDITOR_TARBALL}
 
 # Install dependencies
 RUN \
-npm install
+npm install && \
+npm install -g gulp
 
 # Add the entry point
 ADD scripts/docker-entrypoint.sh /
