@@ -1,4 +1,4 @@
-FROM metadatacenter/cedar-microservice:2.2.5
+FROM metadatacenter/cedar-microservice:2.2.6-SNAPSHOT
 
 ENV CEDAR_SERVER_NAME=workspace
 
