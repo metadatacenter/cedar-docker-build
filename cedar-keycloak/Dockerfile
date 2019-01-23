@@ -3,11 +3,39 @@ FROM jboss/base:latest
 USER root
 
 RUN yum -y install wget
-RUN wget -c --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/11.0.1+13/90cf5d8f270a4347a95050320eef3fb7/jdk-11.0.1_linux-x64_bin.rpm
-RUN yum -y install jdk-11.0.1_linux-x64_bin.rpm
-RUN rm jdk-11.0.1_linux-x64_bin.rpm
 
-ENV JAVA_HOME /usr/java/jdk-11.0.1/
+ENV JAVA_HOME /usr/java/openjdk-11
+ENV PATH $JAVA_HOME/bin:$PATH
+
+# http://jdk.java.net/
+ENV JAVA_VERSION 11.0.2
+ENV JAVA_URL https://download.java.net/java/GA/jdk11/9/GPL/openjdk-11.0.2_linux-x64_bin.tar.gz
+ENV JAVA_SHA256 99be79935354f5c0df1ad293620ea36d13f48ec3ea870c838f20c504c9668b57
+
+RUN set -eux; \
+        \
+        curl -fL -o /openjdk.tgz "$JAVA_URL"; \
+        echo "$JAVA_SHA256 */openjdk.tgz" | sha256sum -c -; \
+        mkdir -p "$JAVA_HOME"; \
+        tar --extract --file /openjdk.tgz --directory "$JAVA_HOME" --strip-components 1; \
+        rm /openjdk.tgz; \
+        \
+# https://github.com/oracle/docker-images/blob/a56e0d1ed968ff669d2e2ba8a1483d0f3acc80c0/OracleJava/java-8/Dockerfile#L17-L19
+        ln -sfT "$JAVA_HOME" /usr/java/default; \
+        ln -sfT "$JAVA_HOME" /usr/java/latest; \
+        for bin in "$JAVA_HOME/bin/"*; do \
+                base="$(basename "$bin")"; \
+                [ ! -e "/usr/bin/$base" ]; \
+                alternatives --install "/usr/bin/$base" "$base" "$bin" 20000; \
+        done; \
+        \
+# https://github.com/docker-library/openjdk/issues/212#issuecomment-420979840
+# http://openjdk.java.net/jeps/341
+        java -Xshare:dump; \
+        \
+# basic smoke test
+        java --version; \
+        javac --version
 
 ENV KEYCLOAK_VERSION 3.3.0.Final
 # Enables signals getting passed from startup script to JVM
@@ -21,7 +49,7 @@ RUN yum -y install nc maven libmysqlclient libmysqlclient-dev MySQL-python
 
 RUN cd /opt/jboss/ && curl -L https://downloads.jboss.org/keycloak/$KEYCLOAK_VERSION/keycloak-$KEYCLOAK_VERSION.tar.gz | tar zx && mv /opt/jboss/keycloak-$KEYCLOAK_VERSION /opt/jboss/keycloak
 
-ENV CEDAR_VERSION=2.2.3
+ENV CEDAR_VERSION=2.2.5
 ENV MYSQL_CONNECTOR_VERSION=5.1.43
 
 ADD config/m2/settings.xml /root/.m2/
