@@ -1,31 +1,17 @@
 #!/bin/bash
 
 # Script to build and tag all CEDAR Docker images and push it to CEDAR's DockerHub.
-#
-# Three arguments must be supplied:
-#
-# (1) Argument one is assigned to the DOCKERHUB variable, and points to a Docker repository.
-#
-# For CEDAR this repository is at cedar-dockerhub.bmir.stanford.edu, which is a proxy for BMIR's Nexus-based DockerHub repo for CEDAR.
-# Note that Docker's ~/.docker/config.json file must be configured allow the invoking user to push images.
-#
-# For CEDAR's DockerHub, the relevant configuration instructions are here:
-# https://github.com/metadatacenter/cedar-conf/wiki/Configuring-Docker-to-use-the-CEDAR-Nexus-DockerHub
-#
-# (2) Argument two is assigned to the CEDAR_DOCKER_BUILD_HOME variable, which will be the download directory for the
-# cedar-docker-build GitHub repo: https://github.com/metadatacenter/cedar-docker-build
-#
-# (3) Argument three is assigned to the IMAGE_VERSION and sets the version of the Docker images
-#
 
-if [ $# -ne 3 ]; then
-    echo "Usage: <DOCKERHUB> <CEDAR_DOCKER_BUILD_HOME> <IMAGE_VERSION>"
+if [ -z "$CEDAR_HOME" ]; then
+    echo "Need to set CEDAR_HOME"
     exit 1
 fi
 
-export DOCKERHUB=$1
-export CEDAR_DOCKER_BUILD_HOME=$2
-export IMAGE_VERSION=$3
+export DOCKERHUB=cedar-dockerhub.bmir.stanford.edu
+
+export CEDAR_DOCKER_BUILD_HOME=$1/cedar-docker-build
+
+export IMAGE_VERSION=2.2.8-SNAPSHOT
 
 source ${CEDAR_DOCKER_BUILD_HOME}/bin/cedar-images-base.sh
 
