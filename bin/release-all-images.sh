@@ -9,7 +9,7 @@ fi
 
 export DOCKERHUB=cedar-dockerhub.bmir.stanford.edu
 
-export CEDAR_DOCKER_BUILD_HOME=$1/cedar-docker-build
+export CEDAR_DOCKER_BUILD_HOME=${CEDAR_HOME}/cedar-docker-build
 
 export IMAGE_VERSION=2.2.8-SNAPSHOT
 
