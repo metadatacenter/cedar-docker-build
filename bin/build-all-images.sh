@@ -1,22 +1,17 @@
 #!/bin/bash
 
 # Script to build all CEDAR Docker images
-#
-# Two arguments must be supplied:
-#
-# (1) Argument one is assigned to the CEDAR_DOCKER_BUILD_HOME variable, which will be the download directory for the
-# cedar-docker-build GitHub repo: https://github.com/metadatacenter/cedar-docker-build
-#
-# (2) Argument two is assigned to the IMAGE_VERSION and sets the version of the Docker images
-#
 
-if [ $# -ne 2 ]; then
-    echo "Usage: <CEDAR_DOCKER_BUILD_HOME> <IMAGE_VERSION>"
+if [ -z "$CEDAR_HOME" ]; then
+    echo "Need to set CEDAR_HOME"
     exit 1
 fi
 
-export CEDAR_DOCKER_BUILD_HOME=$1
-export IMAGE_VERSION=$2
+export CEDAR_DOCKER_BUILD_HOME=${CEDAR_HOME}/cedar-docker-build
+
+export IMAGE_VERSION=2.2.8-SNAPSHOT
+
+echo ${CEDAR_DOCKER_BUILD_HOME}
 
 source ${CEDAR_DOCKER_BUILD_HOME}/bin/cedar-images-base.sh
 
