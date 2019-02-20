@@ -11,8 +11,6 @@ export DOCKERHUB=cedar-dockerhub.bmir.stanford.edu
 
 export CEDAR_DOCKER_BUILD_HOME=${CEDAR_HOME}/cedar-docker-build
 
-export IMAGE_VERSION=2.2.8-SNAPSHOT
-
 source ${CEDAR_DOCKER_BUILD_HOME}/bin/cedar-images-base.sh
 
 tag_image()
