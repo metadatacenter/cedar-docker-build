@@ -18,7 +18,6 @@ mkdir -p nginx-terminology
 mkdir -p nginx-user
 mkdir -p nginx-valuerecommender
 mkdir -p nginx-worker 
-mkdir -p nginx-workspace
 
 
 echo "Executing sed"
