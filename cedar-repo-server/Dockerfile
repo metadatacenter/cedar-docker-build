@@ -1,12 +1,10 @@
-FROM metadatacenter/cedar-microservice:2.2.8
+FROM metadatacenter/cedar-microservice:2.2.9
 
 ENV CEDAR_SERVER_NAME=repo
 
 ENV CEDAR_REPO_HTTP_PORT=9002
 ENV CEDAR_REPO_ADMIN_PORT=9102
 ENV CEDAR_REPO_STOP_PORT=9202
-
-ENV CEDAR_WORKSPACE_HTTP_PORT=9008
 
 ENV LOGDIR=${CEDAR_HOME}/log/cedar-${CEDAR_SERVER_NAME}-server/
 RUN mkdir -p ${LOGDIR}
