@@ -18,7 +18,7 @@ certbot -n --email ${CERTBOT_EMAIL} --agree-tos -a webroot -i nginx -w /usr/shar
 certbot -n --email ${CERTBOT_EMAIL} --agree-tos -a webroot -i nginx -w /usr/share/nginx/resource -d resource.${CEDAR_HOST}
 certbot -n --email ${CERTBOT_EMAIL} --agree-tos -a webroot -i nginx -w /usr/share/nginx/schema -d schema.${CEDAR_HOST}
 certbot -n --email ${CERTBOT_EMAIL} --agree-tos -a webroot -i nginx -w /usr/share/nginx/submission -d submission.${CEDAR_HOST}
-certbot -n --email ${CERTBOT_EMAIL} --agree-tos -a webroot -i nginx -w /usr/share/nginx/template -d template.${CEDAR_HOST}
+certbot -n --email ${CERTBOT_EMAIL} --agree-tos -a webroot -i nginx -w /usr/share/nginx/artifact -d artifact.${CEDAR_HOST}
 certbot -n --email ${CERTBOT_EMAIL} --agree-tos -a webroot -i nginx -w /usr/share/nginx/terminology -d terminology.${CEDAR_HOST}
 certbot -n --email ${CERTBOT_EMAIL} --agree-tos -a webroot -i nginx -w /usr/share/nginx/user -d user.${CEDAR_HOST}
 certbot -n --email ${CERTBOT_EMAIL} --agree-tos -a webroot -i nginx -w /usr/share/nginx/valuerecommender -d valuerecommender.${CEDAR_HOST}
