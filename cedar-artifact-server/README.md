@@ -1,4 +1,4 @@
-Docker version of CEDAR Template server
+Docker version of CEDAR Artifact server
 
 # For end-users
 
@@ -10,7 +10,7 @@ Execute the following command:
 
 ````
 docker run -d \
---name template-server \
+--name artifact-server \
 --net cedarnet \
 -e CEDAR_HOST \
 -e CEDAR_MONGO_APP_USER_NAME \
@@ -22,29 +22,29 @@ docker run -d \
 -e CEDAR_REDIS_PERSISTENT_HOST \
 -e CEDAR_REDIS_PERSISTENT_PORT \
 -e CEDAR_TEST_USER1_ID \
--p ${CEDAR_TEMPLATE_HTTP_PORT}:9001 \
--p ${CEDAR_TEMPLATE_MANAGEMENT_PORT}:9101 \
--p ${CEDAR_TEMPLATE_STOP_PORT}:9201 \
---mount 'type=volume,src=template_log,dst=/cedar/log/cedar-template-server/' \
+-p ${CEDAR_ARTIFACT_HTTP_PORT}:9001 \
+-p ${CEDAR_ARTIFACT_MANAGEMENT_PORT}:9101 \
+-p ${CEDAR_ARTIFACT_STOP_PORT}:9201 \
+--mount 'type=volume,src=artifact_log,dst=/cedar/log/cedar-artifact-server/' \
 --mount 'type=volume,src=cedar_ca,dst=/cedar/ca' \
-metadatacenter/cedar-template-server
+metadatacenter/cedar-artifact-server
 ````
 
 ## Stop the container
 
-    docker stop template-server
+    docker stop artifact-server
 
 ## Start the container
 
-    docker start template-server
+    docker start artifact-server
 
 ## Check the logs of the container
 
-    docker logs -f template-server
+    docker logs -f artifact-server
 
 ## Connect to the container
 
-    docker exec -it template-server bash
+    docker exec -it artifact-server bash
 
 # For developers
 
@@ -52,16 +52,16 @@ metadatacenter/cedar-template-server
 
 With the current release version stored in the `CEDAR_RELEASE_VERSION` environment variable, the image can be built as follows:
 
-     docker build -t metadatacenter/cedar-template-server:${CEDAR_RELEASE_VERSION} .
+     docker build -t metadatacenter/cedar-artifact-server:${CEDAR_RELEASE_VERSION} .
 
 ## Pushing the image to CEDAR's DockerHub
 
 Using the CEDAR DockerHub configuration instructions described [here](https://github.com/metadatacenter/cedar-conf/wiki/Configuring-Docker-to-use-the-CEDAR-Nexus-DockerHub) and with the `CEDAR_DOCKERHUB` environment variable pointing to CEDAR Nexus DockerHub host, the image can be tagged and pushed as follows:
 
-     docker tag metadatacenter/cedar-template-server:${CEDAR_RELEASE_VERSION} ${CEDAR_DOCKERHUB}/metadatacenter/cedar-template-server:${CEDAR_RELEASE_VERSION}
+     docker tag metadatacenter/cedar-artifact-server:${CEDAR_RELEASE_VERSION} ${CEDAR_DOCKERHUB}/metadatacenter/cedar-artifact-server:${CEDAR_RELEASE_VERSION}
 
-     docker push ${CEDAR_DOCKERHUB}/metadatacenter/cedar-template-server:${CEDAR_RELEASE_VERSION}
+     docker push ${CEDAR_DOCKERHUB}/metadatacenter/cedar-artifact-server:${CEDAR_RELEASE_VERSION}
 
 The image can subsequently be pulled as follows:
 
-     docker pull ${CEDAR_DOCKERHUB}/metadatacenter/cedar-template-server:${CEDAR_RELEASE_VERSION}
+     docker pull ${CEDAR_DOCKERHUB}/metadatacenter/cedar-artifact-server:${CEDAR_RELEASE_VERSION}

@@ -18,7 +18,7 @@ CEDAR_DOCKER_IMAGES=(
   "cedar-resource-server"
   "cedar-schema-server"
   "cedar-submission-server"
-  "cedar-template-server"
+  "cedar-artifact-server"
   "cedar-terminology-server"
   "cedar-user-server"
   "cedar-valuerecommender-server"
@@ -35,6 +35,3 @@ CEDAR_DOCKER_IMAGES=(
   "cedar-keycloak"
   "cedar-kibana"
 )
-
-
-

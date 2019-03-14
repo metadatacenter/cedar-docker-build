@@ -13,7 +13,7 @@ mkdir -p nginx-repo
 mkdir -p nginx-resource
 mkdir -p nginx-schema
 mkdir -p nginx-submission
-mkdir -p nginx-template
+mkdir -p nginx-artifact
 mkdir -p nginx-terminology
 mkdir -p nginx-user
 mkdir -p nginx-valuerecommender
