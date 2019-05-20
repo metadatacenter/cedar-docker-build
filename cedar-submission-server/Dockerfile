@@ -1,4 +1,4 @@
-FROM metadatacenter/cedar-microservice:2.3.2
+FROM metadatacenter/cedar-microservice:2.3.3-SNAPSHOT
 
 ENV CEDAR_SERVER_NAME=submission
 
