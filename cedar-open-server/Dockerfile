@@ -1,4 +1,4 @@
-FROM metadatacenter/cedar-microservice:2.4.9-SNAPSHOT
+FROM metadatacenter/cedar-microservice:2.4.9
 
 ENV CEDAR_SERVER_NAME=open
 
