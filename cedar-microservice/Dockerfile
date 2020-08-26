@@ -7,7 +7,7 @@ ENV CEDAR_VERSION=2.5.5-SNAPSHOT
 ENV CEDAR_USER_HTTP_PORT=9005
 
 RUN yum -y update
-RUN yum -y install https://centos7.iuscommunity.org/ius-release.rpm
+RUN yum -y install https://repo.ius.io/ius-release-el7.rpm
 RUN yum -y install gcc
 RUN yum -y install python36u
 RUN yum -y install python36u-devel
