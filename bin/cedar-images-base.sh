@@ -6,7 +6,7 @@
 
 export CEDAR_IMAGE_PREFIX="metadatacenter"
 
-export IMAGE_VERSION=2.5.7
+export IMAGE_VERSION=2.5.8-SNAPSHOT
 
 CEDAR_DOCKER_IMAGES=(
   "cedar-java"
