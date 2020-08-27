@@ -1,13 +1,13 @@
-FROM metadatacenter/cedar-java:2.5.4
+FROM metadatacenter/cedar-java:2.5.6
 
 ENV CEDAR_HOME=/cedar
 
-ENV CEDAR_VERSION=2.5.4
+ENV CEDAR_VERSION=2.5.6
 
 ENV CEDAR_USER_HTTP_PORT=9005
 
 RUN yum -y update
-RUN yum -y install https://centos7.iuscommunity.org/ius-release.rpm
+RUN yum -y install https://repo.ius.io/ius-release-el7.rpm
 RUN yum -y install gcc
 RUN yum -y install python36u
 RUN yum -y install python36u-devel
