@@ -23,6 +23,8 @@ CEDAR_DOCKER_IMAGES=(
   "cedar-user-server"
   "cedar-valuerecommender-server"
   "cedar-worker-server"
+  "cedar-internals-server"
+  "cedar-openview-server"
   "cedar-editor"
   "cedar-mongo"
   "cedar-mysql"
