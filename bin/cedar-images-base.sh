@@ -36,4 +36,5 @@ CEDAR_DOCKER_IMAGES=(
   "cedar-elasticsearch"
   "cedar-keycloak"
   "cedar-kibana"
+  "cedar-phpmyadmin"
 )
