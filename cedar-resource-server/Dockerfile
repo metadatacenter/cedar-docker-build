@@ -16,6 +16,13 @@ RUN yum install -y python-redis
 
 ADD scripts/pre-docker-entrypoint.sh ${CEDAR_HOME}/
 
+# script to install jar
+ADD include/install_cedarat_deps.sh ${CEDAR_HOME}/
+
+ADD scripts/cedarat.sh ${CEDAR_HOME}/app
+
 EXPOSE ${CEDAR_RESOURCE_HTTP_PORT} ${CEDAR_RESOURCE_ADMIN_PORT} ${CEDAR_RESOURCE_STOP_PORT}
 
 RUN ${CEDAR_HOME}/install_deps.sh
+
+RUN ${CEDAR_HOME}/install_cedarat_deps.sh
