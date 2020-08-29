@@ -12,6 +12,10 @@ export INIT_DONE_FLAG="/state/cedar-resource_server-init.done"
 if [ ! -f ${INIT_DONE_FLAG} ]; then
   echo "Resource server not yet initialized!"
 
+  echo "Import CA cert"
+  echo "yes" | $JAVA_HOME/bin/keytool -import -trustcacerts -file ${CEDAR_HOME}/ca/ca-cedar.crt -alias cedar -keystore $JAVA_HOME/jre/lib/security/cacerts -storepass changeit
+  echo --------------------------------------------------------------------------------
+
   export TERM=xterm
 
   echo "Creating indices"
