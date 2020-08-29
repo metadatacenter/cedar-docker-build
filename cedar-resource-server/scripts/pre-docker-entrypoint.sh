@@ -12,6 +12,8 @@ export INIT_DONE_FLAG="/state/cedar-resource_server-init.done"
 if [ ! -f ${INIT_DONE_FLAG} ]; then
   echo "Resource server not yet initialized!"
 
+  export TERM=xterm
+
   echo "Creating indices"
   ${CEDAR_HOME}/app/cedarat.sh graphDb-createIndices
 
