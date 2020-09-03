@@ -2,12 +2,12 @@
 
 # Script to build all CEDAR Docker images
 
-if [ -z "$CEDAR_HOME" ]; then
-    echo "Need to set CEDAR_HOME"
+if [ -z "$CEDAR_DOCKER_SRC_HOME" ]; then
+    echo "Need to set CEDAR_DOCKER_SRC_HOME"
     exit 1
 fi
 
-export CEDAR_DOCKER_BUILD_HOME=${CEDAR_HOME}/cedar-docker-build
+export CEDAR_DOCKER_BUILD_HOME=${CEDAR_DOCKER_SRC_HOME}/cedar-docker-build
 
 echo ${CEDAR_DOCKER_BUILD_HOME}
 

@@ -2,14 +2,14 @@
 
 # Script to build and tag all CEDAR Docker images and push it to CEDAR's DockerHub.
 
-if [ -z "$CEDAR_HOME" ]; then
-    echo "Need to set CEDAR_HOME"
+if [ -z "$CEDAR_DOCKER_SRC_HOME" ]; then
+    echo "Need to set CEDAR_DOCKER_SRC_HOME"
     exit 1
 fi
 
 export DOCKERHUB=cedar-dockerhub.bmir.stanford.edu
 
-export CEDAR_DOCKER_BUILD_HOME=${CEDAR_HOME}/cedar-docker-build
+export CEDAR_DOCKER_BUILD_HOME=${CEDAR_DOCKER_SRC_HOME}/cedar-docker-build
 
 source ${CEDAR_DOCKER_BUILD_HOME}/bin/cedar-images-base.sh
 

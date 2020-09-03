@@ -6,7 +6,7 @@
 
 export CEDAR_IMAGE_PREFIX="metadatacenter"
 
-export IMAGE_VERSION=2.5.7
+export IMAGE_VERSION=2.5.8
 
 CEDAR_DOCKER_IMAGES=(
   "cedar-java"
@@ -23,6 +23,8 @@ CEDAR_DOCKER_IMAGES=(
   "cedar-user-server"
   "cedar-valuerecommender-server"
   "cedar-worker-server"
+  "cedar-internals-server"
+  "cedar-openview-server"
   "cedar-editor"
   "cedar-mongo"
   "cedar-mysql"
@@ -34,4 +36,5 @@ CEDAR_DOCKER_IMAGES=(
   "cedar-elasticsearch"
   "cedar-keycloak"
   "cedar-kibana"
+  "cedar-phpmyadmin"
 )

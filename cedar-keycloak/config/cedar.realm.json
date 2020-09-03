@@ -319,6 +319,36 @@
     "notBefore" : 0,
     "groups" : [ ]
   }, {
+    "id" : "e8d90a8f-8563-4806-bbc8-dc0c0cef2fe4",
+    "createdTimestamp" : 1511978129008,
+    "username" : "cadsr-admin",
+    "enabled" : true,
+    "totp" : false,
+    "emailVerified" : true,
+    "firstName" : "caDSR",
+    "lastName" : "Admin",
+    "email" : "cadsr-admin@<cedar.CEDAR_HOST>",
+    "credentials" : [ {
+      "type" : "password",
+      "hashedSaltedValue" : "MChnVnJwWQiGsXfZwBW4H1dbj+C4uOVwwVHLwYNyya+aMBEZv/yxlnp937FoCpMkXuLSFqxMy/w+W0Z/HbmbAA==",
+      "salt" : "sEPuNcQdTDzNMRzfePkBJQ==",
+      "hashIterations" : 27500,
+      "counter" : 0,
+      "algorithm" : "pbkdf2-sha256",
+      "digits" : 0,
+      "period" : 0,
+      "createdDate" : 1511978151430,
+      "config" : { }
+    } ],
+    "disableableCredentialTypes" : [ "password" ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "normal", "offline_access", "uma_authorization" ],
+    "clientRoles" : {
+      "account" : [ "view-profile", "manage-account" ]
+    },
+    "notBefore" : 0,
+    "groups" : [ ]
+  }, {
     "id" : "e4090748-6c85-4d3c-ba95-c1b5a54f8f32",
     "createdTimestamp" : 1511978450404,
     "username" : "my@user.com",

@@ -15,9 +15,12 @@ docker run -d \
 --mount 'type=volume,src=neo4j_log,dst=/logs' \
 --mount 'type=volume,src=neo4j_data,dst=/data' \
 --mount 'type=volume,src=neo4j_state,dst=/state' \
+-p ${CEDAR_NEO4J_REST_PORT}:7474 \
 -p ${CEDAR_NEO4J_BOLT_PORT}:7687 \
 -e CEDAR_NEO4J_USER_NAME \
 -e CEDAR_NEO4J_USER_PASSWORD \
+-e CEDAR_HOST \
+-e CEDAR_ADMIN_USER_API_KEY \
 metadatacenter/cedar-neo4j
 ````
 
