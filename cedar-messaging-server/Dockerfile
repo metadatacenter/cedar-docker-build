@@ -1,4 +1,4 @@
-FROM metadatacenter/cedar-microservice:2.5.8
+FROM metadatacenter/cedar-microservice:2.5.11
 
 ENV CEDAR_SERVER_NAME=messaging
 
