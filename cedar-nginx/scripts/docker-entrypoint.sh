@@ -8,6 +8,7 @@ mkdir -p nginx-global
 mkdir -p nginx-auth
 mkdir -p nginx-frontend
 mkdir -p nginx-group
+mkdir -p nginx-internals
 mkdir -p nginx-messaging
 mkdir -p nginx-repo
 mkdir -p nginx-resource

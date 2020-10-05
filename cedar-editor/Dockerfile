@@ -54,7 +54,7 @@ apt-get install -y curl
 # Install nodejs
 RUN \
 apt-get install -y gnupg2 && \
-curl -sL https://deb.nodesource.com/setup_6.x | bash - && \
+curl -sL https://deb.nodesource.com/setup_12.x | bash - && \
 apt-get install -y nodejs && \
 apt-get purge -y apt-transport-https && \
 apt-get autoremove -y && \
