@@ -45,7 +45,7 @@ number_of_tries = 5
 sleep_seconds = 1
 
 print("---- Server info ----")
-print("Redis server host   :" + redis_host)
+print("Redis server host   :" + str(redis_host))
 print("Redis server port   :" + str(redis_port))
 
 print("Wait for Redis server to be available")

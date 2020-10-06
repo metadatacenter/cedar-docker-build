@@ -54,9 +54,9 @@ number_of_tries = 5
 sleep_seconds = 1
 
 print("---- Server info ----")
-print("Neo4j server host   :" + neo4j_host)
+print("Neo4j server host   :" + str(neo4j_host))
 print("Neo4j server port   :" + str(neo4j_port))
-print("Neo4j server user   :" + neo4j_user)
+print("Neo4j server user   :" + str(neo4j_user))
 
 print("Wait for Neo4j server to be available")
 

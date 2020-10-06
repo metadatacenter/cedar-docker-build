@@ -1,3 +1,3 @@
-FROM phpmyadmin/phpmyadmin:4.8.2
+FROM phpmyadmin/phpmyadmin:5.0.0
 
 ADD config/config.inc /www/

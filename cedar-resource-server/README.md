@@ -40,6 +40,7 @@ docker run -d \
 -p ${CEDAR_RESOURCE_HTTP_PORT}:9010 \
 -p ${CEDAR_RESOURCE_ADMIN_PORT}:9110 \
 -p ${CEDAR_RESOURCE_STOP_PORT}:9210 \
+-p ${CEDAR_ARTIFACT_ADMIN_PORT}:9101 \
 --mount 'type=volume,src=resource_log,dst=/cedar/log/cedar-resource-server/' \
 --mount 'type=volume,src=cedar_ca,dst=/cedar/ca' \
 metadatacenter/cedar-resource-server

@@ -1,6 +1,6 @@
-FROM node:8.9.1
+FROM node:12.18.4
 
-ENV REDIS_COMMANDER_VERSION=0.4.4
+ENV REDIS_COMMANDER_VERSION=0.7.0
 
 RUN npm config set registry http://registry.npmjs.org/ && \
 	npm i -g --unsafe-perm --no-optional redis-commander@$REDIS_COMMANDER_VERSION

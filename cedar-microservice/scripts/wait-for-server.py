@@ -51,8 +51,8 @@ number_of_tries = 5
 sleep_seconds = 1
 
 print("---- Server info ----")
-print("CEDAR server host   :" + server_host)
-print("CEDAR server name   :" + server_name)
+print("CEDAR server host   :" + str(server_host))
+print("CEDAR server name   :" + str(server_name))
 print("CEDAR server port   :" + str(server_port))
 
 print("Wait for CEDAR Server server to be available")
