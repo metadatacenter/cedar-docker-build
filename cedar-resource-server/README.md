@@ -37,10 +37,10 @@ docker run -d \
 -e CEDAR_ARTIFACT_ADMIN_PORT \
 -e CEDAR_VALIDATION_ENABLED \
 -e CEDAR_SUBMISSION_TEMPLATE_ID_1 \
--p ${CEDAR_RESOURCE_HTTP_PORT}:9010 \
--p ${CEDAR_RESOURCE_ADMIN_PORT}:9110 \
--p ${CEDAR_RESOURCE_STOP_PORT}:9210 \
--p ${CEDAR_ARTIFACT_ADMIN_PORT}:9101 \
+-e CEDAR_ARTIFACT_ADMIN_PORT \
+-p ${CEDAR_RESOURCE_HTTP_PORT}:9007 \
+-p ${CEDAR_RESOURCE_ADMIN_PORT}:9107 \
+-p ${CEDAR_RESOURCE_STOP_PORT}:9207 \
 --mount 'type=volume,src=resource_log,dst=/cedar/log/cedar-resource-server/' \
 --mount 'type=volume,src=cedar_ca,dst=/cedar/ca' \
 metadatacenter/cedar-resource-server
