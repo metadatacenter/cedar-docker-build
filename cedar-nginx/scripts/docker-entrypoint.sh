@@ -7,6 +7,8 @@ mkdir -p nginx-global
 
 mkdir -p nginx-auth
 mkdir -p nginx-frontend
+mkdir -p nginx-frontend-component
+mkdir -p nginx-frontend-openview
 mkdir -p nginx-group
 mkdir -p nginx-internals
 mkdir -p nginx-messaging
@@ -34,5 +36,7 @@ done
 
 sed -i 's/<cedar.CEDAR_KEYCLOAK_HOST>/'${CEDAR_KEYCLOAK_HOST}'/g' /etc/nginx/conf.d/auth.cedar.conf
 sed -i 's/<cedar.CEDAR_FRONTEND_HOST>/'${CEDAR_FRONTEND_HOST}'/g' /etc/nginx/conf.d/cedar.cedar.conf
+sed -i 's/<cedar.CEDAR_FRONTEND_HOST>/'${CEDAR_FRONTEND_HOST}'/g' /etc/nginx/conf.d/component.cedar.conf
+sed -i 's/<cedar.CEDAR_FRONTEND_HOST>/'${CEDAR_FRONTEND_HOST}'/g' /etc/nginx/conf.d/openview.cedar.conf
 
 exec "$@"
