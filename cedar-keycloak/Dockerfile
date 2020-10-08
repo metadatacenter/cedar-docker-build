@@ -66,7 +66,7 @@ RUN chown -R jboss:jboss /opt/jboss/keycloak/modules/system/layers/base/com/mysq
 ADD config/standalone.xml /opt/jboss/keycloak/standalone/configuration/
 ADD config/keycloak.jks /opt/jboss/keycloak/standalone/configuration/
 
-ADD config/themes/cedar-02 /opt/jboss/keycloak/themes/cedar-02
+ADD config/themes/cedar-03 /opt/jboss/keycloak/themes/cedar-03
 
 RUN mkdir -p /opt/jboss/realm-import
 RUN mkdir -p /opt/jboss/realm-export
