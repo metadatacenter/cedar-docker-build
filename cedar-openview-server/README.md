@@ -28,6 +28,7 @@ docker run -d \
 -p ${CEDAR_OPENVIEW_HTTP_PORT}:9013 \
 -p ${CEDAR_OPENVIEW_ADMIN_PORT}:9113 \
 -p ${CEDAR_OPENVIEW_STOP_PORT}:9213 \
+-p ${CEDAR_ARTIFACT_ADMIN_PORT}:9101 \
 --mount 'type=volume,src=open_log,dst=/cedar/log/cedar-openview-server/' \
 --mount 'type=volume,src=cedar_ca,dst=/cedar/ca' \
 metadatacenter/cedar-openview-server

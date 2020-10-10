@@ -1,4 +1,4 @@
-FROM metadatacenter/cedar-microservice:2.5.11
+FROM metadatacenter/cedar-microservice:2.5.12
 
 ENV CEDAR_SERVER_NAME=worker
 

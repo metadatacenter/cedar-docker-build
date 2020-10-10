@@ -1,6 +1,6 @@
 FROM debian:stretch-slim
 
-ENV CEDAR_VERSION=2.5.11
+ENV CEDAR_VERSION=2.5.12
 ENV CEDAR_NPM_NEXUS_REPO=https://nexus.bmir.stanford.edu/repository/npm-cedar
 
 ENV NGINX_VERSION 1.13.0-1~stretch
@@ -54,7 +54,7 @@ apt-get install -y curl
 # Install nodejs
 RUN \
 apt-get install -y gnupg2 && \
-curl -sL https://deb.nodesource.com/setup_6.x | bash - && \
+curl -sL https://deb.nodesource.com/setup_12.x | bash - && \
 apt-get install -y nodejs && \
 apt-get purge -y apt-transport-https && \
 apt-get autoremove -y && \

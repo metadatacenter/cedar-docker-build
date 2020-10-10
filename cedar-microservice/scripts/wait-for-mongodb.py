@@ -50,10 +50,9 @@ number_of_tries = 7
 sleep_seconds = 1
 
 print("---- Server info ----")
-print("MongoDB server host   :" + mongo_host)
+print("MongoDB server host   :" + str(mongo_host))
 print("MongoDB server port   :" + str(mongo_port))
-print("Application user    :" + application_user)
-# print("Application password:" + application_password)
+print("Application user      :" + str(application_user))
 
 print("Wait for MongoDB server to be available")
 

@@ -107,11 +107,11 @@ def init_app_level_database(env_selector):
     application_database = os.environ.get('CEDAR_' + env_selector + '_MYSQL_DB')
 
     print("---- Application Server Info ----")
-    print("MySQL server host   :" + mysql_host)
+    print("MySQL server host   :" + str(mysql_host))
     print("MySQL server port   :" + str(mysql_port))
-    print("Root user           :" + mysql_root_user)
-    print("Application user    :" + application_user)
-    print("Application database:" + application_database)
+    print("Root user           :" + str(mysql_root_user))
+    print("Application user    :" + str(application_user))
+    print("Application database:" + str(application_database))
 
     print("Wait for MySQL server to be available")
     wait_for_root()

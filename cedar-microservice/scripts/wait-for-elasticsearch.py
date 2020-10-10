@@ -48,7 +48,7 @@ number_of_tries = 5
 sleep_seconds = 1
 
 print("---- Server info ----")
-print("Elasticsearch server host   :" + elasticsearch_host)
+print("Elasticsearch server host   :" + str(elasticsearch_host))
 print("Elasticsearch server port   :" + str(elasticsearch_port))
 
 print("Wait for Elasticsearch server to be available")

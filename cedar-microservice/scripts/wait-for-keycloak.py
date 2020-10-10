@@ -48,7 +48,7 @@ number_of_tries = 5
 sleep_seconds = 1
 
 print("---- Server info ----")
-print("Keycloak server host   :" + keycloak_host)
+print("Keycloak server host   :" + str(keycloak_host))
 print("Keycloak server port   :" + str(keycloak_port))
 
 print("Wait for Keycloak server to be available")

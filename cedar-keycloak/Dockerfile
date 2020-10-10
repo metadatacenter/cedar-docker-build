@@ -49,7 +49,7 @@ RUN yum -y install nc maven libmysqlclient libmysqlclient-dev MySQL-python
 
 RUN cd /opt/jboss/ && curl -L https://downloads.jboss.org/keycloak/$KEYCLOAK_VERSION/keycloak-$KEYCLOAK_VERSION.tar.gz | tar zx && mv /opt/jboss/keycloak-$KEYCLOAK_VERSION /opt/jboss/keycloak
 
-ENV CEDAR_VERSION=2.5.11
+ENV CEDAR_VERSION=2.5.12
 ENV MYSQL_CONNECTOR_VERSION=5.1.43
 
 ADD config/m2/settings.xml /root/.m2/
@@ -66,7 +66,7 @@ RUN chown -R jboss:jboss /opt/jboss/keycloak/modules/system/layers/base/com/mysq
 ADD config/standalone.xml /opt/jboss/keycloak/standalone/configuration/
 ADD config/keycloak.jks /opt/jboss/keycloak/standalone/configuration/
 
-ADD config/themes/cedar-02 /opt/jboss/keycloak/themes/cedar-02
+ADD config/themes/cedar-03 /opt/jboss/keycloak/themes/cedar-03
 
 RUN mkdir -p /opt/jboss/realm-import
 RUN mkdir -p /opt/jboss/realm-export

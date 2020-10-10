@@ -13,6 +13,8 @@ docker run -d \
 --name worker-server \
 --net cedarnet \
 -e CEDAR_HOST \
+-e CEDAR_NET_GATEWAY \
+-e CEDAR_MICROSERVICE_HOST \
 -e CEDAR_MONGO_APP_USER_NAME \
 -e CEDAR_MONGO_APP_USER_PASSWORD \
 -e CEDAR_MONGO_HOST \
