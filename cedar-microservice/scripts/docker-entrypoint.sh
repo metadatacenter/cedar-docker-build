@@ -9,7 +9,7 @@ else
 fi
 
 echo "Import CA cert"
-echo "yes" | $JAVA_HOME/bin/keytool -import -trustcacerts -file ${CEDAR_HOME}/ca/ca-cedar.crt -alias cedar -keystore $JAVA_HOME/lib/security/cacerts -storepass changeit
+echo "yes" | $JAVA_HOME/bin/keytool -import -trustcacerts -file ${CEDAR_HOME}/ca/ca.crt -alias cedar -keystore $JAVA_HOME/lib/security/cacerts -storepass changeit
 
 echo --------------------------------------------------------------------------------
 echo Starting CEDAR ${CEDAR_SERVER_NAME} server
