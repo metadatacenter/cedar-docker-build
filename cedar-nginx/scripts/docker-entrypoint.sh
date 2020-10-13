@@ -5,6 +5,7 @@ echo "Creating log folders"
 cd "${LOGDIR}"
 mkdir -p nginx-global
 
+mkdir -p nginx-artifact
 mkdir -p nginx-auth
 mkdir -p nginx-frontend
 mkdir -p nginx-frontend-component
@@ -12,11 +13,12 @@ mkdir -p nginx-frontend-openview
 mkdir -p nginx-group
 mkdir -p nginx-internals
 mkdir -p nginx-messaging
+mkdir -p nginx-open
+mkdir -p nginx-openview
 mkdir -p nginx-repo
 mkdir -p nginx-resource
 mkdir -p nginx-schema
 mkdir -p nginx-submission
-mkdir -p nginx-artifact
 mkdir -p nginx-terminology
 mkdir -p nginx-user
 mkdir -p nginx-valuerecommender
