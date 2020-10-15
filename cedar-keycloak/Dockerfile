@@ -37,7 +37,7 @@ RUN set -eux; \
         java --version; \
         javac --version
 
-ENV KEYCLOAK_VERSION 3.3.0.Final
+ENV KEYCLOAK_VERSION 11.0.2
 # Enables signals getting passed from startup script to JVM
 # ensuring clean shutdown when container is stopped.
 ENV LAUNCH_JBOSS_IN_BACKGROUND 1
@@ -50,7 +50,7 @@ RUN yum -y install nc maven libmysqlclient libmysqlclient-dev MySQL-python
 RUN cd /opt/jboss/ && curl -L https://downloads.jboss.org/keycloak/$KEYCLOAK_VERSION/keycloak-$KEYCLOAK_VERSION.tar.gz | tar zx && mv /opt/jboss/keycloak-$KEYCLOAK_VERSION /opt/jboss/keycloak
 
 ENV CEDAR_VERSION=2.5.21-SNAPSHOT
-ENV MYSQL_CONNECTOR_VERSION=5.1.43
+ENV MYSQL_CONNECTOR_VERSION=5.1.49
 
 ADD config/m2/settings.xml /root/.m2/
 
