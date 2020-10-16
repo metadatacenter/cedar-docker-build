@@ -40,7 +40,7 @@
             <security-realm name="ApplicationRealm">
                 <server-identities>
                     <ssl>
-                        <keystore path="keycloak.jks" relative-to="jboss.server.config.dir" keystore-password="password"/>
+                        <keystore path="cedar.keycloak.keystore" relative-to="jboss.server.config.dir" keystore-password="password" alias="auth.metadatacenter.orgx" key-password="password" generate-self-signed-certificate-host="localhost"/>
                     </ssl>
                 </server-identities>
                 <authentication>

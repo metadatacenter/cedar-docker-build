@@ -1,8 +1,8 @@
 #!/bin/bash
 
-sed -i 's/<cedar.CEDAR_HOST>/'${CEDAR_HOST}'/g' /opt/jboss/realm-import/cedar.realm.json
+#sed -i 's/<cedar.CEDAR_HOST>/'${CEDAR_HOST}'/g' /opt/jboss/realm-import/keycloak-realm.CEDAR.development.20201013.json
 
-sed -i 's/<cedar.CEDAR_ADMIN_USER_PASSWORD>/'${CEDAR_ADMIN_USER_PASSWORD}'/g' /opt/jboss/realm-import/cedar.realm.json
+#sed -i 's/<cedar.CEDAR_ADMIN_USER_PASSWORD>/'${CEDAR_ADMIN_USER_PASSWORD}'/g' /opt/jboss/realm-import/keycloak-realm.CEDAR.development.20201013.json
 
 sed -i 's/<cedar.MYSQL_CONNECTOR_VERSION>/'${MYSQL_CONNECTOR_VERSION}'/g' /opt/jboss/keycloak/modules/system/layers/base/com/mysql/jdbc/main/module.xml
 

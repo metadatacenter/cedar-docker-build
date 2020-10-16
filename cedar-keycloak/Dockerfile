@@ -49,7 +49,7 @@ RUN yum -y install nc maven libmysqlclient libmysqlclient-dev MySQL-python
 
 RUN cd /opt/jboss/ && curl -L https://downloads.jboss.org/keycloak/$KEYCLOAK_VERSION/keycloak-$KEYCLOAK_VERSION.tar.gz | tar zx && mv /opt/jboss/keycloak-$KEYCLOAK_VERSION /opt/jboss/keycloak
 
-ENV CEDAR_VERSION=2.5.21
+ENV CEDAR_VERSION=2.5.22
 ENV MYSQL_CONNECTOR_VERSION=5.1.49
 
 ADD config/m2/settings.xml /root/.m2/
@@ -64,14 +64,14 @@ ADD config/mysql/module.xml /opt/jboss/keycloak/modules/system/layers/base/com/m
 RUN chown -R jboss:jboss /opt/jboss/keycloak/modules/system/layers/base/com/mysql/jdbc/main
 
 ADD config/standalone.xml /opt/jboss/keycloak/standalone/configuration/
-ADD config/keycloak.jks /opt/jboss/keycloak/standalone/configuration/
+ADD config/cedar.keycloak.keystore /opt/jboss/keycloak/standalone/configuration/
 
 ADD config/themes/cedar-03 /opt/jboss/keycloak/themes/cedar-03
 
 RUN mkdir -p /opt/jboss/realm-import
 RUN mkdir -p /opt/jboss/realm-export
 RUN chown -R jboss:jboss /opt/jboss/realm-export
-ADD config/cedar.realm.json /opt/jboss/realm-import/
+ADD config/keycloak-realm.CEDAR.development.20201013.json /opt/jboss/realm-import/
 RUN chown -R jboss:jboss /opt/jboss/realm-import
 RUN mkdir -p /opt/jboss/keycloak/standalone/log
 RUN chown -R jboss:jboss /opt/jboss/keycloak/standalone/log
@@ -88,6 +88,6 @@ EXPOSE 8080 8443
 
 ENTRYPOINT [ "/opt/jboss/docker-entrypoint.sh" ]
 
-CMD [ "-b", "0.0.0.0", "-Dkeycloak.migration.action=import", "-Dkeycloak.migration.provider=singleFile", "-Dkeycloak.migration.file=/opt/jboss/realm-import/cedar.realm.json", "-Dkeycloak.migration.realmName=CEDAR", "-Dkeycloak.migration.strategy=IGNORE_EXISTING" ]
+CMD [ "-b", "0.0.0.0", "-Dkeycloak.migration.action=import", "-Dkeycloak.migration.provider=singleFile", "-Dkeycloak.migration.file=/opt/jboss/realm-import/keycloak-realm.CEDAR.development.20201013.json", "-Dkeycloak.migration.realmName=CEDAR", "-Dkeycloak.migration.strategy=IGNORE_EXISTING" ]
 #CMD [ "-b", "0.0.0.0", "-Dkeycloak.migration.action=export", "-Dkeycloak.migration.provider=singleFile", "-Dkeycloak.migration.file=/opt/jboss/realm-export/cedar.realm.json", "-Dkeycloak.migration.realmName=CEDAR" ]
 #CMD [ "-b", "0.0.0.0" ]
