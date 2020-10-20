@@ -1,17 +1,18 @@
 #!/bin/bash
 
-#sed -i 's/<cedar.CEDAR_HOST>/'${CEDAR_HOST}'/g' /opt/jboss/realm-import/keycloak-realm.CEDAR.development.20201013.json
+export KEYCLOAK_USER=${CEDAR_KEYCLOAK_ADMIN_USER}
+export KEYCLOAK_PASSWORD=${CEDAR_KEYCLOAK_ADMIN_PASSWORD}
+export KEYCLOAK_IMPORT=/opt/jboss/realm-import/keycloak-realm.CEDAR.development.20201013.json
 
-#sed -i 's/<cedar.CEDAR_ADMIN_USER_PASSWORD>/'${CEDAR_ADMIN_USER_PASSWORD}'/g' /opt/jboss/realm-import/keycloak-realm.CEDAR.development.20201013.json
+export DB_ADDR=${CEDAR_KEYCLOAK_MYSQL_HOST}
+export DB_PORT=${CEDAR_KEYCLOAK_MYSQL_PORT}
+export DB_DATABASE=${CEDAR_KEYCLOAK_MYSQL_DB}
+export DB_USER=${CEDAR_KEYCLOAK_MYSQL_USER}
+export DB_PASSWORD=${CEDAR_KEYCLOAK_MYSQL_PASSWORD}
 
-sed -i 's/<cedar.MYSQL_CONNECTOR_VERSION>/'${MYSQL_CONNECTOR_VERSION}'/g' /opt/jboss/keycloak/modules/system/layers/base/com/mysql/jdbc/main/module.xml
+export JDBC_PARAMS="useSSL=false"
 
-if [ $CEDAR_KEYCLOAK_ADMIN_USER ] && [ $CEDAR_KEYCLOAK_ADMIN_PASSWORD ]; then
-    keycloak/bin/add-user-keycloak.sh --user $CEDAR_KEYCLOAK_ADMIN_USER --password $CEDAR_KEYCLOAK_ADMIN_PASSWORD
-fi
+python3.8 -u /opt/jboss/wait-and-init-mysql.py
 
-python --version
-python -u /opt/jboss/wait-and-init-mysql.py
-
-exec /opt/jboss/keycloak/bin/standalone.sh $@
+exec /opt/jboss/tools/docker-entrypoint.sh
 exit $?
