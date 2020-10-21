@@ -1,6 +1,6 @@
 FROM jboss/keycloak:11.0.2
 
-ENV CEDAR_VERSION=2.5.22-SNAPSHOT
+ENV CEDAR_VERSION=2.5.23-SNAPSHOT
 
 USER root
 
@@ -20,7 +20,7 @@ ADD config/themes/cedar-03 /opt/jboss/keycloak/themes/cedar-03
 RUN mkdir -p /opt/jboss/realm-import
 RUN mkdir -p /opt/jboss/realm-export
 RUN chown -R jboss:jboss /opt/jboss/realm-export
-ADD config/keycloak-realm.CEDAR.development.20201013.json /opt/jboss/realm-import/
+ADD config/keycloak-realm.CEDAR.development.20201020.json /opt/jboss/realm-import/
 RUN chown -R jboss:jboss /opt/jboss/realm-import
 RUN mkdir -p /opt/jboss/keycloak/standalone/log
 RUN chown -R jboss:jboss /opt/jboss/keycloak/standalone/log

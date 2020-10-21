@@ -2,7 +2,7 @@
 
 export KEYCLOAK_USER=${CEDAR_KEYCLOAK_ADMIN_USER}
 export KEYCLOAK_PASSWORD=${CEDAR_KEYCLOAK_ADMIN_PASSWORD}
-export KEYCLOAK_IMPORT=/opt/jboss/realm-import/keycloak-realm.CEDAR.development.20201013.json
+export KEYCLOAK_IMPORT=/opt/jboss/realm-import/keycloak-realm.CEDAR.development.20201020.json
 
 export DB_ADDR=${CEDAR_KEYCLOAK_MYSQL_HOST}
 export DB_PORT=${CEDAR_KEYCLOAK_MYSQL_PORT}
