@@ -1,0 +1,19 @@
+FROM metadatacenter/cedar-microservice:2.5.29-SNAPSHOT
+
+ENV CEDAR_SERVER_NAME=impex
+
+ENV CEDAR_IMPEX_HTTP_PORT=9008
+ENV CEDAR_IMPEX_ADMIN_PORT=9108
+ENV CEDAR_IMPEX_STOP_PORT=9208
+
+ENV LOGDIR=${CEDAR_HOME}/log/cedar-${CEDAR_SERVER_NAME}-server/
+RUN mkdir -p ${LOGDIR}
+VOLUME ${LOGDIR}
+
+RUN yum install -y python-redis
+
+ADD scripts/pre-docker-entrypoint.sh ${CEDAR_HOME}/
+
+EXPOSE ${CEDAR_IMPEX_HTTP_PORT} ${CEDAR_IMPEX_ADMIN_PORT} ${CEDAR_IMPEX_STOP_PORT}
+
+RUN ${CEDAR_HOME}/install_deps.sh
