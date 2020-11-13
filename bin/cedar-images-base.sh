@@ -6,7 +6,7 @@
 
 export CEDAR_IMAGE_PREFIX="metadatacenter"
 
-export IMAGE_VERSION=2.5.28
+export IMAGE_VERSION=2.5.29
 
 CEDAR_DOCKER_IMAGES=(
   "cedar-java"
@@ -23,6 +23,7 @@ CEDAR_DOCKER_IMAGES=(
   "cedar-user-server"
   "cedar-valuerecommender-server"
   "cedar-worker-server"
+  "cedar-impex-server"
   "cedar-internals-server"
   "cedar-openview-server"
   "cedar-editor"
