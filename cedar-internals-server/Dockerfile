@@ -1,4 +1,4 @@
-FROM metadatacenter/cedar-microservice:2.5.33
+FROM metadatacenter/cedar-microservice:2.5.34-SNAPSHOT
 
 ENV CEDAR_SERVER_NAME=internals
 
