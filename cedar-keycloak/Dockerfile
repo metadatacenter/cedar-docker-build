@@ -1,6 +1,6 @@
 FROM jboss/keycloak:11.0.2
 
-ENV CEDAR_VERSION=2.5.36
+ENV CEDAR_VERSION=2.5.37
 
 USER root
 
