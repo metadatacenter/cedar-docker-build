@@ -1,4 +1,4 @@
-FROM metadatacenter/cedar-microservice:2.6.17
+FROM metadatacenter/cedar-microservice:2.6.18-SNAPSHOT
 
 ENV CEDAR_SERVER_NAME=terminology
 
