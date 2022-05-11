@@ -1,4 +1,4 @@
-FROM metadatacenter/cedar-microservice:2.6.19-SNAPSHOT
+FROM metadatacenter/cedar-microservice:2.6.19
 
 ENV CEDAR_SERVER_NAME=schema
 
