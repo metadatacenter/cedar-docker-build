@@ -1,23 +1,39 @@
-FROM metadatacenter/cedar-java:2.6.20-SNAPSHOT
+FROM metadatacenter/cedar-java:2.6.21-SNAPSHOT
 
 ENV CEDAR_HOME=/cedar
 
-ENV CEDAR_VERSION=2.6.20-SNAPSHOT
+ENV CEDAR_VERSION=2.6.21-SNAPSHOT
 
 ENV CEDAR_USER_HTTP_PORT=9005
 
-RUN yum -y update
-RUN yum -y install https://repo.ius.io/ius-release-el7.rpm
-RUN yum -y install gcc
-RUN yum -y install python36u
-RUN yum -y install python36u-devel
-RUN yum -y install python36u-pip
-RUN yum -y install mysql-devel
+RUN microdnf -y update
 
-RUN python3.6 -m pip install --upgrade pip
-RUN python3.6 -m pip install pymongo==3.6.1
-RUN python3.6 -m pip install mysqlclient==1.3.12
-RUN python3.6 -m pip install redis==2.10.6
+#RUN microdnf install -y yum-utils
+#RUN yum-config-manager --add-repo https://repo.ius.io/ius-release-el7.rpm
+
+RUN microdnf install -y yum-utils
+RUN yum-config-manager --add-repo http://repo.mysql.com/yum/mysql-8.0-community/el/9/aarch64/
+RUN microdnf makecache
+RUN microdnf repoquery mysql*
+
+RUN microdnf -y install gcc
+RUN microdnf -y install python3
+RUN microdnf -y install python3-devel
+RUN microdnf -y install python3-pip
+
+RUN ls /etc/yum.repos.d/
+RUN cat /etc/yum.repos.d/repo.mysql.com_yum_mysql-8.0-community_el_9_aarch64_.repo
+RUN yum-config-manager --save --setopt=repo.mysql.com_yum_mysql-8.0-community_el_9_aarch64_.gpgkey=http://repo.mysql.com/RPM-GPG-KEY-mysql-2022
+RUN yum-config-manager --save --setopt=repo.mysql.com_yum_mysql-8.0-community_el_9_aarch64_.gpgcheck=0
+RUN cat /etc/yum.repos.d/repo.mysql.com_yum_mysql-8.0-community_el_9_aarch64_.repo
+RUN microdnf makecache
+
+RUN microdnf -y install mysql-community-devel-8.0.30-1.el9.aarch64
+
+RUN python3 -m pip install --upgrade pip
+RUN python3 -m pip install pymongo==3.6.1
+RUN python3 -m pip install mysqlclient==2.1.1
+RUN python3 -m pip install redis==2.10.6
 
 ADD config/m2/settings.xml /root/.m2/
 
@@ -29,7 +45,7 @@ ADD scripts/wait-and-init-mysql.py ${CEDAR_HOME}/
 ADD scripts/wait-for-mongodb.py ${CEDAR_HOME}/
 ADD scripts/wait-for-keycloak.py ${CEDAR_HOME}/
 ADD scripts/wait-for-neo4j.py ${CEDAR_HOME}/
-ADD scripts/wait-for-elasticsearch.py ${CEDAR_HOME}/
+ADD scripts/wait-for-opensearch.py ${CEDAR_HOME}/
 ADD scripts/wait-for-redis.py ${CEDAR_HOME}/
 ADD scripts/wait-for-server.py ${CEDAR_HOME}/
 # script to install jar

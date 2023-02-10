@@ -2,7 +2,7 @@
 
 echo "CEDAR: exporting variables ..."
 export MYSQL_ROOT_PASSWORD="${CEDAR_MYSQL_ROOT_PASSWORD}"
-export MYSQL_ROOT_HOST="${CEDAR_NET_GATEWAY}"
+export MYSQL_ROOT_HOST="%"
 
 env
 

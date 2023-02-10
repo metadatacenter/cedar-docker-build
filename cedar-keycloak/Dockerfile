@@ -1,14 +1,14 @@
-FROM jboss/keycloak:11.0.2
+FROM jboss/keycloak:15.1.1
 
-ENV CEDAR_VERSION=2.6.20-SNAPSHOT
+ENV CEDAR_VERSION=2.6.21-SNAPSHOT
 
 USER root
 
 RUN microdnf -y install python3.8
 RUN microdnf -y install python38-PyMySQL
 RUN microdnf -y install nc maven
-RUN microdnf -y install java-11-openjdk-headless
-RUN alternatives --set java java-11-openjdk.x86_64
+#RUN microdnf -y install java-19-openjdk-headless
+#RUN alternatives --set java java-19-openjdk.x86_64
 
 ADD config/m2/settings.xml /root/.m2/
 
@@ -30,6 +30,7 @@ ADD scripts/wait-and-init-mysql.py /opt/jboss/
 
 COPY scripts/custom-scripts/ /opt/jboss/startup-scripts/
 COPY scripts/tools/listener.cli /opt/jboss/tools/listener.cli
+COPY scripts/original-docker-entrypoint.sh /opt/jboss/tools/docker-entrypoint.sh
 
 EXPOSE 8080
 EXPOSE 8443

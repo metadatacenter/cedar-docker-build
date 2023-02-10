@@ -1,6 +1,7 @@
-FROM neo4j:3.5.3
+FROM neo4j:5.3.0-community
 
-RUN apk --no-cache add curl netcat-openbsd
+RUN apt update
+RUN apt -y install curl netcat
 
 WORKDIR /var/lib/neo4j
 

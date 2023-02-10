@@ -6,7 +6,7 @@
 
 export CEDAR_IMAGE_PREFIX="metadatacenter"
 
-export IMAGE_VERSION=2.6.20-SNAPSHOT
+export IMAGE_VERSION=2.6.21-SNAPSHOT
 
 CEDAR_DOCKER_IMAGES=(
   "cedar-java"
@@ -34,7 +34,7 @@ CEDAR_DOCKER_IMAGES=(
   "cedar-nginx-setup"
   "cedar-redis-commander"
   "cedar-redis-persistent"
-  "cedar-elasticsearch"
+  "cedar-opensearch"
   "cedar-keycloak"
   "cedar-kibana"
   "cedar-phpmyadmin"

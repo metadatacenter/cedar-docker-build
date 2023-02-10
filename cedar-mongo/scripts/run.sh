@@ -21,7 +21,7 @@ else
   echo "Mongo database is already initialized!"
 fi
 
-cmd="gosu mongodb mongod --storageEngine $MONGO_STORAGE_ENGINE --keyFile $MONGO_KEYFILE"
+cmd="gosu mongodb mongod --storageEngine $MONGO_STORAGE_ENGINE --bind_ip_all"
 
 if [ "$MONGO_AUTH" == true ]; then
   cmd="$cmd --auth"
@@ -44,6 +44,9 @@ mkdir -p $MONGO_LOG_PATH && chown -R mongodb:mongodb $MONGO_LOG_PATH
 cmd="$cmd --logpath $MONGO_LOG_PATH/mongo.log"
 
 chown -R mongodb:mongodb $MONGO_DB_PATH
+
+echo "Starting Mongo with cmd:"
+echo "$cmd"
 
 $cmd --dbpath $MONGO_DB_PATH &
 

@@ -1,4 +1,4 @@
-FROM metadatacenter/cedar-microservice:2.6.20-SNAPSHOT
+FROM metadatacenter/cedar-microservice:2.6.21-SNAPSHOT
 
 ENV CEDAR_SERVER_NAME=openview
 

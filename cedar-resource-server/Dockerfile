@@ -1,4 +1,4 @@
-FROM metadatacenter/cedar-microservice:2.6.20-SNAPSHOT
+FROM metadatacenter/cedar-microservice:2.6.21-SNAPSHOT
 
 ENV CEDAR_SERVER_NAME=resource
 
@@ -12,7 +12,7 @@ ENV LOGDIR=${CEDAR_HOME}/log/cedar-${CEDAR_SERVER_NAME}-server/
 RUN mkdir -p ${LOGDIR}
 VOLUME ${LOGDIR}
 
-RUN yum install -y python-redis
+RUN microdnf -y install python-redis
 
 ADD scripts/pre-docker-entrypoint.sh ${CEDAR_HOME}/
 
