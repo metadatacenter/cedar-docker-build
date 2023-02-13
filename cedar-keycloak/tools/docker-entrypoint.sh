@@ -240,7 +240,7 @@ if [ ! -e "$configured_file" ]; then
     if [ "$DB_NAME" != "Embedded H2" ]; then
       /bin/sh /opt/jboss/tools/databases/change-database.sh $DB_VENDOR
     fi
-
+	
     /opt/jboss/tools/x509.sh
     /opt/jboss/tools/jgroups.sh
     /opt/jboss/tools/infinispan.sh

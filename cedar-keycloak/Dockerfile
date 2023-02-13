@@ -1,14 +1,34 @@
-FROM jboss/keycloak:15.1.1
+FROM registry.access.redhat.com/ubi8-minimal
 
 ENV CEDAR_VERSION=2.6.21-SNAPSHOT
 
+ENV KEYCLOAK_VERSION 18.0.2
+ENV JDBC_POSTGRES_VERSION 42.3.3
+ENV JDBC_MYSQL_VERSION 8.0.22
+ENV JDBC_MARIADB_VERSION 2.5.4
+ENV JDBC_MSSQL_VERSION 10.2.1.jre17
+
+ENV LAUNCH_JBOSS_IN_BACKGROUND 1
+ENV PROXY_ADDRESS_FORWARDING false
+ENV JBOSS_HOME /opt/jboss/keycloak
+ENV LANG en_US.UTF-8
+
+ARG GIT_REPO
+ARG GIT_BRANCH
+ARG KEYCLOAK_DIST=https://github.com/keycloak/keycloak/releases/download/$KEYCLOAK_VERSION/keycloak-legacy-$KEYCLOAK_VERSION.tar.gz
+
 USER root
+
+RUN microdnf update -y && microdnf install -y glibc-langpack-en gzip hostname java-17-openjdk-headless openssl tar which && microdnf clean all
+
+RUN update-alternatives --set 'java' 'java-17-openjdk.aarch64'
+
+ADD tools /opt/jboss/tools
+RUN /opt/jboss/tools/build-keycloak.sh
 
 RUN microdnf -y install python3.8
 RUN microdnf -y install python38-PyMySQL
 RUN microdnf -y install nc maven
-#RUN microdnf -y install java-19-openjdk-headless
-#RUN alternatives --set java java-19-openjdk.x86_64
 
 ADD config/m2/settings.xml /root/.m2/
 
@@ -30,7 +50,8 @@ ADD scripts/wait-and-init-mysql.py /opt/jboss/
 
 COPY scripts/custom-scripts/ /opt/jboss/startup-scripts/
 COPY scripts/tools/listener.cli /opt/jboss/tools/listener.cli
-COPY scripts/original-docker-entrypoint.sh /opt/jboss/tools/docker-entrypoint.sh
+
+USER 1000
 
 EXPOSE 8080
 EXPOSE 8443

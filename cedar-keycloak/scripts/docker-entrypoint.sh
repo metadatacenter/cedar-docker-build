@@ -14,6 +14,12 @@ export JDBC_PARAMS="useSSL=false"
 
 python3.8 -u /opt/jboss/wait-and-init-mysql.py
 
+echo "JAVA version ---"
+echo $JAVA_HOME
+java -version
+which java
+echo "----------------"
+
 chmod a+x /opt/jboss/tools/docker-entrypoint.sh
 exec /opt/jboss/tools/docker-entrypoint.sh
 exit $?
