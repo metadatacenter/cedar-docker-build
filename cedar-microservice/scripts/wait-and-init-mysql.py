@@ -63,30 +63,30 @@ def create_application_user_core(connection):
 
     print("Dropping application user if exists ...")
     drop_user_query = "DROP USER IF EXISTS '{user}'@'{host}'"
-    q1 = drop_user_query.format(user=application_user, host=localhost)
-    q2 = drop_user_query.format(user=application_user, host=mysql_host)
+    q1 = drop_user_query.format(user=application_user, host='%')
+    #q2 = drop_user_query.format(user=application_user, host=mysql_host)
     # print q1
     # print q2
     cursor.execute(q1)
-    cursor.execute(q2)
+    #cursor.execute(q2)
 
     print("Creating application user ...")
     create_user_query = "CREATE USER '{user}'@'{host}' IDENTIFIED BY '{passwd}'"
-    q1 = create_user_query.format(user=application_user, host=localhost, passwd=application_password)
-    q2 = create_user_query.format(user=application_user, host=mysql_host, passwd=application_password)
+    q1 = create_user_query.format(user=application_user, host='%', passwd=application_password)
+    #q2 = create_user_query.format(user=application_user, host=mysql_host, passwd=application_password)
     # print q1
     # print q2
     cursor.execute(q1)
-    cursor.execute(q2)
+    #cursor.execute(q2)
 
     print("Granting all privileges to application user ...")
     grant_query = "GRANT ALL PRIVILEGES ON {database}.* TO '{user}'@'{host}'"
-    q1 = grant_query.format(user=application_user, host=localhost, database=application_database)
-    q2 = grant_query.format(user=application_user, host=mysql_host, database=application_database)
+    q1 = grant_query.format(user=application_user, host='%', database=application_database)
+    #q2 = grant_query.format(user=application_user, host=mysql_host, database=application_database)
     # print q1
     # print q2
     cursor.execute(q1)
-    cursor.execute(q2)
+    #cursor.execute(q2)
 
 
 def create_application_user():

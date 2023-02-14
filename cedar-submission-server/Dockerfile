@@ -10,7 +10,7 @@ ENV LOGDIR=${CEDAR_HOME}/log/cedar-${CEDAR_SERVER_NAME}-server/
 RUN mkdir -p ${LOGDIR}
 VOLUME ${LOGDIR}
 
-RUN yum install -y python-redis
+RUN python3 -m pip install redis==2.10.6
 
 ADD scripts/pre-docker-entrypoint.sh ${CEDAR_HOME}/
 
