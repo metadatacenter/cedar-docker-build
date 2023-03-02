@@ -1,5 +1,8 @@
 #!/bin/bash
-python3.6 --version
-python3.6 -u ${CEDAR_HOME}/wait-for-mongodb.py
-python3.6 -u ${CEDAR_HOME}/wait-for-keycloak.py
-python3.6 -u ${CEDAR_HOME}/wait-for-neo4j.py
+python3 --version
+echo 'Wait for Mongo'
+python3 -u ${CEDAR_HOME}/wait-for-mongodb.py
+echo 'Wait for Keycloak'
+python3 -u ${CEDAR_HOME}/wait-for-keycloak.py
+echo 'Wait for Neo'
+python3 -u ${CEDAR_HOME}/wait-for-neo4j.py

@@ -1,4 +1,4 @@
-Docker version of Elasticsearch to be used with CEDAR
+Docker version of Opensearch to be used with CEDAR
 
 # For end-users
 
@@ -10,29 +10,29 @@ Execute the following command:
 
 ````
 docker run -d \
---name elasticsearch \
+--name opensearch \
 --net cedarnet \
---mount 'type=volume,src=elasticsearch_log,dst=/usr/share/elasticsearch/logs' \
---mount 'type=volume,src=elasticsearch_data,dst=/usr/share/elasticsearch/data' \
--p ${CEDAR_ELASTICSEARCH_REST_PORT}:9200 \
-metadatacenter/cedar-elasticsearch
+--mount 'type=volume,src=opensearch_log,dst=/usr/share/opensearch/logs' \
+--mount 'type=volume,src=opensearch_data,dst=/usr/share/opensearch/data' \
+-p ${CEDAR_OPENSEARCH_REST_PORT}:9200 \
+metadatacenter/cedar-opensearch
 ````
 
 ## Stop the container
 
-    docker stop elasticsearch
+    docker stop opensearch
 
 ## Start the container
 
-    docker start elasticsearch
+    docker start opensearch
 
 ## Check the logs of the container
 
-    docker logs -f elasticsearch
+    docker logs -f opensearch
 
 ## Connect to the container
 
-    docker exec -it elasticsearch bash
+    docker exec -it opensearch bash
 
 # For developers
 
@@ -40,16 +40,16 @@ metadatacenter/cedar-elasticsearch
 
 With the current release version stored in the `CEDAR_RELEASE_VERSION` environment variable, the image can be built as follows:
 
-     docker build -t metadatacenter/cedar-elasticsearch:${CEDAR_RELEASE_VERSION} .
+     docker build -t metadatacenter/cedar-opensearch:${CEDAR_RELEASE_VERSION} .
 
 ## Pushing the image to CEDAR's DockerHub
 
 Using the CEDAR DockerHub configuration instructions described [here](https://github.com/metadatacenter/cedar-conf/wiki/Configuring-Docker-to-use-the-CEDAR-Nexus-DockerHub) and with the `CEDAR_DOCKERHUB` environment variable pointing to CEDAR Nexus DockerHub host, the image can be tagged and pushed as follows:
 
-     docker tag metadatacenter/cedar-elasticsearch:${CEDAR_RELEASE_VERSION} ${CEDAR_DOCKERHUB}/metadatacenter/cedar-elasticsearch:${CEDAR_RELEASE_VERSION}
+     docker tag metadatacenter/cedar-opensearch:${CEDAR_RELEASE_VERSION} ${CEDAR_DOCKERHUB}/metadatacenter/cedar-opensearch:${CEDAR_RELEASE_VERSION}
 
-     docker push ${CEDAR_DOCKERHUB}/metadatacenter/cedar-elasticsearch:${CEDAR_RELEASE_VERSION}
+     docker push ${CEDAR_DOCKERHUB}/metadatacenter/cedar-opensearch:${CEDAR_RELEASE_VERSION}
 
 The image can subsequently be pulled as follows:
 
-     docker pull ${CEDAR_DOCKERHUB}/metadatacenter/cedar-elasticsearch:${CEDAR_RELEASE_VERSION}
+     docker pull ${CEDAR_DOCKERHUB}/metadatacenter/cedar-opensearch:${CEDAR_RELEASE_VERSION}

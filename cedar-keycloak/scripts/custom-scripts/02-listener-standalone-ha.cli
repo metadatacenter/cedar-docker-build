@@ -1,4 +1,6 @@
+echo "02-listener-standalone-ha.cli starting"
 embed-server --server-config=standalone-ha.xml --std-out=echo
+echo "02-listener-standalone-ha.cli embed-server started"
 if (outcome != success) of /subsystem=keycloak-server/spi=eventsListener/: remove()
     echo "standalone-ha.xml => CEDAR-Evenet-Listener was not present. Adding it..."
 else
@@ -6,3 +8,4 @@ else
 end-if
 run-batch --file=/opt/jboss/tools/listener.cli
 stop-embedded-server
+echo "02-listener-standalone-ha.cli embed-server stopped"

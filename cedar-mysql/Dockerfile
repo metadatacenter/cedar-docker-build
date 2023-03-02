@@ -1,4 +1,4 @@
-FROM mysql/mysql-server:5.7.20
+FROM mysql/mysql-server:5.7.40
 
 ADD scripts/docker-entrypoint-wrapper.sh /
 

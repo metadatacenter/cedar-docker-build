@@ -6,7 +6,7 @@ export INIT_DONE_FLAG="/state/cedar-neo4j-init.done"
 export NEO4J_AUTH="${CEDAR_NEO4J_USER_NAME}/${CEDAR_NEO4J_USER_PASSWORD}"
 
 set -m
-/docker-entrypoint.sh neo4j &
+tini -g -- /startup/docker-entrypoint.sh neo4j &
 
 if [ ! -f ${INIT_DONE_FLAG} ]; then
   echo "Neo4J database not yet initialized!"

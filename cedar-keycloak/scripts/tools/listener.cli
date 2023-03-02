@@ -1,2 +1,9 @@
-/subsystem=keycloak-server/spi=eventsListener/: add()
-/subsystem=keycloak-server/spi=eventsListener/provider=CEDAR-event-listener/: add(enabled=true, properties={userEventList => "[\"LOGIN\"]", userEventCallbackURL => "http://${env.CEDAR_NET_GATEWAY}:${env.CEDAR_RESOURCE_HTTP_PORT}/command/auth-user-callback", adminResourceList => "[\"USER\"]", adminResourceCallbackURL => "http://${env.CEDAR_NET_GATEWAY}:${env.CEDAR_RESOURCE_HTTP_PORT}/command/auth-admin-callback", linkedDataUserBase => "https://metadatacenter.org/users/", apiKey => "${env.CEDAR_ADMIN_USER_API_KEY}", clientId => "cedar-angular-app"})
+/subsystem=keycloak-server/spi=eventsListener/:add
+/subsystem=keycloak-server/spi=eventsListener/provider=CEDAR-event-listener:add(enabled=true)
+/subsystem=keycloak-server/spi=eventsListener/provider=CEDAR-event-listener/:map-put(name=properties,key=userEventList,value="[\"LOGIN\"]")
+/subsystem=keycloak-server/spi=eventsListener/provider=CEDAR-event-listener/:map-put(name=properties,key=userEventCallbackURL,value="http://${env.CEDAR_NET_GATEWAY}:${env.CEDAR_RESOURCE_HTTP_PORT}/command/auth-user-callback")
+/subsystem=keycloak-server/spi=eventsListener/provider=CEDAR-event-listener/:map-put(name=properties,key=adminResourceList,value="[\"USER\"]")
+/subsystem=keycloak-server/spi=eventsListener/provider=CEDAR-event-listener/:map-put(name=properties,key=adminResourceCallbackURL,value="http://${env.CEDAR_NET_GATEWAY}:${env.CEDAR_RESOURCE_HTTP_PORT}/command/auth-admin-callback")
+/subsystem=keycloak-server/spi=eventsListener/provider=CEDAR-event-listener/:map-put(name=properties,key=linkedDataUserBase,value="https://metadatacenter.org/users/")
+/subsystem=keycloak-server/spi=eventsListener/provider=CEDAR-event-listener/:map-put(name=properties,key=apiKey,value="${env.CEDAR_ADMIN_USER_API_KEY}")
+/subsystem=keycloak-server/spi=eventsListener/provider=CEDAR-event-listener/:map-put(name=properties,key=clientId,value="cedar-angular-app")

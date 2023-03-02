@@ -1,4 +1,4 @@
-FROM nginx:1.13.12
+FROM nginx:1.23.2
 
 # Add the entry point
 ADD scripts/docker-entrypoint.sh /

@@ -9,7 +9,7 @@ def check_keycloak_connection(title_message, error_message):
     print(title_message + '...')
     try:
         conn = http.client.HTTPConnection(keycloak_host, keycloak_port)
-        conn.request("GET", "/auth/realms/CEDAR/.well-known/openid-configuration")
+        conn.request("GET", "/auth/realms/CEDAR")
         status = conn.getresponse().status
         if status == 200:
             return True
@@ -27,7 +27,7 @@ def connect_to_keycloak():
 
 
 def wait_for_keycloak():
-    print("Wait for openid-configuration location ...")
+    print("Wait for realm data ...")
     number_of_successes = 0
     number_of_failures = 0
     while number_of_successes < number_of_tries:
