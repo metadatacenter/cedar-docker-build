@@ -1,25 +1,25 @@
 #!/bin/bash
 
-export KEYCLOAK_USER=${CEDAR_KEYCLOAK_ADMIN_USER}
-export KEYCLOAK_PASSWORD=${CEDAR_KEYCLOAK_ADMIN_PASSWORD}
-export KEYCLOAK_IMPORT=/opt/jboss/realm-import/keycloak-realm.CEDAR.development.20201020.json
+export KEYCLOAK_ADMIN=${CEDAR_KEYCLOAK_ADMIN_USER}
+export KEYCLOAK_ADMIN_PASSWORD=${CEDAR_KEYCLOAK_ADMIN_PASSWORD}
 
-export DB_ADDR=${CEDAR_KEYCLOAK_MYSQL_HOST}
-export DB_PORT=${CEDAR_KEYCLOAK_MYSQL_PORT}
-export DB_DATABASE=${CEDAR_KEYCLOAK_MYSQL_DB}
-export DB_USER=${CEDAR_KEYCLOAK_MYSQL_USER}
-export DB_PASSWORD=${CEDAR_KEYCLOAK_MYSQL_PASSWORD}
+echo "Waiting for MySQL"
 
-export JDBC_PARAMS="useSSL=false"
-
-python3.8 -u /opt/jboss/wait-and-init-mysql.py
+python3 -u /opt/keycloak/wait-and-init-mysql.py
 
 echo "JAVA version ---"
 echo $JAVA_HOME
 java -version
-which java
 echo "----------------"
 
-chmod a+x /opt/jboss/tools/docker-entrypoint.sh
-exec /opt/jboss/tools/docker-entrypoint.sh
-exit $?
+dir /opt/keycloak/lib/quarkus/
+
+/opt/keycloak/bin/kc.sh --verbose build
+
+/opt/keycloak/bin/kc.sh import --file /opt/keycloak/keycloak-realm.CEDAR.development.20230322.json
+
+#/opt/keycloak/bin/kc.sh --verbose start-dev --import-realm
+
+/opt/keycloak/bin/kc.sh --verbose build
+
+/opt/keycloak/bin/kc.sh --verbose start

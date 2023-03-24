@@ -1,8 +1,8 @@
-FROM mysql/mysql-server:5.7.40
+FROM mysql/mysql-server:8.0.32
 
 ADD scripts/docker-entrypoint-wrapper.sh /
 
-ADD config/my.cnf /etc
+#ADD config/my.cnf /etc
 
 VOLUME /var/log/mysql
 
