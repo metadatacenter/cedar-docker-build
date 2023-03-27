@@ -34,14 +34,16 @@ RUN dnf -y install python3
 RUN dnf -y install python3-PyMySQL
 RUN dnf -y install nc maven
 
+RUN alternatives --display java | grep 'family java-17-openjdk' | awk '{print $4}' | xargs alternatives --set java
+
 ADD config/m2/settings.xml /root/.m2/
 ADD config/themes/cedar-03 /opt/keycloak/themes/cedar-03
 ADD config/keycloak.conf /opt/keycloak/conf/.
 RUN mkdir /opt/keycloak/data/import/
 ADD config/keycloak-realm.CEDAR.development.20201020.json /opt/keycloak/.
 
-#RUN mvn org.apache.maven.plugins:maven-dependency-plugin:3.1.1:get -DrepoUrl=https://nexus.bmir.stanford.edu/ -Dartifact=org.metadatacenter:cedar-keycloak-event-listener:${CEDAR_VERSION}
-#RUN mvn org.apache.maven.plugins:maven-dependency-plugin:3.1.1:copy -Dartifact=org.metadatacenter:cedar-keycloak-event-listener:${CEDAR_VERSION}:jar -DoutputDirectory=/opt/keycloak/providers -Dmdep.useBaseVersion=true
+RUN mvn org.apache.maven.plugins:maven-dependency-plugin:3.1.1:get -DrepoUrl=https://nexus.bmir.stanford.edu/ -Dartifact=org.metadatacenter:cedar-keycloak-event-listener:${CEDAR_VERSION}
+RUN mvn org.apache.maven.plugins:maven-dependency-plugin:3.1.1:copy -Dartifact=org.metadatacenter:cedar-keycloak-event-listener:${CEDAR_VERSION}:jar -DoutputDirectory=/opt/keycloak/providers -Dmdep.useBaseVersion=true
 
 ADD scripts/wait-and-init-mysql.py /opt/keycloak/
 ADD scripts/docker-entrypoint.sh /opt/keycloak/
