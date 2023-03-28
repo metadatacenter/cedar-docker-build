@@ -16,7 +16,7 @@ dir /opt/keycloak/lib/quarkus/
 
 /opt/keycloak/bin/kc.sh --verbose build
 
-/opt/keycloak/bin/kc.sh import --file /opt/keycloak/keycloak-realm.CEDAR.development.20230322.json
+/opt/keycloak/bin/kc.sh import --file /opt/keycloak/keycloak-realm.CEDAR.development.2023-03-23.json
 
 #/opt/keycloak/bin/kc.sh --verbose start-dev --import-realm
 

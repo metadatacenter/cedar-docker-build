@@ -9,7 +9,7 @@ def check_keycloak_connection(title_message, error_message):
     print(title_message + '...')
     try:
         conn = http.client.HTTPConnection(keycloak_host, keycloak_port)
-        conn.request("GET", "/auth/realms/CEDAR")
+        conn.request("GET", "/realms/CEDAR")
         status = conn.getresponse().status
         if status == 200:
             return True
