@@ -16,10 +16,18 @@ dir /opt/keycloak/lib/quarkus/
 
 /opt/keycloak/bin/kc.sh --verbose build
 
-/opt/keycloak/bin/kc.sh import --file /opt/keycloak/keycloak-realm.CEDAR.development.2023-03-23.json
+export INIT_DONE_FLAG="$KEYCLOAK_STATE_PATH/cedar-keycloak-init.done"
+if [ ! -f ${INIT_DONE_FLAG} ]; then
+  echo "Keycloak realm not yet imported!"
 
-#/opt/keycloak/bin/kc.sh --verbose start-dev --import-realm
+  echo "Importing realm"
+  /opt/keycloak/bin/kc.sh import --file /opt/keycloak/keycloak-realm.CEDAR.development.2023-03-23.json
+  /opt/keycloak/bin/kc.sh --verbose build
 
-/opt/keycloak/bin/kc.sh --verbose build
+  echo "Creating done flag:${INIT_DONE_FLAG}"
+  touch ${INIT_DONE_FLAG}
+else
+  echo "Keycloak realm is already imported!"
+fi
 
 /opt/keycloak/bin/kc.sh --verbose start

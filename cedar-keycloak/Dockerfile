@@ -48,6 +48,13 @@ RUN mvn org.apache.maven.plugins:maven-dependency-plugin:3.1.1:copy -Dartifact=o
 ADD scripts/wait-and-init-mysql.py /opt/keycloak/
 ADD scripts/docker-entrypoint.sh /opt/keycloak/
 
+ENV KEYCLOAK_LOG_PATH /opt/keycloak/data/log
+ENV KEYCLOAK_STATE_PATH /opt/keycloak/data/state
+
+RUN mkdir $KEYCLOAK_STATE_PATH && chown -R keycloak $KEYCLOAK_STATE_PATH
+
+VOLUME $KEYCLOAK_LOG_PATH
+VOLUME $KEYCLOAK_STATE_PATH
 
 USER 1000
 
