@@ -6,10 +6,11 @@ export INIT_DONE_FLAG="/state/cedar-neo4j-init.done"
 export NEO4J_AUTH="${CEDAR_NEO4J_USER_NAME}/${CEDAR_NEO4J_USER_PASSWORD}"
 
 set -m
-tini -g -- /startup/docker-entrypoint.sh neo4j &
 
 if [ ! -f ${INIT_DONE_FLAG} ]; then
   echo "Neo4J database not yet initialized!"
+
+  tini -g -- /startup/docker-entrypoint.sh neo4j &
 
   echo "Waiting for Neo4j to be available on the REST port 7474"
   while ! nc -z localhost 7474; do
