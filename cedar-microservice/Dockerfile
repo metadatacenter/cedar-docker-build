@@ -1,8 +1,8 @@
-FROM metadatacenter/cedar-java:2.6.21
+FROM metadatacenter/cedar-java:2.6.22
 
 ENV CEDAR_HOME=/cedar
 
-ENV CEDAR_VERSION=2.6.21
+ENV CEDAR_VERSION=2.6.22
 
 ENV CEDAR_USER_HTTP_PORT=9005
 
@@ -30,7 +30,12 @@ RUN microdnf makecache
 
 RUN microdnf -y install mysql-community-devel-8.0.30-1.el9.aarch64
 
+ENV VIRTUAL_ENV=${CEDAR_HOME}/cedar-env
+RUN python3 -m venv $VIRTUAL_ENV
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+
 RUN python3 -m pip install --upgrade pip
+RUN python3 -m pip install wheel==0.40.0
 RUN python3 -m pip install pymongo==3.6.1
 RUN python3 -m pip install mysqlclient==2.1.1
 RUN python3 -m pip install redis==2.10.6

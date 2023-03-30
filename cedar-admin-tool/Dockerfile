@@ -1,8 +1,8 @@
-FROM metadatacenter/cedar-java:2.6.21
+FROM metadatacenter/cedar-java:2.6.22
 
 ENV CEDAR_HOME=/cedar
 
-ENV CEDAR_VERSION=2.6.21
+ENV CEDAR_VERSION=2.6.22
 
 ENV CEDAR_RESOURCE_HTTP_PORT=9007
 
@@ -20,7 +20,9 @@ ENV CADIR=${CEDAR_HOME}/ca/
 RUN mkdir -p ${CADIR}
 VOLUME ${CADIR}
 
-RUN yum install -y vim curl telnet maven
+RUN microdnf update -y
+RUN microdnf install -y vim iputils hostname
+RUN microdnf clean all
 
 ADD config/m2/settings.xml /root/.m2/
 
