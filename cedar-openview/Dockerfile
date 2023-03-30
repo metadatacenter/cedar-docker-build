@@ -1,6 +1,6 @@
 FROM nginx:1.23.3
 
-ENV CEDAR_VERSION=2.6.23-SNAPSHOT
+ENV CEDAR_VERSION=2.6.23
 
 # Add the entry point
 ADD scripts/docker-entrypoint.sh /
