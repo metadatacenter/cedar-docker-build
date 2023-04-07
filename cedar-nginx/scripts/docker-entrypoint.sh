@@ -20,19 +20,22 @@ mkdir -p nginx-user
 mkdir -p nginx-valuerecommender
 mkdir -p nginx-worker 
 
-mkdir -p nginx-frontend-cedar
-
 mkdir -p nginx-frontend-artifacts
+mkdir -p nginx-frontend-cedar
 mkdir -p nginx-frontend-component
 mkdir -p nginx-frontend-monitoring
 mkdir -p nginx-frontend-openview
 
 
 echo "Executing sed"
-echo "Using CEDAR_HOST              :${CEDAR_HOST}"
-echo "Using CEDAR_MICROSERVICE_HOST :${CEDAR_MICROSERVICE_HOST}"
-echo "Using CEDAR_KEYCLOAK_HOST     :${CEDAR_KEYCLOAK_HOST}"
-echo "Using CEDAR_FRONTEND_HOST     :${CEDAR_FRONTEND_HOST}"
+echo "Using CEDAR_HOST                     :${CEDAR_HOST}"
+echo "Using CEDAR_MICROSERVICE_HOST        :${CEDAR_MICROSERVICE_HOST}"
+echo "Using CEDAR_KEYCLOAK_HOST            :${CEDAR_KEYCLOAK_HOST}"
+echo "Using CEDAR_FRONTEND_EDITOR_HOST     :${CEDAR_FRONTEND_EDITOR_HOST}"
+echo "Using CEDAR_FRONTEND_COMPONENT_HOST  :${CEDAR_FRONTEND_COMPONENT_HOST}"
+echo "Using CEDAR_FRONTEND_OPENVIEW_HOST   :${CEDAR_FRONTEND_OPENVIEW_HOST}"
+echo "Using CEDAR_FRONTEND_MONITORING_HOST :${CEDAR_FRONTEND_MONITORING_HOST}"
+echo "Using CEDAR_FRONTEND_ARTIFACTS_HOST  :${CEDAR_FRONTEND_ARTIFACTS_HOST}"
 
 for filename in /etc/nginx/conf.d/*inc.conf; do
   sed -i 's/<cedar.CEDAR_HOST>/'${CEDAR_HOST}'/g' $filename
@@ -40,6 +43,11 @@ for filename in /etc/nginx/conf.d/*inc.conf; do
 done
 
 sed -i 's/<cedar.CEDAR_KEYCLOAK_HOST>/'${CEDAR_KEYCLOAK_HOST}'/g' /etc/nginx/conf.d/server-auth.inc.conf
-sed -i 's/<cedar.CEDAR_FRONTEND_HOST>/'${CEDAR_FRONTEND_HOST}'/g' /etc/nginx/conf.d/frontend-*.inc.conf
+
+sed -i 's/<cedar.CEDAR_FRONTEND_EDITOR_HOST>/'${CEDAR_FRONTEND_EDITOR_HOST}'/g' /etc/nginx/conf.d/frontend-*.inc.conf
+sed -i 's/<cedar.CEDAR_FRONTEND_COMPONENT_HOST>/'${CEDAR_FRONTEND_COMPONENT_HOST}'/g' /etc/nginx/conf.d/frontend-*.inc.conf
+sed -i 's/<cedar.CEDAR_FRONTEND_OPENVIEW_HOST>/'${CEDAR_FRONTEND_OPENVIEW_HOST}'/g' /etc/nginx/conf.d/frontend-*.inc.conf
+sed -i 's/<cedar.CEDAR_FRONTEND_MONITORING_HOST>/'${CEDAR_FRONTEND_MONITORING_HOST}'/g' /etc/nginx/conf.d/frontend-*.inc.conf
+sed -i 's/<cedar.CEDAR_FRONTEND_ARTIFACTS_HOST>/'${CEDAR_FRONTEND_ARTIFACTS_HOST}'/g' /etc/nginx/conf.d/frontend-*.inc.conf
 
 exec "$@"

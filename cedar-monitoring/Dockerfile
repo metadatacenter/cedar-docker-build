@@ -2,7 +2,7 @@ FROM nginx:1.23.3
 
 ENV CEDAR_VERSION=2.6.24-SNAPSHOT
 ENV CEDAR_NPM_NEXUS_REPO=https://nexus.bmir.stanford.edu/repository/npm-cedar
-ENV PACKAGE_NAME=cedar-component-distribution
+ENV PACKAGE_NAME=cedar-monitoring-dist
 
 # Add the entry point
 ADD scripts/docker-entrypoint.sh /
@@ -34,7 +34,7 @@ curl --fail --show-error --location --remote-name ${PACKAGE_URI} && \
 tar --extract --file ${TARBALL} --directory ${CEDAR_FRONTEND_HOME} --strip 1 && \
 rm ${TARBALL}
 
-EXPOSE 4240
+EXPOSE 4300
 
 CMD ["nginx", "-g", "daemon off;"]
 
