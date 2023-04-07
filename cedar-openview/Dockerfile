@@ -1,6 +1,7 @@
 FROM nginx:1.23.3
 
 ENV CEDAR_VERSION=2.6.24-SNAPSHOT
+ENV CEDAR_NPM_NEXUS_REPO=https://nexus.bmir.stanford.edu/repository/npm-cedar
 
 # Add the entry point
 ADD scripts/docker-entrypoint.sh /
@@ -23,8 +24,8 @@ RUN mkdir -p ${CEDAR_OPENVIEW_HOME}
 # Make CEDAR OpenView home the default work directory
 WORKDIR ${CEDAR_OPENVIEW_HOME}
 
-ENV OPENVIEW_TARBALL release-${CEDAR_VERSION}.tar.gz
-ENV PACKAGE_URI https://github.com/metadatacenter/cedar-openview-dist/archive/${OPENVIEW_TARBALL}
+ENV OPENVIEW_TARBALL cedar-openview-${CEDAR_VERSION}.tgz
+ENV PACKAGE_URI ${CEDAR_NPM_NEXUS_REPO}/cedar-openview/-/${EDITOR_TARBALL}
 
 # Download and extract the frontend source
 RUN \

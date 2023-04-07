@@ -8,7 +8,7 @@ mkdir -p nginx-global
 mkdir -p nginx-artifact
 mkdir -p nginx-auth
 mkdir -p nginx-group
-mkdir -p nginx-internals
+mkdir -p nginx-monitor
 mkdir -p nginx-messaging
 mkdir -p nginx-open
 mkdir -p nginx-repo
@@ -24,7 +24,7 @@ mkdir -p nginx-frontend-cedar
 
 mkdir -p nginx-frontend-artifacts
 mkdir -p nginx-frontend-component
-mkdir -p nginx-frontend-internalsview
+mkdir -p nginx-frontend-monitoring
 mkdir -p nginx-frontend-openview
 
 
