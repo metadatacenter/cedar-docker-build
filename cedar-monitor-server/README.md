@@ -1,4 +1,4 @@
-Docker version of CEDAR Internals server
+Docker version of CEDAR Monitor server
 
 # For end-users
 
@@ -10,7 +10,7 @@ Execute the following command:
 
 ````
 docker run -d \
---name internals-server \
+--name monitor-server \
 --net cedarnet \
 -e CEDAR_HOST \
 -e CEDAR_NET_GATEWAY \
@@ -41,29 +41,29 @@ docker run -d \
 -e CEDAR_LOG_MYSQL_DB \
 -e CEDAR_LOG_MYSQL_USER \
 -e CEDAR_LOG_MYSQL_PASSWORD \
--p ${CEDAR_INTERNALS_HTTP_PORT}:9014 \
--p ${CEDAR_INTERNALS_ADMIN_PORT}:9114 \
--p ${CEDAR_INTERNALS_STOP_PORT}:9214 \
---mount 'type=volume,src=internals_log,dst=/cedar/log/cedar-internals-server/' \
+-p ${CEDAR_MONITOR_HTTP_PORT}:9014 \
+-p ${CEDAR_MONITOR_ADMIN_PORT}:9114 \
+-p ${CEDAR_MONITOR_STOP_PORT}:9214 \
+--mount 'type=volume,src=monitor_log,dst=/cedar/log/cedar-monitor-server/' \
 --mount 'type=volume,src=cedar_ca,dst=/cedar/ca' \
-metadatacenter/cedar-internals-server
+metadatacenter/cedar-monitor-server
 ````
 
 ## Stop the container
 
-    docker stop internals-server
+    docker stop monitor-server
 
 ## Start the container
 
-    docker start internals-server
+    docker start monitor-server
 
 ## Check the logs of the container
 
-    docker logs -f internals-server
+    docker logs -f monitor-server
 
 ## Connect to the container
 
-    docker exec -it internals-server bash
+    docker exec -it monitor-server bash
 
 # For developers
 
@@ -71,16 +71,16 @@ metadatacenter/cedar-internals-server
 
 With the current release version stored in the `CEDAR_RELEASE_VERSION` environment variable, the image can be built as follows:
 
-     docker build -t metadatacenter/cedar-internals-server:${CEDAR_RELEASE_VERSION} .
+     docker build -t metadatacenter/cedar-monitor-server:${CEDAR_RELEASE_VERSION} .
 
 ## Pushing the image to CEDAR's DockerHub
 
 Using the CEDAR DockerHub configuration instructions described [here](https://github.com/metadatacenter/cedar-conf/wiki/Configuring-Docker-to-use-the-CEDAR-Nexus-DockerHub) and with the `CEDAR_DOCKERHUB` environment variable pointing to CEDAR Nexus DockerHub host, the image can be tagged and pushed as follows:
 
-     docker tag metadatacenter/cedar-internals-server:${CEDAR_RELEASE_VERSION} ${CEDAR_DOCKERHUB}/metadatacenter/cedar-internals-server:${CEDAR_RELEASE_VERSION}
+     docker tag metadatacenter/cedar-monitor-server:${CEDAR_RELEASE_VERSION} ${CEDAR_DOCKERHUB}/metadatacenter/cedar-monitor-server:${CEDAR_RELEASE_VERSION}
 
-     docker push ${CEDAR_DOCKERHUB}/metadatacenter/cedar-internals-server:${CEDAR_RELEASE_VERSION}
+     docker push ${CEDAR_DOCKERHUB}/metadatacenter/cedar-monitor-server:${CEDAR_RELEASE_VERSION}
 
 The image can subsequently be pulled as follows:
 
-     docker pull ${CEDAR_DOCKERHUB}/metadatacenter/cedar-internals-server:${CEDAR_RELEASE_VERSION}
+     docker pull ${CEDAR_DOCKERHUB}/metadatacenter/cedar-monitor-server:${CEDAR_RELEASE_VERSION}

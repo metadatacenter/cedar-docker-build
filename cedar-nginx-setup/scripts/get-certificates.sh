@@ -14,7 +14,8 @@ certbot -n --email ${CERTBOT_EMAIL} --agree-tos -a webroot -i nginx -w /usr/shar
 certbot -n --email ${CERTBOT_EMAIL} --agree-tos -a webroot -i nginx -w /usr/share/nginx/cedar -d cedar.${CEDAR_HOST}
 certbot -n --email ${CERTBOT_EMAIL} --agree-tos -a webroot -i nginx -w /usr/share/nginx/component -d component.${CEDAR_HOST}
 certbot -n --email ${CERTBOT_EMAIL} --agree-tos -a webroot -i nginx -w /usr/share/nginx/group -d group.${CEDAR_HOST}
-certbot -n --email ${CERTBOT_EMAIL} --agree-tos -a webroot -i nginx -w /usr/share/nginx/internals -d internals.${CEDAR_HOST}
+certbot -n --email ${CERTBOT_EMAIL} --agree-tos -a webroot -i nginx -w /usr/share/nginx/monitor -d monitor.${CEDAR_HOST}
+certbot -n --email ${CERTBOT_EMAIL} --agree-tos -a webroot -i nginx -w /usr/share/nginx/monitoring -d monitoring.${CEDAR_HOST}
 certbot -n --email ${CERTBOT_EMAIL} --agree-tos -a webroot -i nginx -w /usr/share/nginx/messaging -d messaging.${CEDAR_HOST}
 certbot -n --email ${CERTBOT_EMAIL} --agree-tos -a webroot -i nginx -w /usr/share/nginx/open -d open.${CEDAR_HOST}
 certbot -n --email ${CERTBOT_EMAIL} --agree-tos -a webroot -i nginx -w /usr/share/nginx/openview -d openview.${CEDAR_HOST}
