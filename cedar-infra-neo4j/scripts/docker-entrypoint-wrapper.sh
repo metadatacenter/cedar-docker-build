@@ -26,6 +26,7 @@ if [ ! -f ${INIT_DONE_FLAG} ]; then
   touch ${INIT_DONE_FLAG}
 else
   echo "Neo4J database is already initialized!"
+  tini -g -- /startup/docker-entrypoint.sh neo4j &
 fi
 
 fg %1
