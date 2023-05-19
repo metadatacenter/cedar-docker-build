@@ -1,4 +1,4 @@
-FROM nginx:1.23.3
+FROM nginx:1.23.4
 
 ENV CEDAR_VERSION=2.6.26-SNAPSHOT
 ENV CEDAR_NPM_NEXUS_REPO=https://nexus.bmir.stanford.edu/repository/npm-cedar
