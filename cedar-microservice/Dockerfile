@@ -42,8 +42,8 @@ RUN python3 -m pip install redis==2.10.6
 
 ADD config/m2/settings.xml /root/.m2/
 
-RUN mvn org.apache.maven.plugins:maven-dependency-plugin:3.1.1:get \
--Dartifact=org.apache.maven.plugins:maven-dependency-plugin:3.1.1
+RUN mvn org.apache.maven.plugins:maven-dependency-plugin:3.5.0:get \
+-Dartifact=org.apache.maven.plugins:maven-dependency-plugin:3.5.0
 
 ADD scripts/docker-entrypoint.sh ${CEDAR_HOME}/
 ADD scripts/wait-and-init-mysql.py ${CEDAR_HOME}/
