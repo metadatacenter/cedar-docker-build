@@ -28,7 +28,7 @@ RUN keytool -genkeypair -storepass password -storetype PKCS12 -keyalg RSA -keysi
 RUN /opt/keycloak/bin/kc.sh build
 
 
-ENV CEDAR_VERSION=2.6.27
+ENV CEDAR_VERSION=2.6.28
 
 RUN dnf -y install python3
 RUN dnf -y install python3-PyMySQL
@@ -42,8 +42,8 @@ ADD config/keycloak.conf /opt/keycloak/conf/.
 RUN mkdir /opt/keycloak/data/import/
 ADD config/keycloak-realm.CEDAR.development.2023-03-23.json /opt/keycloak/.
 
-RUN mvn org.apache.maven.plugins:maven-dependency-plugin:3.1.1:get -DrepoUrl=https://nexus.bmir.stanford.edu/ -Dartifact=org.metadatacenter:cedar-keycloak-event-listener:${CEDAR_VERSION}
-RUN mvn org.apache.maven.plugins:maven-dependency-plugin:3.1.1:copy -Dartifact=org.metadatacenter:cedar-keycloak-event-listener:${CEDAR_VERSION}:jar -DoutputDirectory=/opt/keycloak/providers -Dmdep.useBaseVersion=true
+RUN mvn org.apache.maven.plugins:maven-dependency-plugin:3.5.0:get -DrepoUrl=https://nexus.bmir.stanford.edu/ -Dartifact=org.metadatacenter:cedar-keycloak-event-listener:${CEDAR_VERSION} -Dmaven.wagon.http.retryHandler.count=5
+RUN mvn org.apache.maven.plugins:maven-dependency-plugin:3.5.0:copy -Dartifact=org.metadatacenter:cedar-keycloak-event-listener:${CEDAR_VERSION}:jar -DoutputDirectory=/opt/keycloak/providers -Dmdep.useBaseVersion=true
 
 ADD scripts/wait-and-init-mysql.py /opt/keycloak/
 ADD scripts/docker-entrypoint.sh /opt/keycloak/
