@@ -1,0 +1,19 @@
+FROM metadatacenter/cedar-microservice:2.6.32-SNAPSHOT
+
+ENV CEDAR_SERVER_NAME=bridge
+
+ENV CEDAR_BRIDGE_HTTP_PORT=9015
+ENV CEDAR_BRIDGE_ADMIN_PORT=9115
+ENV CEDAR_BRIDGE_STOP_PORT=9215
+
+ENV LOGDIR=${CEDAR_HOME}/log/cedar-${CEDAR_SERVER_NAME}-server/
+RUN mkdir -p ${LOGDIR}
+VOLUME ${LOGDIR}
+
+RUN python3 -m pip install redis==2.10.6
+
+ADD scripts/pre-docker-entrypoint.sh ${CEDAR_HOME}/
+
+EXPOSE ${CEDAR_BRIDGE_HTTP_PORT} ${CEDAR_BRIDGE_ADMIN_PORT} ${CEDAR_BRIDGE_STOP_PORT}
+
+RUN ${CEDAR_HOME}/install_deps.sh

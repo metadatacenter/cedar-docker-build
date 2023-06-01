@@ -2,7 +2,7 @@
 
 # Base script containing configuration information for CEDAR Docker images.
 # Lists all directories containing CEDAR Docker image specifications.
-# Asumption here is image name is same as directory name containing Dockerfile for image with "metadatacenter/" prepended to it.
+# Assumption here is image name is same as directory name containing Dockerfile for image with "metadatacenter/" prepended to it.
 
 export CEDAR_IMAGE_PREFIX="metadatacenter"
 
@@ -15,6 +15,7 @@ CEDAR_DOCKER_IMAGES=(
   "cedar-admin-tool"
 
   "cedar-frontend-artifacts"
+  "cedar-frontend-component"
   "cedar-frontend-main"
   "cedar-frontend-monitoring"
   "cedar-frontend-openview"
@@ -31,6 +32,7 @@ CEDAR_DOCKER_IMAGES=(
   "cedar-microservice"
 
   "cedar-server-artifact"
+  "cedar-server-bridge"
   "cedar-server-group"
   "cedar-server-impex"
   "cedar-server-messaging"
