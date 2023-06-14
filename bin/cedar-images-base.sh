@@ -18,6 +18,7 @@ CEDAR_DOCKER_IMAGES=(
   "cedar-frontend-component"
   "cedar-frontend-main"
   "cedar-frontend-monitoring"
+  "cedar-frontend-bridging"
   "cedar-frontend-openview"
 
   "cedar-infra-keycloak"
