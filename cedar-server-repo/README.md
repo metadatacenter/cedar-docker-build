@@ -30,7 +30,7 @@ docker run -d \
 -p ${CEDAR_REPO_HTTP_PORT}:9002 \
 -p ${CEDAR_REPO_ADMIN_PORT}:9102 \
 -p ${CEDAR_REPO_STOP_PORT}:9202 \
---mount 'type=volume,src=repo_log,dst=/cedar/log/cedar-repo-server/' \
+--mount 'type=volume,src=repo_log,dst=/cedar/log/server-repo/' \
 --mount 'type=volume,src=cedar_ca,dst=/cedar/ca' \
 metadatacenter/cedar-repo-server
 ````

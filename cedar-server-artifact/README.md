@@ -25,7 +25,7 @@ docker run -d \
 -p ${CEDAR_ARTIFACT_HTTP_PORT}:9001 \
 -p ${CEDAR_ARTIFACT_MANAGEMENT_PORT}:9101 \
 -p ${CEDAR_ARTIFACT_STOP_PORT}:9201 \
---mount 'type=volume,src=artifact_log,dst=/cedar/log/cedar-artifact-server/' \
+--mount 'type=volume,src=artifact_log,dst=/cedar/log/server-artifact/' \
 --mount 'type=volume,src=cedar_ca,dst=/cedar/ca' \
 metadatacenter/cedar-artifact-server
 ````

@@ -34,7 +34,7 @@ curl --fail --show-error --location --remote-name ${PACKAGE_URI} && \
 tar --extract --file ${TARBALL} --directory ${CEDAR_FRONTEND_HOME} --strip 1 && \
 rm ${TARBALL}
 
-EXPOSE 4300
+EXPOSE 4340
 
 CMD ["nginx", "-g", "daemon off;"]
 

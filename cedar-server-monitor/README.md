@@ -44,7 +44,7 @@ docker run -d \
 -p ${CEDAR_MONITOR_HTTP_PORT}:9014 \
 -p ${CEDAR_MONITOR_ADMIN_PORT}:9114 \
 -p ${CEDAR_MONITOR_STOP_PORT}:9214 \
---mount 'type=volume,src=monitor_log,dst=/cedar/log/cedar-monitor-server/' \
+--mount 'type=volume,src=monitor_log,dst=/cedar/log/server-monitor/' \
 --mount 'type=volume,src=cedar_ca,dst=/cedar/ca' \
 metadatacenter/cedar-monitor-server
 ````

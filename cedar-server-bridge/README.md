@@ -25,7 +25,7 @@ docker run -d \
 -p ${CEDAR_BRIDGE_HTTP_PORT}:9015 \
 -p ${CEDAR_BRIDGE_ADMIN_PORT}:9115 \
 -p ${CEDAR_BRIDGE_STOP_PORT}:9215 \
---mount 'type=volume,src=bridge_log,dst=/cedar/log/cedar-bridge-server/' \
+--mount 'type=volume,src=bridge_log,dst=/cedar/log/server-bridge/' \
 --mount 'type=volume,src=cedar_ca,dst=/cedar/ca' \
 metadatacenter/cedar-bridge-server
 ````
