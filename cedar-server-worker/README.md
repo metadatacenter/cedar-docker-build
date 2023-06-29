@@ -47,7 +47,7 @@ docker run -d \
 -p ${CEDAR_WORKER_HTTP_PORT}:9011 \
 -p ${CEDAR_WORKER_ADMIN_PORT}:9111 \
 -p ${CEDAR_WORKER_STOP_PORT}:9211 \
---mount 'type=volume,src=worker_log,dst=/cedar/log/cedar-worker-server/' \
+--mount 'type=volume,src=worker_log,dst=/cedar/log/server-worker/' \
 --mount 'type=volume,src=cedar_ca,dst=/cedar/ca' \
 metadatacenter/cedar-worker-server
 ````

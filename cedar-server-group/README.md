@@ -29,7 +29,7 @@ docker run -d \
 -p ${CEDAR_GROUP_HTTP_PORT}:9009 \
 -p ${CEDAR_GROUP_ADMIN_PORT}:9109 \
 -p ${CEDAR_GROUP_STOP_PORT}:9209 \
---mount 'type=volume,src=group_log,dst=/cedar/log/cedar-group-server/' \
+--mount 'type=volume,src=group_log,dst=/cedar/log/server-group/' \
 --mount 'type=volume,src=cedar_ca,dst=/cedar/ca' \
 metadatacenter/cedar-group-server
 ````

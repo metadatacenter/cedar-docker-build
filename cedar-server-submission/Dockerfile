@@ -1,4 +1,4 @@
-FROM metadatacenter/cedar-microservice:2.6.31
+FROM metadatacenter/cedar-microservice:2.6.33
 
 ENV CEDAR_SERVER_NAME=submission
 
@@ -6,7 +6,7 @@ ENV CEDAR_SUBMISSION_HTTP_PORT=9010
 ENV CEDAR_SUBMISSION_ADMIN_PORT=9110
 ENV CEDAR_SUBMISSION_STOP_PORT=9210
 
-ENV LOGDIR=${CEDAR_HOME}/log/cedar-${CEDAR_SERVER_NAME}-server/
+ENV LOGDIR=${CEDAR_HOME}/log/server-${CEDAR_SERVER_NAME}/
 RUN mkdir -p ${LOGDIR}
 VOLUME ${LOGDIR}
 

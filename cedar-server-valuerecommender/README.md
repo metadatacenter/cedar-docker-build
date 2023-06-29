@@ -28,7 +28,7 @@ docker run -d \
 -p ${CEDAR_VALUERECOMMENDER_HTTP_PORT}:9006 \
 -p ${CEDAR_VALUERECOMMENDER_ADMIN_PORT}:9106 \
 -p ${CEDAR_VALUERECOMMENDER_STOP_PORT}:9206 \
---mount 'type=volume,src=valuerecommender_log,dst=/cedar/log/cedar-valuerecommender-server/' \
+--mount 'type=volume,src=valuerecommender_log,dst=/cedar/log/server-valuerecommender/' \
 --mount 'type=volume,src=cedar_ca,dst=/cedar/ca' \
 metadatacenter/cedar-valuerecommender-server
 ````

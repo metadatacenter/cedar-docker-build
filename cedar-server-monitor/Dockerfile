@@ -1,4 +1,4 @@
-FROM metadatacenter/cedar-microservice:2.6.31
+FROM metadatacenter/cedar-microservice:2.6.33
 
 ENV CEDAR_SERVER_NAME=monitor
 
@@ -6,7 +6,7 @@ ENV CEDAR_MONITOR_HTTP_PORT=9014
 ENV CEDAR_MONITOR_ADMIN_PORT=9114
 ENV CEDAR_MONITOR_STOP_PORT=9214
 
-ENV LOGDIR=${CEDAR_HOME}/log/cedar-${CEDAR_SERVER_NAME}-server/
+ENV LOGDIR=${CEDAR_HOME}/log/server-${CEDAR_SERVER_NAME}/
 RUN mkdir -p ${LOGDIR}
 VOLUME ${LOGDIR}
 

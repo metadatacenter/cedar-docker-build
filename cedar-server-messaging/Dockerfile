@@ -1,4 +1,4 @@
-FROM metadatacenter/cedar-microservice:2.6.31
+FROM metadatacenter/cedar-microservice:2.6.33
 
 ENV CEDAR_SERVER_NAME=messaging
 
@@ -6,7 +6,7 @@ ENV CEDAR_MESSAGING_HTTP_PORT=9012
 ENV CEDAR_MESSAGING_ADMIN_PORT=9112
 ENV CEDAR_MESSAGING_STOP_PORT=9212
 
-ENV LOGDIR=${CEDAR_HOME}/log/cedar-${CEDAR_SERVER_NAME}-server/
+ENV LOGDIR=${CEDAR_HOME}/log/server-${CEDAR_SERVER_NAME}/
 RUN mkdir -p ${LOGDIR}
 VOLUME ${LOGDIR}
 

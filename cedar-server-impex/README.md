@@ -44,7 +44,7 @@ docker run -d \
 -p ${CEDAR_IMPEX_HTTP_PORT}:9008 \
 -p ${CEDAR_IMPEX_ADMIN_PORT}:9108 \
 -p ${CEDAR_IMPEX_STOP_PORT}:9208 \
---mount 'type=volume,src=impex_log,dst=/cedar/log/cedar-impex-server/' \
+--mount 'type=volume,src=impex_log,dst=/cedar/log/server-impex/' \
 --mount 'type=volume,src=cedar_ca,dst=/cedar/ca' \
 metadatacenter/cedar-impex-server
 ````

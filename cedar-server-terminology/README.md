@@ -28,7 +28,7 @@ docker run -d \
 -p ${CEDAR_TERMINOLOGY_HTTP_PORT}:9004 \
 -p ${CEDAR_TERMINOLOGY_ADMIN_PORT}:9104 \
 -p ${CEDAR_TERMINOLOGY_STOP_PORT}:9204 \
---mount 'type=volume,src=terminology_log,dst=/cedar/log/cedar-terminology-server/' \
+--mount 'type=volume,src=terminology_log,dst=/cedar/log/server-terminology/' \
 --mount 'type=volume,src=terminology_data,dst=/cedar/cache/terminology/' \
 --mount 'type=volume,src=cedar_ca,dst=/cedar/ca' \
 metadatacenter/cedar-terminology-server

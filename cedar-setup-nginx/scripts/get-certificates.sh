@@ -11,6 +11,7 @@ fi
 
 certbot -n --email ${CERTBOT_EMAIL} --agree-tos -a webroot -i nginx -w /usr/share/nginx/_ -d ${CEDAR_HOST}
 certbot -n --email ${CERTBOT_EMAIL} --agree-tos -a webroot -i nginx -w /usr/share/nginx/auth -d auth.${CEDAR_HOST}
+certbot -n --email ${CERTBOT_EMAIL} --agree-tos -a webroot -i nginx -w /usr/share/nginx/bridging -d bridging.${CEDAR_HOST}
 certbot -n --email ${CERTBOT_EMAIL} --agree-tos -a webroot -i nginx -w /usr/share/nginx/cedar -d cedar.${CEDAR_HOST}
 certbot -n --email ${CERTBOT_EMAIL} --agree-tos -a webroot -i nginx -w /usr/share/nginx/component -d component.${CEDAR_HOST}
 certbot -n --email ${CERTBOT_EMAIL} --agree-tos -a webroot -i nginx -w /usr/share/nginx/group -d group.${CEDAR_HOST}

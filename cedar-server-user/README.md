@@ -24,7 +24,7 @@ docker run -d \
 -p ${CEDAR_USER_HTTP_PORT}:9005 \
 -p ${CEDAR_USER_ADMIN_PORT}:9105 \
 -p ${CEDAR_USER_STOP_PORT}:9205 \
---mount 'type=volume,src=user_log,dst=/cedar/log/cedar-user-server/' \
+--mount 'type=volume,src=user_log,dst=/cedar/log/server-user/' \
 --mount 'type=volume,src=cedar_ca,dst=/cedar/ca' \
 metadatacenter/cedar-user-server
 ````

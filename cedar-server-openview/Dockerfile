@@ -1,4 +1,4 @@
-FROM metadatacenter/cedar-microservice:2.6.31
+FROM metadatacenter/cedar-microservice:2.6.33
 
 ENV CEDAR_SERVER_NAME=openview
 
@@ -8,7 +8,7 @@ ENV CEDAR_OPENVIEW_STOP_PORT=9213
 
 ENV CEDAR_ARTIFACT_HTTP_PORT=9001
 
-ENV LOGDIR=${CEDAR_HOME}/log/cedar-${CEDAR_SERVER_NAME}-server/
+ENV LOGDIR=${CEDAR_HOME}/log/server-${CEDAR_SERVER_NAME}/
 RUN mkdir -p ${LOGDIR}
 VOLUME ${LOGDIR}
 
