@@ -40,7 +40,7 @@ ADD config/m2/settings.xml /root/.m2/
 ADD config/themes/cedar-03 /opt/keycloak/themes/cedar-03
 ADD config/keycloak.conf /opt/keycloak/conf/.
 RUN mkdir /opt/keycloak/data/import/
-ADD config/keycloak-realm.CEDAR.development.2023-03-23.json /opt/keycloak/.
+ADD config/keycloak-realm.CEDAR.development.2023-07-05.json /opt/keycloak/.
 
 RUN mvn org.apache.maven.plugins:maven-dependency-plugin:3.5.0:get -DrepoUrl=https://nexus.bmir.stanford.edu/ -Dartifact=org.metadatacenter:cedar-keycloak-event-listener:${CEDAR_VERSION} -Dmaven.wagon.http.retryHandler.count=5
 RUN mvn org.apache.maven.plugins:maven-dependency-plugin:3.5.0:copy -Dartifact=org.metadatacenter:cedar-keycloak-event-listener:${CEDAR_VERSION}:jar -DoutputDirectory=/opt/keycloak/providers -Dmdep.useBaseVersion=true
