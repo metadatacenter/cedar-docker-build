@@ -1,4 +1,4 @@
-FROM metadatacenter/cedar-microservice:2.6.34
+FROM metadatacenter/cedar-microservice:2.6.35
 
 ENV CEDAR_SERVER_NAME=bridge
 
