@@ -160,8 +160,6 @@ npm install -g gulp
 
 # Add the entry point
 ADD scripts/docker-entrypoint.sh /
-# Add keycloak realm descriptor - will be changed at runtime
-ADD config/keycloak.json ${CEDAR_TEMPLATE_EDITOR_HOME}/app
 # Add nginx config
 ADD config/default.conf /etc/nginx/conf.d/
 
