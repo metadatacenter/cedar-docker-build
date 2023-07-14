@@ -1,34 +1,19 @@
-FROM metadatacenter/cedar-java:2.6.36
+FROM metadatacenter/cedar-java:2.6.37
 
 ENV CEDAR_HOME=/cedar
 
-ENV CEDAR_VERSION=2.6.36
+ENV CEDAR_VERSION=2.6.37
 
 ENV CEDAR_USER_HTTP_PORT=9005
 
 RUN microdnf -y update
 
-#RUN microdnf install -y yum-utils
-#RUN yum-config-manager --add-repo https://repo.ius.io/ius-release-el7.rpm
-
-RUN microdnf install -y yum-utils
-RUN yum-config-manager --add-repo http://repo.mysql.com/yum/mysql-8.0-community/el/9/aarch64/
-RUN microdnf makecache
-RUN microdnf repoquery mysql*
+RUN microdnf -y install yum-utils
 
 RUN microdnf -y install gcc
 RUN microdnf -y install python3
 RUN microdnf -y install python3-devel
 RUN microdnf -y install python3-pip
-
-RUN ls /etc/yum.repos.d/
-RUN cat /etc/yum.repos.d/repo.mysql.com_yum_mysql-8.0-community_el_9_aarch64_.repo
-RUN yum-config-manager --save --setopt=repo.mysql.com_yum_mysql-8.0-community_el_9_aarch64_.gpgkey=http://repo.mysql.com/RPM-GPG-KEY-mysql-2022
-RUN yum-config-manager --save --setopt=repo.mysql.com_yum_mysql-8.0-community_el_9_aarch64_.gpgcheck=0
-RUN cat /etc/yum.repos.d/repo.mysql.com_yum_mysql-8.0-community_el_9_aarch64_.repo
-RUN microdnf makecache
-
-RUN microdnf -y install mysql-community-devel-8.0.30-1.el9.aarch64
 
 ENV VIRTUAL_ENV=${CEDAR_HOME}/cedar-env
 RUN python3 -m venv $VIRTUAL_ENV
@@ -37,7 +22,6 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 RUN python3 -m pip install --upgrade pip
 RUN python3 -m pip install wheel==0.40.0
 RUN python3 -m pip install pymongo==3.6.1
-RUN python3 -m pip install mysqlclient==2.1.1
 RUN python3 -m pip install redis==2.10.6
 
 ADD config/m2/settings.xml /root/.m2/

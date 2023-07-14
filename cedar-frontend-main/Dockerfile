@@ -1,6 +1,6 @@
 FROM debian:bullseye-slim
 
-ENV CEDAR_VERSION=2.6.36
+ENV CEDAR_VERSION=2.6.37
 ENV CEDAR_NPM_NEXUS_REPO=https://nexus.bmir.stanford.edu/repository/npm-cedar
 
 ENV NGINX_VERSION   1.23.4
@@ -160,8 +160,6 @@ npm install -g gulp
 
 # Add the entry point
 ADD scripts/docker-entrypoint.sh /
-# Add keycloak realm descriptor - will be changed at runtime
-ADD config/keycloak.json ${CEDAR_TEMPLATE_EDITOR_HOME}/app
 # Add nginx config
 ADD config/default.conf /etc/nginx/conf.d/
 

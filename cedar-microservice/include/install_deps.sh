@@ -1,5 +1,32 @@
 #!/bin/bash
 
+echo "Install mysql drivers"
+
+uname -a
+uname -m
+
+ARCH=$(uname -m)
+if [[ "$ARCH" == "arm64" || "$ARCH" == "aarch64" ]]; then
+    ARCH_DIR="aarch64"
+else
+    ARCH_DIR="x86_64"
+fi
+
+yum-config-manager --add-repo http://repo.mysql.com/yum/mysql-8.0-community/el/9/${ARCH_DIR}/
+microdnf makecache
+microdnf repoquery mysql*
+
+ls /etc/yum.repos.d/
+cat /etc/yum.repos.d/repo.mysql.com_yum_mysql-8.0-community_el_9_${ARCH_DIR}_.repo
+yum-config-manager --save --setopt=repo.mysql.com_yum_mysql-8.0-community_el_9_${ARCH_DIR}_.gpgkey=http://repo.mysql.com/RPM-GPG-KEY-mysql-2022
+yum-config-manager --save --setopt=repo.mysql.com_yum_mysql-8.0-community_el_9_${ARCH_DIR}_.gpgcheck=0
+cat /etc/yum.repos.d/repo.mysql.com_yum_mysql-8.0-community_el_9_${ARCH_DIR}_.repo
+microdnf makecache
+
+microdnf -y install mysql-community-devel-8.0.30-1.el9.${ARCH_DIR}
+
+python3 -m pip install mysqlclient==2.1.1
+
 echo "Current working directory:"
 pwd
 
