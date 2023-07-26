@@ -19,7 +19,6 @@ if [ ! -f ${INIT_DONE_FLAG} ]; then
   done
 
   echo "Neo4j started, create the indices and constraints"
-  export NEO4J_REST_AUTH="Basic `echo -n "${CEDAR_NEO4J_USER_NAME}:${CEDAR_NEO4J_USER_PASSWORD}" | base64`"
   /neo4j-init.sh
 
   echo "Creating done flag:${INIT_DONE_FLAG}"
