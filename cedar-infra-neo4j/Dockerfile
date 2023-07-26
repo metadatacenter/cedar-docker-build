@@ -1,7 +1,7 @@
 FROM neo4j:5.3.0-community
 
-RUN apt update
-RUN apt -y install curl netcat
+RUN apt-get update
+RUN apt-get -y install curl netcat
 
 WORKDIR /var/lib/neo4j
 
