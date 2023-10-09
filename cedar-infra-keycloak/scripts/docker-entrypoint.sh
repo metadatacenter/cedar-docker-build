@@ -21,6 +21,8 @@ if [ ! -f ${INIT_DONE_FLAG} ]; then
   echo "Keycloak realm not yet imported!"
 
   echo "Importing realm"
+  sed -i 's/\.metadatacenter\.orgx\//\.'${CEDAR_HOST}'\//g' /opt/keycloak/keycloak-realm.CEDAR.development.2023-07-05.json
+  sed -i 's/\.metadatacenter\.orgx\"/\.'${CEDAR_HOST}'\"/g' /opt/keycloak/keycloak-realm.CEDAR.development.2023-07-05.json
   /opt/keycloak/bin/kc.sh import --file /opt/keycloak/keycloak-realm.CEDAR.development.2023-07-05.json
   /opt/keycloak/bin/kc.sh --verbose build
 
