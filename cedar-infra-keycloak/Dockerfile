@@ -1,6 +1,6 @@
 FROM registry.access.redhat.com/ubi9
 
-ENV KEYCLOAK_VERSION 21.0.1
+ENV KEYCLOAK_VERSION 22.0.4
 ARG KEYCLOAK_DIST=https://github.com/keycloak/keycloak/releases/download/$KEYCLOAK_VERSION/keycloak-$KEYCLOAK_VERSION.tar.gz
 
 RUN dnf install -y tar gzip
@@ -28,7 +28,7 @@ RUN keytool -genkeypair -storepass password -storetype PKCS12 -keyalg RSA -keysi
 RUN /opt/keycloak/bin/kc.sh build
 
 
-ENV CEDAR_VERSION=2.6.42
+ENV CEDAR_VERSION=2.6.44
 
 RUN dnf -y install python3
 RUN dnf -y install python3-PyMySQL
