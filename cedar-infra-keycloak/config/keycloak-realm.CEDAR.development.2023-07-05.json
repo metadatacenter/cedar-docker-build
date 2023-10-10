@@ -2087,7 +2087,7 @@
     "acr.loa.map" : "{}",
     "shortVerificationUri" : ""
   },
-  "keycloakVersion" : "21.0.1",
+  "keycloakVersion" : "22.0.4",
   "userManagedAccessAllowed" : false,
   "clientProfiles" : {
     "profiles" : [ ]
