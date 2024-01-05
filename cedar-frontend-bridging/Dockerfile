@@ -1,6 +1,6 @@
 FROM nginx:1.23.4
 
-ENV CEDAR_VERSION=2.6.48-SNAPSHOT
+ENV CEDAR_VERSION=2.6.49-SNAPSHOT
 ENV CEDAR_NPM_NEXUS_REPO=https://nexus.bmir.stanford.edu/repository/npm-cedar
 ENV PACKAGE_NAME=cedar-bridging-dist
 
