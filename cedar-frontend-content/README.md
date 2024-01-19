@@ -1,4 +1,4 @@
-Docker version of the CEDAR Component Distribution served by Nginx
+Docker version of the CEDAR Content Distribution served by Nginx
 
 # For end-users
 
@@ -10,29 +10,29 @@ Execute the following command:
 
 ````
 docker run -d \
---name component \
+--name content \
 --net cedarnet \
---mount 'type=volume,src=frontend_component_log,dst=/log' \
--p ${CEDAR_FRONTEND_COMPONENT_PORT}:4240 \
+--mount 'type=volume,src=frontend_content_log,dst=/log' \
+-p ${CEDAR_FRONTEND_CONTENT_PORT}:4240 \
 -e CEDAR_HOST \
-metadatacenter/cedar-component
+metadatacenter/cedar-content
 ````
 
 ## Stop the container
 
-    docker stop component
+    docker stop content
 
 ## Start the container
 
-    docker start component
+    docker start content
 
 ## Check the logs of the container
 
-    docker logs -f component
+    docker logs -f content
 
 ## Connect to the container
 
-    docker exec -it component bash
+    docker exec -it content bash
 
 # For developers
 
@@ -42,16 +42,16 @@ metadatacenter/cedar-component
 With the current release version stored in the `CEDAR_RELEASE_VERSION` environment variable, the image can be built as follows:
 
      chmod a+x scripts/docker-entrypoint.sh
-     docker build -t metadatacenter/cedar-component:${CEDAR_RELEASE_VERSION} .
+     docker build -t metadatacenter/cedar-content:${CEDAR_RELEASE_VERSION} .
 
 ## Pushing the image to CEDAR's DockerHub
 
 Using the CEDAR DockerHub configuration instructions described [here](https://github.com/metadatacenter/cedar-conf/wiki/Configuring-Docker-to-use-the-CEDAR-Nexus-DockerHub) and with the `CEDAR_DOCKERHUB` environment variable pointing to CEDAR Nexus DockerHub host, the image can be tagged and pushed as follows:
 
-     docker tag metadatacenter/cedar-component:${CEDAR_RELEASE_VERSION} ${CEDAR_DOCKERHUB}/metadatacenter/cedar-component:${CEDAR_RELEASE_VERSION}
+     docker tag metadatacenter/cedar-content:${CEDAR_RELEASE_VERSION} ${CEDAR_DOCKERHUB}/metadatacenter/cedar-content:${CEDAR_RELEASE_VERSION}
 
-     docker push ${CEDAR_DOCKERHUB}/metadatacenter/cedar-component:${CEDAR_RELEASE_VERSION}
+     docker push ${CEDAR_DOCKERHUB}/metadatacenter/cedar-content:${CEDAR_RELEASE_VERSION}
 
 The image can subsequently be pulled as follows:
 
-     docker pull ${CEDAR_DOCKERHUB}/metadatacenter/cedar-component:${CEDAR_RELEASE_VERSION}
+     docker pull ${CEDAR_DOCKERHUB}/metadatacenter/cedar-content:${CEDAR_RELEASE_VERSION}

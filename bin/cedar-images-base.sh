@@ -15,7 +15,7 @@ CEDAR_DOCKER_IMAGES=(
   "cedar-admin-tool"
 
   "cedar-frontend-artifacts"
-  "cedar-frontend-component"
+  "cedar-frontend-content"
   "cedar-frontend-main"
   "cedar-frontend-monitoring"
   "cedar-frontend-bridging"
@@ -47,6 +47,4 @@ CEDAR_DOCKER_IMAGES=(
   "cedar-server-user"
   "cedar-server-valuerecommender"
   "cedar-server-worker"
-
-  "cedar-setup-nginx"
 )
