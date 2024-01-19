@@ -1,8 +1,8 @@
 FROM nginx:1.23.4
 
-ENV CEDAR_VERSION=2.6.51
+ENV CEDAR_VERSION=2.6.52
 ENV CEDAR_NPM_NEXUS_REPO=https://nexus.bmir.stanford.edu/repository/npm-cedar
-ENV PACKAGE_NAME=cedar-component-distribution
+ENV PACKAGE_NAME=cedar-content-distribution
 
 # Add the entry point
 ADD scripts/docker-entrypoint.sh /
