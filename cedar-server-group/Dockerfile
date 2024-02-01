@@ -1,4 +1,4 @@
-FROM metadatacenter/cedar-microservice:2.6.53-SNAPSHOT
+FROM metadatacenter/cedar-microservice:2.6.54-SNAPSHOT
 
 ENV CEDAR_SERVER_NAME=group
 
