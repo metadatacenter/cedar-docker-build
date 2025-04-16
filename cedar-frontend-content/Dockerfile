@@ -1,6 +1,6 @@
 FROM nginx:1.23.4
 
-ENV CEDAR_VERSION=2.7.5-SNAPSHOT
+ENV CEDAR_VERSION=2.7.5
 ENV CEDAR_NPM_NEXUS_REPO=https://nexus.bmir.stanford.edu/repository/npm-cedar
 ENV PACKAGE_NAME=cedar-content-distribution
 
