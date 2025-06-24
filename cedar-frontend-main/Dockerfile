@@ -1,6 +1,6 @@
 FROM debian:bullseye-slim
 
-ENV CEDAR_VERSION=2.7.9
+ENV CEDAR_VERSION=2.7.10
 ENV CEDAR_NPM_NEXUS_REPO=https://nexus.bmir.stanford.edu/repository/npm-cedar
 
 ENV NGINX_VERSION   1.23.4
