@@ -1,4 +1,4 @@
-FROM metadatacenter/cedar-microservice:2.7.11-SNAPSHOT
+FROM metadatacenter/cedar-microservice:2.7.11
 
 ENV CEDAR_SERVER_NAME=artifact
 
