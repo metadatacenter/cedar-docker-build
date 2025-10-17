@@ -1,6 +1,6 @@
 FROM nginx:1.23.4
 
-ENV CEDAR_VERSION=2.7.14-SNAPSHOT
+ENV CEDAR_VERSION=2.7.15-SNAPSHOT
 ENV CEDAR_NPM_NEXUS_REPO=https://nexus.bmir.stanford.edu/repository/npm-cedar
 ENV PACKAGE_NAME=cedar-monitoring-dist
 
