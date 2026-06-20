@@ -6,7 +6,7 @@
 
 export CEDAR_IMAGE_PREFIX="metadatacenter"
 
-export IMAGE_VERSION=2.8.2
+export IMAGE_VERSION=2.8.3
 
 CEDAR_DOCKER_IMAGES=(
   "cedar-admin-kibana"
