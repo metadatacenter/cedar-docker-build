@@ -1,4 +1,4 @@
-FROM metadatacenter/cedar-microservice:2.8.5-SNAPSHOT
+FROM metadatacenter/cedar-microservice:2.9.0
 
 ENV CEDAR_SERVER_NAME=monitor
 
