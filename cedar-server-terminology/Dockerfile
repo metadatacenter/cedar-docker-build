@@ -14,8 +14,6 @@ ENV CACHEDIR=${CEDAR_HOME}/cache/terminology/
 RUN mkdir -p ${CACHEDIR}
 VOLUME ${CACHEDIR}
 
-ADD scripts/pre-docker-entrypoint.sh ${CEDAR_HOME}/
-
 EXPOSE ${CEDAR_TERMINOLOGY_HTTP_PORT} ${CEDAR_TERMINOLOGY_ADMIN_PORT} ${CEDAR_TERMINOLOGY_STOP_PORT}
 
 # Empty unless bin/stage-local-jar.sh has staged a locally built jar here.

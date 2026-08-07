@@ -1,11 +1,9 @@
 #!/bin/bash
-python3 --version
-python3 -u ${CEDAR_HOME}/wait-for-mongodb.py
-python3 -u ${CEDAR_HOME}/wait-for-keycloak.py
-python3 -u ${CEDAR_HOME}/wait-for-neo4j.py
-python3 -u ${CEDAR_HOME}/wait-for-opensearch.py
-python3 -u ${CEDAR_HOME}/wait-for-redis.py
-python3 -u ${CEDAR_HOME}/wait-for-server.py Artifact ${CEDAR_ARTIFACT_ADMIN_PORT}
+
+# First-run bootstrap for the whole system: Neo4j indices, global and caDSR objects, and the
+# initial users. Guarded by a flag on the resource_state volume so it runs once per deployment.
+# The dependency waits that used to sit above this now come from wait-for-dependencies.sh in
+# the base image; only this bootstrap is specific to the resource server.
 
 export INIT_DONE_FLAG="/state/cedar-resource_server-init.done"
 

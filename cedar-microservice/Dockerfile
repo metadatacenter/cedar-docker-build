@@ -30,6 +30,7 @@ RUN mvn org.apache.maven.plugins:maven-dependency-plugin:3.5.0:get \
 -Dartifact=org.apache.maven.plugins:maven-dependency-plugin:3.5.0
 
 ADD scripts/docker-entrypoint.sh ${CEDAR_HOME}/
+ADD scripts/wait-for-dependencies.sh ${CEDAR_HOME}/
 ADD scripts/wait-and-init-mysql.py ${CEDAR_HOME}/
 ADD scripts/wait-for-mongodb.py ${CEDAR_HOME}/
 ADD scripts/wait-for-keycloak.py ${CEDAR_HOME}/

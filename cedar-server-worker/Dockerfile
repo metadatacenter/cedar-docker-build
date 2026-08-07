@@ -8,13 +8,15 @@ ENV CEDAR_WORKER_STOP_PORT=9211
 
 ENV CEDAR_ARTIFACT_HTTP_PORT=9001
 
+# This server does not start usefully until the Resource server answers its
+# health check. The base pre-entrypoint reads this and the matching admin port.
+ENV CEDAR_WAIT_FOR_SERVERS=Resource
+
 ENV LOGDIR=${CEDAR_HOME}/log/server-${CEDAR_SERVER_NAME}/
 RUN mkdir -p ${LOGDIR}
 VOLUME ${LOGDIR}
 
 RUN python3 -m pip install redis==2.10.6
-
-ADD scripts/pre-docker-entrypoint.sh ${CEDAR_HOME}/
 
 EXPOSE ${CEDAR_WORKER_HTTP_PORT} ${CEDAR_WORKER_ADMIN_PORT} ${CEDAR_WORKER_STOP_PORT}
 
