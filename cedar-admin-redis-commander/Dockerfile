@@ -1,9 +1,10 @@
-FROM node:12.18.4
+# node 12 went end-of-life in 2022 and publishes no arm64 image, so a full build failed on Apple
+# Silicon here rather than anywhere interesting.
+FROM node:20-bookworm
 
-ENV REDIS_COMMANDER_VERSION=0.7.0
+ENV REDIS_COMMANDER_VERSION=0.9.0
 
-RUN npm config set registry http://registry.npmjs.org/ && \
-	npm i -g --unsafe-perm --no-optional redis-commander@$REDIS_COMMANDER_VERSION
+RUN npm i -g --unsafe-perm --no-optional redis-commander@$REDIS_COMMANDER_VERSION
 
 ADD scripts/docker-entrypoint.sh /
 
