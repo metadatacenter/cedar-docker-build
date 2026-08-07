@@ -1,0 +1,183 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - develop
+  pull_request:
+    branches:
+      - develop
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # Every image that carries CEDAR code fetches it from Nexus while it builds, so an
+  # unpublished artifact fails the build far from its cause: a curl 404 or a Maven error deep
+  # in a layer. Resolve them all first, and say plainly which ones are missing.
+  artifacts:
+    name: Resolve the artifacts the images need
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check every Nexus coordinate
+        shell: bash
+        run: |
+          source bin/cedar-images-base.sh
+          echo "Image version: ${IMAGE_VERSION}"
+          echo
+
+          nexus=https://nexus.bmir.stanford.edu/repository
+          missing=0
+          missing_npm=0
+
+          check_maven() {
+              local url="${nexus}/snapshots/org/metadatacenter/$1/${IMAGE_VERSION}/maven-metadata.xml"
+              case "${IMAGE_VERSION}" in
+                  *SNAPSHOT) ;;
+                  *) url="${nexus}/releases/org/metadatacenter/$1/${IMAGE_VERSION}/" ;;
+              esac
+              code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 30 "${url}")
+              if [ "${code}" = 200 ]; then echo "OK      jar $1"
+              else echo "MISSING jar $1 (HTTP ${code})"; missing=$((missing+1)); fi
+          }
+
+          # The frontend tarballs are published by their own repos and routinely lag the
+          # current snapshot, so a miss here is a warning: it explains why the matching
+          # frontend image failed rather than failing the run on its own.
+          check_npm() {
+              local url="${nexus}/npm-cedar/$1/-/$1-${IMAGE_VERSION}.tgz"
+              code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 30 "${url}")
+              if [ "${code}" = 200 ]; then echo "OK      npm $1"
+              else echo "WARN    npm $1 (HTTP ${code}) - the image that needs it cannot build"; missing_npm=$((missing_npm+1)); fi
+          }
+
+          for image in "${CEDAR_DOCKER_IMAGES[@]}"; do
+              case "${image}" in
+                  cedar-server-*) check_maven "cedar-${image#cedar-server-}-server-application" ;;
+                  cedar-admin-tool) check_maven cedar-admin-tool ;;
+                  cedar-infra-keycloak) check_maven cedar-keycloak-event-listener ;;
+                  cedar-frontend-main) check_npm cedar-template-editor ;;
+                  cedar-frontend-artifacts) check_npm cedar-artifacts-dist ;;
+                  cedar-frontend-openview) check_npm cedar-openview-dist ;;
+                  cedar-frontend-monitoring) check_npm cedar-monitoring-dist ;;
+                  cedar-frontend-bridging) check_npm cedar-bridging-dist ;;
+                  cedar-frontend-content) check_npm cedar-content-distribution ;;
+              esac
+          done
+
+          echo
+          if [ ${missing_npm} -gt 0 ]; then
+              echo "${missing_npm} frontend tarball(s) are not published at ${IMAGE_VERSION}."
+              echo "Those frontend images will fail to build. Publish them from their own"
+              echo "repositories, or move IMAGE_VERSION in bin/cedar-images-base.sh."
+              echo
+          fi
+          if [ ${missing} -gt 0 ]; then
+              echo "${missing} jar(s) are not published at ${IMAGE_VERSION}."
+              echo "Every Java repository publishes its snapshot on merge to develop, so this"
+              echo "means a build failed or never ran. The images that need them cannot build."
+              exit 1
+          fi
+          echo "Every jar resolves."
+
+  # cedar-java and cedar-microservice are referenced by unqualified tag, so they have to exist
+  # in the local daemon before anything built on top of them. That forces one sequential job
+  # rather than a matrix.
+  java-chain:
+    name: Build the Java image chain
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build base, then every image built on it
+        shell: bash
+        run: |
+          source bin/cedar-images-base.sh
+
+          build() {
+              echo "::group::$1"
+              docker build -t "${CEDAR_IMAGE_PREFIX}/$1:${IMAGE_VERSION}" "$1"
+              echo "::endgroup::"
+          }
+
+          build cedar-java
+          build cedar-microservice
+
+          failed=""
+          for image in "${CEDAR_DOCKER_IMAGES[@]}"; do
+              case "${image}" in
+                  cedar-server-*|cedar-admin-tool)
+                      build "${image}" || failed="${failed} ${image}"
+                      ;;
+              esac
+          done
+
+          if [ -n "${failed}" ]; then
+              echo "Failed to build:${failed}"
+              exit 1
+          fi
+
+  # Infrastructure and the three non-Java admin images depend on nothing CEDAR builds, so each
+  # is independent and each gates the run.
+  standalone:
+    name: Build ${{ matrix.image }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        image:
+          - cedar-infra-keycloak
+          - cedar-infra-mongo
+          - cedar-infra-mysql
+          - cedar-infra-neo4j
+          - cedar-infra-nginx
+          - cedar-infra-opensearch
+          - cedar-infra-redis-persistent
+          - cedar-admin-kibana
+          - cedar-admin-phpmyadmin
+          - cedar-admin-redis-commander
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build
+        shell: bash
+        run: |
+          source bin/cedar-images-base.sh
+          docker build -t "${CEDAR_IMAGE_PREFIX}/${{ matrix.image }}:${IMAGE_VERSION}" "${{ matrix.image }}"
+
+  # The frontends download a tarball their own repository publishes, and those routinely lag
+  # the current snapshot. Report the failure without failing the run; the artifacts job above
+  # says which tarball is missing. Make this gate once publishing keeps up.
+  frontends:
+    name: Build ${{ matrix.image }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    continue-on-error: true
+    strategy:
+      fail-fast: false
+      matrix:
+        image:
+          - cedar-frontend-main
+          - cedar-frontend-artifacts
+          - cedar-frontend-bridging
+          - cedar-frontend-content
+          - cedar-frontend-monitoring
+          - cedar-frontend-openview
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build
+        shell: bash
+        run: |
+          source bin/cedar-images-base.sh
+          docker build -t "${CEDAR_IMAGE_PREFIX}/${{ matrix.image }}:${IMAGE_VERSION}" "${{ matrix.image }}"
