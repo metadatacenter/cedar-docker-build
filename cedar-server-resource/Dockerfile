@@ -23,6 +23,9 @@ ADD scripts/cedarat.sh ${CEDAR_HOME}/app
 
 EXPOSE ${CEDAR_RESOURCE_HTTP_PORT} ${CEDAR_RESOURCE_ADMIN_PORT} ${CEDAR_RESOURCE_STOP_PORT}
 
+# Empty unless bin/stage-local-jar.sh has staged a locally built jar here.
+COPY local/ ${CEDAR_HOME}/local/
+
 RUN ${CEDAR_HOME}/install_deps.sh
 
 RUN ${CEDAR_HOME}/install_cedarat_deps.sh

@@ -16,4 +16,7 @@ ADD scripts/pre-docker-entrypoint.sh ${CEDAR_HOME}/
 
 EXPOSE ${CEDAR_OPENVIEW_HTTP_PORT} ${CEDAR_OPENVIEW_ADMIN_PORT} ${CEDAR_OPENVIEW_STOP_PORT}
 
+# Empty unless bin/stage-local-jar.sh has staged a locally built jar here.
+COPY local/ ${CEDAR_HOME}/local/
+
 RUN ${CEDAR_HOME}/install_deps.sh

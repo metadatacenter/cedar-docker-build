@@ -28,6 +28,9 @@ ADD config/m2/settings.xml /root/.m2/
 
 RUN echo 'alias cedarat="/cedar/app/cedarat.sh"' >> ~/.bashrc
 
+# Empty unless bin/stage-local-jar.sh has staged a locally built jar here.
+COPY local/ ${CEDAR_HOME}/local/
+
 RUN ${CEDAR_HOME}/install_deps.sh
 
 CMD ["bash", "-C", "/cedar/docker-entrypoint.sh"]

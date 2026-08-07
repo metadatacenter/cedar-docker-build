@@ -2,3 +2,7 @@
 *.iml
 .settings
 .DS_Store
+
+# Jars staged into a build context by bin/stage-local-jar.sh. The directories themselves are
+# tracked through their .gitkeep, because each Dockerfile's COPY needs a source that exists.
+*/local/*.jar

@@ -34,18 +34,29 @@ ARTIFACT=cedar-${CEDAR_SERVER_NAME}-server-application
 REPO_URL=https://nexus.bmir.stanford.edu/
 ARTIFACT_FULL=org.metadatacenter:${ARTIFACT}:${CEDAR_VERSION}
 
-echo "Downloading microservice jar:"
-n=0
-until [ "$n" -ge 5 ]
-do
-  mvn org.apache.maven.plugins:maven-dependency-plugin:3.5.0:get -DrepoUrl=${REPO_URL} -Dartifact=${ARTIFACT_FULL} -Dmaven.wagon.http.retryHandler.count=5 && break
-  echo "Downloading of jar failed. Retrying soon..."
-  n=$((n+1))
-  sleep $((n+15))
-done
-mvn org.apache.maven.plugins:maven-dependency-plugin:3.5.0:copy -Dartifact=${ARTIFACT_FULL}:jar -DoutputDirectory=. -Dmdep.useBaseVersion=true -Dmdep.stripVersion=true
-echo "Renaming microservice jar:"
-mv ./${ARTIFACT}.jar ./cedar-server.jar
+# A jar staged into the build context wins over the published one. Without this the image can
+# only ever run code that has already reached Nexus, so a local change is invisible to Docker
+# until it is published. Stage one with bin/stage-local-jar.sh.
+LOCAL_JAR=${CEDAR_HOME}/local/cedar-server.jar
+
+if [ -f "${LOCAL_JAR}" ]; then
+  echo "Using the staged jar ${LOCAL_JAR}, skipping the Nexus download:"
+  ls -l "${LOCAL_JAR}"
+  cp "${LOCAL_JAR}" ./cedar-server.jar
+else
+  echo "Downloading microservice jar:"
+  n=0
+  until [ "$n" -ge 5 ]
+  do
+    mvn org.apache.maven.plugins:maven-dependency-plugin:3.5.0:get -DrepoUrl=${REPO_URL} -Dartifact=${ARTIFACT_FULL} -Dmaven.wagon.http.retryHandler.count=5 && break
+    echo "Downloading of jar failed. Retrying soon..."
+    n=$((n+1))
+    sleep $((n+15))
+  done
+  mvn org.apache.maven.plugins:maven-dependency-plugin:3.5.0:copy -Dartifact=${ARTIFACT_FULL}:jar -DoutputDirectory=. -Dmdep.useBaseVersion=true -Dmdep.stripVersion=true
+  echo "Renaming microservice jar:"
+  mv ./${ARTIFACT}.jar ./cedar-server.jar
+fi
 echo "Contents of current directory:"
 ls -ls
 

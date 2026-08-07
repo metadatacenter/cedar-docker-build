@@ -14,4 +14,7 @@ ADD scripts/pre-docker-entrypoint.sh ${CEDAR_HOME}/
 
 EXPOSE ${CEDAR_MESSAGING_HTTP_PORT} ${CEDAR_MESSAGING_ADMIN_PORT} ${CEDAR_MESSAGING_STOP_PORT}
 
+# Empty unless bin/stage-local-jar.sh has staged a locally built jar here.
+COPY local/ ${CEDAR_HOME}/local/
+
 RUN ${CEDAR_HOME}/install_deps.sh
