@@ -28,6 +28,7 @@ mkdir -p nginx-frontend-content
 mkdir -p nginx-frontend-monitoring
 mkdir -p nginx-frontend-openview
 mkdir -p nginx-frontend-bridging
+mkdir -p nginx-frontend-shared
 
 
 echo "Executing sed"
