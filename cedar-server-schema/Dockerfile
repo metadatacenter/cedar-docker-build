@@ -10,6 +10,8 @@ ENV LOGDIR=${CEDAR_HOME}/log/server-${CEDAR_SERVER_NAME}/
 RUN mkdir -p ${LOGDIR}
 VOLUME ${LOGDIR}
 
+ADD scripts/pre-docker-entrypoint.sh ${CEDAR_HOME}/
+
 EXPOSE ${CEDAR_SCHEMA_HTTP_PORT} ${CEDAR_SCHEMA_ADMIN_PORT} ${CEDAR_SCHEMA_STOP_PORT}
 
 # Empty unless bin/stage-local-jar.sh has staged a locally built jar here.
