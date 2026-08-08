@@ -16,15 +16,24 @@ if [ ! -f ${INIT_DONE_FLAG} ]; then
 
   export TERM=xterm
 
-  echo "Creating indices"
-  ${CEDAR_HOME}/app/cedarat.sh graphDb-createIndices
+  # Each step is checked. The flag used to be written whatever happened, so a first run against a
+  # half-ready Neo4j marked the system initialised without having initialised it and never tried
+  # again - recoverable only by deleting the flag from the volume by hand. Failing instead lets the
+  # container's restart policy try again, which is what a first run needs.
+  run_step() {
+    echo "$1"
+    shift
+    if ! ${CEDAR_HOME}/app/cedarat.sh "$@"; then
+      echo "Bootstrap step failed: cedarat.sh $*"
+      echo "Not writing ${INIT_DONE_FLAG}; the server will not start and the bootstrap will be retried."
+      exit 1
+    fi
+  }
 
-  echo "Creating global objects"
-  ${CEDAR_HOME}/app/cedarat.sh graphDb-createGlobalObjects
-  ${CEDAR_HOME}/app/cedarat.sh graphDb-createCaDSRObjects
-
-  echo "Creating users"
-  ${CEDAR_HOME}/app/cedarat.sh graphDb-createAllUsers
+  run_step "Creating indices"        graphDb-createIndices
+  run_step "Creating global objects" graphDb-createGlobalObjects
+  run_step "Creating caDSR objects"  graphDb-createCaDSRObjects
+  run_step "Creating users"          graphDb-createAllUsers
 
   echo "Creating done flag:${INIT_DONE_FLAG}"
   touch ${INIT_DONE_FLAG}
