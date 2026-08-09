@@ -10,16 +10,21 @@ FROM registry.access.redhat.com/ubi9:${UBI9_VERSION}
 ARG KEYCLOAK_VERSION
 ENV KEYCLOAK_VERSION=${KEYCLOAK_VERSION}
 ARG KEYCLOAK_DIST=https://github.com/keycloak/keycloak/releases/download/$KEYCLOAK_VERSION/keycloak-$KEYCLOAK_VERSION.tar.gz
+# Declared beside KEYCLOAK_VERSION in bin/cedar-images-base.sh, because the two must move together.
+ARG KEYCLOAK_SHA256
 
 RUN dnf install -y tar gzip
 
-ADD $KEYCLOAK_DIST /tmp/keycloak/
-
-# The next step makes it uniform for local development and upstream built.
-# If it is a local tar archive then it is unpacked, if from remote is just downloaded.
-RUN (cd /tmp/keycloak && \
-    tar -xvf /tmp/keycloak/keycloak-*.tar.gz && \
-    rm /tmp/keycloak/keycloak-*.tar.gz) || true
+# This used to be `ADD $KEYCLOAK_DIST`, which downloads but cannot verify. Keycloak publishes no
+# checksum next to its release, so the digest is pinned in the manifest and checked here: the build
+# fails rather than unpacking an archive that is not the one that was meant.
+RUN set -eux; \
+    test -n "$KEYCLOAK_SHA256" || { echo "KEYCLOAK_SHA256 build argument is required"; exit 1; }; \
+    mkdir -p /tmp/keycloak; \
+    curl -fsSL -o /tmp/keycloak/keycloak.tar.gz "$KEYCLOAK_DIST"; \
+    echo "${KEYCLOAK_SHA256}  /tmp/keycloak/keycloak.tar.gz" | sha256sum -c -; \
+    tar -xf /tmp/keycloak/keycloak.tar.gz -C /tmp/keycloak; \
+    rm /tmp/keycloak/keycloak.tar.gz
 
 RUN mv /tmp/keycloak/keycloak-* /opt/keycloak && mkdir -p /opt/keycloak/data
 RUN chmod -R a+rwx /opt/keycloak

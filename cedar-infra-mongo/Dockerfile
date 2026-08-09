@@ -26,8 +26,9 @@ RUN set -eux; \
 
 # grab gosu for easy step-down from root (https://github.com/tianon/gosu/releases)
 ENV GOSU_VERSION 1.12
-# grab "js-yaml" for parsing mongod's YAML config files (https://github.com/nodeca/js-yaml/releases)
-ENV JSYAML_VERSION 3.13.1
+# js-yaml used to be downloaded here from a raw GitHub URL with no verification, directly below a
+# gosu download that is GPG-verified. It was also unreachable: the entrypoint loads it only to parse
+# a --config file, and run.sh starts mongod with flags. Removed rather than verified.
 
 RUN set -ex; \
 	\
@@ -46,9 +47,6 @@ RUN set -ex; \
 	gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu; \
 	gpgconf --kill all; \
 	rm -rf "$GNUPGHOME" /usr/local/bin/gosu.asc; \
-	\
-	wget -O /js-yaml.js "https://github.com/nodeca/js-yaml/raw/${JSYAML_VERSION}/dist/js-yaml.js"; \
-# TODO some sort of download verification here
 	\
 	apt-mark auto '.*' > /dev/null; \
 	apt-mark manual $savedAptMark > /dev/null; \

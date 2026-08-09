@@ -18,16 +18,29 @@ USER root
 RUN \
 apt-get update && \
 apt-get install -y apt-utils && \
-apt-get install -y curl
+apt-get install -y curl xz-utils
 
-# Install nodejs
-RUN \
-apt-get install -y gnupg2 && \
-curl -sL https://deb.nodesource.com/setup_16.x | bash - && \
-apt-get install -y nodejs && \
-apt-get purge -y apt-transport-https && \
-apt-get autoremove -y && \
-apt-get clean all
+# Node used to arrive as `curl -sL https://deb.nodesource.com/setup_16.x | bash -`: whatever that URL
+# returned ran as root at build time, unverified. Take the official distribution instead and check it
+# against the SHASUMS256.txt nodejs.org publishes beside it, so a build either gets the bytes upstream
+# published or fails.
+ARG NODE_FRONTEND_VERSION
+RUN set -eux; \
+    test -n "$NODE_FRONTEND_VERSION" || { echo "NODE_FRONTEND_VERSION build argument is required"; exit 1; }; \
+    case "$(dpkg --print-architecture)" in \
+      amd64) nodearch=x64 ;; \
+      arm64) nodearch=arm64 ;; \
+      *) echo "unsupported architecture: $(dpkg --print-architecture)"; exit 1 ;; \
+    esac; \
+    tarball="node-v${NODE_FRONTEND_VERSION}-linux-${nodearch}.tar.xz"; \
+    cd /tmp; \
+    curl -fsSLO "https://nodejs.org/dist/v${NODE_FRONTEND_VERSION}/${tarball}"; \
+    curl -fsSLO "https://nodejs.org/dist/v${NODE_FRONTEND_VERSION}/SHASUMS256.txt"; \
+    grep " ${tarball}\$" SHASUMS256.txt | sha256sum -c -; \
+    tar -xJf "${tarball}" -C /usr/local --strip-components=1 --no-same-owner; \
+    rm "${tarball}" SHASUMS256.txt; \
+    node --version; \
+    npm --version
 
 ENV CEDAR_HOME /srv/cedar
 ENV CEDAR_TEMPLATE_EDITOR_HOME ${CEDAR_HOME}/cedar-template-editor/

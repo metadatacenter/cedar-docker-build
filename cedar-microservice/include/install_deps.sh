@@ -1,31 +1,11 @@
 #!/bin/bash
 
-echo "Install mysql drivers"
-
-uname -a
-uname -m
-
-ARCH=$(uname -m)
-if [[ "$ARCH" == "arm64" || "$ARCH" == "aarch64" ]]; then
-    ARCH_DIR="aarch64"
-else
-    ARCH_DIR="x86_64"
-fi
-
-yum-config-manager --add-repo http://repo.mysql.com/yum/mysql-8.0-community/el/9/${ARCH_DIR}/
-microdnf makecache
-microdnf repoquery mysql*
-
-ls /etc/yum.repos.d/
-cat /etc/yum.repos.d/repo.mysql.com_yum_mysql-8.0-community_el_9_${ARCH_DIR}_.repo
-yum-config-manager --save --setopt=repo.mysql.com_yum_mysql-8.0-community_el_9_${ARCH_DIR}_.gpgkey=http://repo.mysql.com/RPM-GPG-KEY-mysql-2022
-yum-config-manager --save --setopt=repo.mysql.com_yum_mysql-8.0-community_el_9_${ARCH_DIR}_.gpgcheck=0
-cat /etc/yum.repos.d/repo.mysql.com_yum_mysql-8.0-community_el_9_${ARCH_DIR}_.repo
-microdnf makecache
-
-microdnf -y install mysql-community-devel-8.0.30-1.el9.${ARCH_DIR}
-
-python3 -m pip install mysqlclient==2.1.1
+# The MySQL driver used to be mysqlclient, a C extension, which meant adding MySQL's own package
+# repository to install mysql-community-devel and compile against it. That repository was added over
+# plain HTTP with its gpgkey also on plain HTTP and gpgcheck=0, so packages entered the base image of
+# every CEDAR server unverified. PyMySQL is a pure-Python driver with the same DB-API surface, needs
+# no repository and no compiler, and is what the Keycloak image already uses for the same job.
+# It is installed with the other pip dependencies in the Dockerfile.
 
 echo "Current working directory:"
 pwd

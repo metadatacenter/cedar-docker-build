@@ -33,6 +33,10 @@ export REDIS_VERSION=7.2.7
 export OPENSEARCH_VERSION=2.19.1
 # renovate: datasource=github-releases depName=keycloak/keycloak
 export KEYCLOAK_VERSION=22.0.4
+# Keycloak publishes no checksum alongside its GitHub release, so the digest is pinned here instead
+# and verified at build time. It is version-specific: change one of these two and you must change
+# the other, which is why they sit together. sha256sum of keycloak-${KEYCLOAK_VERSION}.tar.gz.
+export KEYCLOAK_SHA256=d00d88fc9dd73b022e0109f09353374049955de18dd089d2e2da927f1ba52434
 
 # nginx is declared here for the same reason but not locked for the same one. The six above are
 # locked because moving one is a data migration; nginx holds no data, so it is pinned only so a
@@ -52,6 +56,13 @@ export NODE_VERSION=20.20.2
 # renovate: datasource=docker depName=ubuntu
 export UBUNTU_VERSION=20.04
 
+# The Node the Template Designer image builds with, distinct from NODE_VERSION above because
+# they are genuinely two different Nodes. 16 left support in September 2023 and should move, but
+# that image cannot currently be built to completion — its npm tarball is unpublished — so the
+# bump cannot be tested and is not being made blind. Fixing the download was separable and done.
+# renovate: datasource=node-version depName=node
+export NODE_FRONTEND_VERSION=16.20.2
+
 # The build arguments those versions become, derived from the declarations above so that adding a
 # server stays a one-line change. `cedarcli docker build` reads the same declarations directly and
 # is the only builder; this exists for the CI jobs, which build images individually.
@@ -59,7 +70,7 @@ export UBUNTU_VERSION=20.04
 # declare, and the alternative is a second place recording which image installs which server.
 cedar_server_build_args() {
   local name
-  for name in $(grep -oE '^export [A-Z0-9_]+_VERSION=' "${BASH_SOURCE[0]}" | sed 's/^export //; s/=$//'); do
+  for name in $(grep -oE '^export [A-Z0-9_]+(_VERSION|_SHA256)=' "${BASH_SOURCE[0]}" | sed 's/^export //; s/=$//'); do
     [ "${name}" = "IMAGE_VERSION" ] && continue
     printf ' --build-arg %s=%s' "${name}" "${!name}"
   done
