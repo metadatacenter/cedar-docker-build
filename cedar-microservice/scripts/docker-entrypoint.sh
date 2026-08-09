@@ -32,7 +32,11 @@ echo ---------------------------------------------------------------------------
 echo Starting CEDAR ${CEDAR_SERVER_NAME} server
 echo - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-exec java \
+# CEDAR_JAVA_OPTS is deliberately unquoted: it carries whitespace-separated JVM flags, and the
+# native controller passes exactly the same ones with -D. The local terminology store is configured
+# this way — the server reads terminologyStore.* system properties rather than the environment — so
+# without this hook a containerized server cannot be given it at all.
+exec java ${CEDAR_JAVA_OPTS} \
   -jar /cedar/app/cedar-server.jar \
   server \
   "/cedar/app/config.yml"
