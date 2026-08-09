@@ -75,12 +75,15 @@ ARG MONGO_PACKAGE=mongodb-org
 ARG MONGO_REPO=repo.mongodb.org
 ENV MONGO_PACKAGE=${MONGO_PACKAGE} MONGO_REPO=${MONGO_REPO}
 
-ENV MONGO_MAJOR 5.0
-RUN echo "deb [ signed-by=/etc/apt/keyrings/mongodb.gpg ] http://$MONGO_REPO/apt/ubuntu focal/${MONGO_PACKAGE%-unstable}/$MONGO_MAJOR multiverse" | tee "/etc/apt/sources.list.d/${MONGO_PACKAGE%-unstable}.list"
+# Declared in bin/cedar-images-base.sh and supplied by `cedarcli docker build`. No default: a build
+# that was not given a version fails rather than silently choosing one. The series the apt
+# repository is keyed on is derived from it, so there is still only one version to change.
+ARG MONGO_VERSION
+ENV MONGO_VERSION=${MONGO_VERSION}
 
-# https://docs.mongodb.org/master/release-notes/5.0/
-# Matches the server the native development stack runs, so an image can open data it wrote.
-ENV MONGO_VERSION 5.0.31
+RUN test -n "$MONGO_VERSION" || { echo "MONGO_VERSION build argument is required"; exit 1; } \
+	&& MONGO_MAJOR="${MONGO_VERSION%.*}" \
+	&& echo "deb [ signed-by=/etc/apt/keyrings/mongodb.gpg ] http://$MONGO_REPO/apt/ubuntu focal/${MONGO_PACKAGE%-unstable}/$MONGO_MAJOR multiverse" | tee "/etc/apt/sources.list.d/${MONGO_PACKAGE%-unstable}.list"
 
 RUN set -x \
 # installing "mongodb-enterprise" pulls in "tzdata" which prompts for input

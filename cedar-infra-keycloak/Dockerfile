@@ -1,6 +1,9 @@
 FROM registry.access.redhat.com/ubi9
 
-ENV KEYCLOAK_VERSION 22.0.4
+# Declared in bin/cedar-images-base.sh and supplied by `cedarcli docker build`. No default: a build
+# that was not given a version fails rather than silently choosing one.
+ARG KEYCLOAK_VERSION
+ENV KEYCLOAK_VERSION=${KEYCLOAK_VERSION}
 ARG KEYCLOAK_DIST=https://github.com/keycloak/keycloak/releases/download/$KEYCLOAK_VERSION/keycloak-$KEYCLOAK_VERSION.tar.gz
 
 RUN dnf install -y tar gzip

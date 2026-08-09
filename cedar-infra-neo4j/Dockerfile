@@ -1,5 +1,9 @@
-# Matches the server the native development stack runs, so an image can open data it wrote.
-FROM neo4j:5.26.0-community
+# check=skip=InvalidDefaultArgInFrom
+# Declared in bin/cedar-images-base.sh and supplied by `cedarcli docker build`. No default: a build
+# that was not given a version fails here rather than silently choosing one, which is exactly what
+# the skipped lint check objects to.
+ARG NEO4J_VERSION
+FROM neo4j:${NEO4J_VERSION}-community
 
 RUN apt-get update
 RUN apt-get -y install curl netcat
