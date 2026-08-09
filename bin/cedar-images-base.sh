@@ -21,8 +21,10 @@ export IMAGE_VERSION=2.9.2-SNAPSHOT
 # The `# renovate:` lines are what let Renovate maintain this file; keep them attached.
 # renovate: datasource=docker depName=mongo
 export MONGO_VERSION=5.0.31
-# renovate: datasource=docker depName=mysql/mysql-server
-export MYSQL_VERSION=8.0.32
+# The 8.4 LTS line, deliberately rather than the 9.x innovation line the native install drifted onto:
+# an innovation release is superseded roughly quarterly, which is the opposite of a locked version.
+# renovate: datasource=docker depName=mysql
+export MYSQL_VERSION=8.4.11
 # renovate: datasource=docker depName=neo4j
 export NEO4J_VERSION=5.26.0
 # renovate: datasource=docker depName=redis
