@@ -1,4 +1,9 @@
-FROM registry.access.redhat.com/ubi9
+# check=skip=InvalidDefaultArgInFrom
+# Declared in bin/cedar-images-base.sh and supplied by `cedarcli docker build`. No default: a build
+# that was not given a version fails here rather than silently choosing one, which is exactly what
+# the skipped lint check objects to.
+ARG UBI9_VERSION
+FROM registry.access.redhat.com/ubi9:${UBI9_VERSION}
 
 # Declared in bin/cedar-images-base.sh and supplied by `cedarcli docker build`. No default: a build
 # that was not given a version fails rather than silently choosing one.

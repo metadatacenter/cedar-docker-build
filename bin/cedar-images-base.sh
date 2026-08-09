@@ -41,6 +41,17 @@ export KEYCLOAK_VERSION=22.0.4
 # renovate: datasource=docker depName=nginx
 export NGINX_VERSION=1.23.4
 
+# The OS bases, pinned to what the images were already resolving to rather than to a moving target.
+# `ubi9` carried no tag at all and `node:20-bookworm` floated within the Node 20 line, so a rebuild
+# could silently produce a different image; `ubuntu:focal` is a rolling alias for the same reason.
+# These are still tags rather than digests, and a tag can be re-pushed — Renovate pins the digests.
+# renovate: datasource=docker depName=registry.access.redhat.com/ubi9
+export UBI9_VERSION=9.8
+# renovate: datasource=docker depName=node
+export NODE_VERSION=20.20.2
+# renovate: datasource=docker depName=ubuntu
+export UBUNTU_VERSION=20.04
+
 # The build arguments those versions become, derived from the declarations above so that adding a
 # server stays a one-line change. `cedarcli docker build` reads the same declarations directly and
 # is the only builder; this exists for the CI jobs, which build images individually.

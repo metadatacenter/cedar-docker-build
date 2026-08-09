@@ -1,4 +1,9 @@
-FROM ubuntu:focal
+# check=skip=InvalidDefaultArgInFrom
+# Declared in bin/cedar-images-base.sh and supplied by `cedarcli docker build`. No default: a build
+# that was not given a version fails here rather than silently choosing one, which is exactly what
+# the skipped lint check objects to.
+ARG UBUNTU_VERSION
+FROM ubuntu:${UBUNTU_VERSION}
 
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
 RUN set -eux; \
