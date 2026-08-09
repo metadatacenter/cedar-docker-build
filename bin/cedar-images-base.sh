@@ -34,6 +34,13 @@ export OPENSEARCH_VERSION=2.19.1
 # renovate: datasource=github-releases depName=keycloak/keycloak
 export KEYCLOAK_VERSION=22.0.4
 
+# nginx is declared here for the same reason but not locked for the same one. The six above are
+# locked because moving one is a data migration; nginx holds no data, so it is pinned only so a
+# rebuild produces the same bytes, and it may move whenever someone wants it to. Seven images are
+# built on it — the reverse proxy and all six frontends — and each used to restate the number.
+# renovate: datasource=docker depName=nginx
+export NGINX_VERSION=1.23.4
+
 # The build arguments those versions become, derived from the declarations above so that adding a
 # server stays a one-line change. `cedarcli docker build` reads the same declarations directly and
 # is the only builder; this exists for the CI jobs, which build images individually.

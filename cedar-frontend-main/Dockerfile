@@ -1,9 +1,11 @@
+# check=skip=InvalidDefaultArgInFrom
 # The official nginx image, as cedar-frontend-content and the other dist frontends already use.
 # This used to install nginx from nginx.org on debian:bullseye-slim, fetching the repository signing
 # key by fingerprint; nginx rotated that key to 2FD21310B49F6B46 and apt began rejecting the
 # repository as unsigned, so the build failed in its second layer. The image is still bullseye-based,
 # so the Node install below is unaffected. None of the dynamic modules the old block added are used.
-FROM nginx:1.23.4
+ARG NGINX_VERSION
+FROM nginx:${NGINX_VERSION}
 
 ENV CEDAR_VERSION=2.9.2-SNAPSHOT
 ENV CEDAR_NPM_NEXUS_REPO=https://nexus.bmir.stanford.edu/repository/npm-cedar

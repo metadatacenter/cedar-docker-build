@@ -29,13 +29,27 @@
   ],
   "packageRules": [
     {
-      "description": "The six locked servers move only when someone decides to, and moving one is a migration rather than an upgrade: an image older than a running server cannot open its data files, and a newer one may write a format the old one cannot read. Group them so they arrive as one reviewable decision, and never merge them automatically.",
+      "description": "The six locked servers, which is every server declared in the manifest except nginx. move only when someone decides to, and moving one is a migration rather than an upgrade: an image older than a running server cannot open its data files, and a newer one may write a format the old one cannot read. Group them so they arrive as one reviewable decision, and never merge them automatically.",
       "matchFileNames": [
         "bin/cedar-images-base.sh"
       ],
       "groupName": "locked infrastructure servers",
       "automerge": false,
-      "minimumReleaseAge": "14 days"
+      "minimumReleaseAge": "14 days",
+      "excludePackageNames": [
+        "nginx"
+      ]
+    },
+    {
+      "description": "nginx is declared in the same manifest but is not part of the version lock: it holds no data, so a bump is an upgrade rather than a migration and needs no rehearsal. Seven images are built on it, so one pull request moves all of them.",
+      "matchPackageNames": [
+        "nginx"
+      ],
+      "matchFileNames": [
+        "bin/cedar-images-base.sh"
+      ],
+      "groupName": "nginx",
+      "automerge": false
     },
     {
       "description": "Keycloak is held at 22 by CEDAR's own code, not by the lock: keycloak-adapter-core, which the bearer-token path of every server is built on, was last published at 25.0.3. Raise the pull request anyway so the distance stays visible, but say why it cannot simply be merged.",

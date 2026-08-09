@@ -1,4 +1,9 @@
-FROM nginx:1.23.4
+# check=skip=InvalidDefaultArgInFrom
+# Declared in bin/cedar-images-base.sh and supplied by `cedarcli docker build`. No default: a build
+# that was not given a version fails here rather than silently choosing one, which is exactly what
+# the skipped lint check objects to.
+ARG NGINX_VERSION
+FROM nginx:${NGINX_VERSION}
 
 ENV CEDAR_VERSION=2.9.2-SNAPSHOT
 ENV CEDAR_NPM_NEXUS_REPO=https://nexus.bmir.stanford.edu/repository/npm-cedar

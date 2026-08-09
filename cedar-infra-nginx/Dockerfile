@@ -1,3 +1,4 @@
+# check=skip=InvalidDefaultArgInFrom
 # The official nginx image, which is what the five other frontend images already use. This used to
 # install nginx from nginx.org on debian:bullseye-slim, fetching the repository signing key from a
 # keyserver by fingerprint. nginx rotated that key to 2FD21310B49F6B46 and the build broke: apt
@@ -9,7 +10,8 @@
 # directive (ngx_http_geo_module, built in), not the geoip module. The nginx user at uid/gid 101,
 # the access and error log symlinks to stdout and stderr, and STOPSIGNAL SIGQUIT all come with the
 # official image.
-FROM nginx:1.23.4
+ARG NGINX_VERSION
+FROM nginx:${NGINX_VERSION}
 
 COPY scripts/docker-entrypoint.sh /
 
