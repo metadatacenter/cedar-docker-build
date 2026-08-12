@@ -22,13 +22,16 @@ docker run -d \
 -e CEDAR_REDIS_PERSISTENT_HOST \
 -e CEDAR_REDIS_PERSISTENT_PORT \
 -e CEDAR_TEST_USER1_ID \
--p ${CEDAR_ARTIFACT_HTTP_PORT}:9001 \
 -p ${CEDAR_ARTIFACT_MANAGEMENT_PORT}:9101 \
 -p ${CEDAR_ARTIFACT_STOP_PORT}:9201 \
 --mount 'type=volume,src=artifact_log,dst=/cedar/log/server-artifact/' \
 --mount 'type=volume,src=cedar_ca,dst=/cedar/ca' \
 metadatacenter/cedar-artifact-server
 ````
+
+The artifact REST port is intentionally not published. Other CEDAR services reach it over
+`cedarnet`; external clients must use the resource server, which applies resource-level access
+control before forwarding requests internally.
 
 ## Stop the container
 
