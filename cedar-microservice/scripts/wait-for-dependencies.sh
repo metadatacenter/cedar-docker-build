@@ -11,7 +11,6 @@
 # Two things stay explicit because they are not derivable from a host variable:
 #   - the MySQL step creates databases and users, so it must not run just because MySQL coordinates
 #     are present; wait-and-init-mysql.py decides for itself from CEDAR_SERVER_NAME.
-#   - waiting on another CEDAR server is a per-server fact, declared as CEDAR_WAIT_FOR_SERVERS.
 
 python3 --version
 
@@ -36,14 +35,11 @@ wait_for Neo4j      CEDAR_NEO4J_HOST              wait-for-neo4j.py
 wait_for OpenSearch CEDAR_OPENSEARCH_HOST         wait-for-opensearch.py
 wait_for Redis      CEDAR_REDIS_PERSISTENT_HOST   wait-for-redis.py
 
-# CEDAR_WAIT_FOR_SERVERS is a space-separated list of server names, e.g. "Artifact". The admin port
-# comes from CEDAR_<NAME>_ADMIN_PORT, which is how the per-server scripts passed it.
-for server in ${CEDAR_WAIT_FOR_SERVERS}; do
-    port_var="CEDAR_$(echo "${server}" | tr '[:lower:]' '[:upper:]')_ADMIN_PORT"
-    if [ -z "${!port_var}" ]; then
-        echo "Cannot wait for the ${server} server: ${port_var} is not set"
-        exit 1
-    fi
-    echo "Wait for the ${server} server"
-    python3 -u "${CEDAR_HOME}/wait-for-server.py" "${server}" "${!port_var}"
-done
+# Waiting on another CEDAR server is not done here. It used to be, driven by CEDAR_WAIT_FOR_SERVERS,
+# and it reached the other server through CEDAR_MICROSERVICE_HOST -- the Docker gateway -- so a
+# container left the network, hit a port its dependency published on the host, and came back in.
+# That made startup depend on host port publication: unpublishing the admin ports, which nothing
+# outside the network should reach, stopped five containers from ever starting. Compose expresses
+# the same ordering directly, with depends_on/condition: service_healthy, and Docker runs the
+# health check inside the container, so nothing has to be reachable from outside for one server to
+# wait for another.

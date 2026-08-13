@@ -7,8 +7,6 @@ ENV CEDAR_SUBMISSION_ADMIN_PORT=9110
 ENV CEDAR_SUBMISSION_STOP_PORT=9210
 
 # This server does not start usefully until the Messaging server answers its
-# health check. The base pre-entrypoint reads this and the matching admin port.
-ENV CEDAR_WAIT_FOR_SERVERS=Messaging
 
 ENV LOGDIR=${CEDAR_HOME}/log/server-${CEDAR_SERVER_NAME}/
 RUN mkdir -p ${LOGDIR}
