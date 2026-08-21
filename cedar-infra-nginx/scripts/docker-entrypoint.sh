@@ -22,7 +22,6 @@ mkdir -p nginx-user
 mkdir -p nginx-valuerecommender
 mkdir -p nginx-worker 
 
-mkdir -p nginx-frontend-artifacts
 mkdir -p nginx-frontend-cedar
 mkdir -p nginx-frontend-content
 mkdir -p nginx-frontend-monitoring
@@ -39,7 +38,6 @@ echo "Using CEDAR_FRONTEND_EDITOR_HOST     :${CEDAR_FRONTEND_EDITOR_HOST}"
 echo "Using CEDAR_FRONTEND_CONTENT_HOST    :${CEDAR_FRONTEND_CONTENT_HOST}"
 echo "Using CEDAR_FRONTEND_OPENVIEW_HOST   :${CEDAR_FRONTEND_OPENVIEW_HOST}"
 echo "Using CEDAR_FRONTEND_MONITORING_HOST :${CEDAR_FRONTEND_MONITORING_HOST}"
-echo "Using CEDAR_FRONTEND_ARTIFACTS_HOST  :${CEDAR_FRONTEND_ARTIFACTS_HOST}"
 echo "Using CEDAR_FRONTEND_BRIDGING_HOST   :${CEDAR_FRONTEND_BRIDGING_HOST}"
 
 for filename in /etc/nginx/conf.d/*inc.conf; do
@@ -53,7 +51,6 @@ sed -i 's/<cedar.CEDAR_FRONTEND_EDITOR_HOST>/'${CEDAR_FRONTEND_EDITOR_HOST}'/g' 
 sed -i 's/<cedar.CEDAR_FRONTEND_CONTENT_HOST>/'${CEDAR_FRONTEND_CONTENT_HOST}'/g' /etc/nginx/conf.d/frontend-*.inc.conf
 sed -i 's/<cedar.CEDAR_FRONTEND_OPENVIEW_HOST>/'${CEDAR_FRONTEND_OPENVIEW_HOST}'/g' /etc/nginx/conf.d/frontend-*.inc.conf
 sed -i 's/<cedar.CEDAR_FRONTEND_MONITORING_HOST>/'${CEDAR_FRONTEND_MONITORING_HOST}'/g' /etc/nginx/conf.d/frontend-*.inc.conf
-sed -i 's/<cedar.CEDAR_FRONTEND_ARTIFACTS_HOST>/'${CEDAR_FRONTEND_ARTIFACTS_HOST}'/g' /etc/nginx/conf.d/frontend-*.inc.conf
 sed -i 's/<cedar.CEDAR_FRONTEND_BRIDGING_HOST>/'${CEDAR_FRONTEND_BRIDGING_HOST}'/g' /etc/nginx/conf.d/frontend-*.inc.conf
 
 exec "$@"

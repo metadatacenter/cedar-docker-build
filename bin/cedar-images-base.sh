@@ -82,7 +82,6 @@ CEDAR_DOCKER_IMAGES=(
   "cedar-admin-redis-commander"
   "cedar-admin-tool"
 
-  "cedar-frontend-artifacts"
   "cedar-frontend-content"
   "cedar-frontend-main"
   "cedar-frontend-monitoring"

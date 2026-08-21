@@ -65,7 +65,6 @@ jobs:
                   cedar-admin-tool) check_maven cedar-admin-tool ;;
                   cedar-infra-keycloak) check_maven cedar-keycloak-event-listener ;;
                   cedar-frontend-main) check_npm cedar-template-editor ;;
-                  cedar-frontend-artifacts) check_npm cedar-artifacts-dist ;;
                   cedar-frontend-openview) check_npm cedar-openview-dist ;;
                   cedar-frontend-monitoring) check_npm cedar-monitoring-dist ;;
                   cedar-frontend-bridging) check_npm cedar-bridging-dist ;;
@@ -203,7 +202,6 @@ jobs:
       matrix:
         image:
           - cedar-frontend-main
-          - cedar-frontend-artifacts
           - cedar-frontend-bridging
           - cedar-frontend-content
           - cedar-frontend-monitoring
