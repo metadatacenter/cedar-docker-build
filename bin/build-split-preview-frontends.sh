@@ -15,16 +15,27 @@ build_one() {
   local image=$1
   local repo=$2
   local context="${CEDAR_HOME}/${repo}"
+  local source_commit
+  local source_dirty
 
   if [ ! -f "${context}/Dockerfile" ]; then
     echo "Missing ${context}/Dockerfile" >&2
     return 1
   fi
 
-  echo "==> ${image}:${IMAGE_VERSION} from ${repo}"
+  source_commit=$(git -C "${context}" rev-parse --verify HEAD)
+  if [ -n "$(git -C "${context}" status --porcelain --untracked-files=normal)" ]; then
+    source_dirty=true
+  else
+    source_dirty=false
+  fi
+
+  echo "==> ${image}:${IMAGE_VERSION} from ${repo}@${source_commit} (dirty=${source_dirty})"
   docker build \
     --build-arg "NGINX_VERSION=${NGINX_VERSION}" \
     --build-arg "NODE_FRONTEND_VERSION=${NODE_FRONTEND_VERSION}" \
+    --build-arg "CEDAR_SOURCE_COMMIT=${source_commit}" \
+    --build-arg "CEDAR_SOURCE_DIRTY=${source_dirty}" \
     --tag "${CEDAR_IMAGE_PREFIX}/${image}:${IMAGE_VERSION}" \
     "${context}"
 }
