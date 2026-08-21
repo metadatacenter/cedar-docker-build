@@ -23,6 +23,19 @@ build the jar first and then stage it into the image's build context:
 admin tool; `--clear` removes them and restores the published-artifact behaviour. Staged jars are
 git-ignored, so nothing here changes what a release builds.
 
+### Split Frontend Preview Images
+
+Workspace and Template Designer build directly from their local checkouts while they are in preview:
+
+    ./bin/build-split-preview-frontends.sh
+    ./bin/build-split-preview-frontends.sh workspace
+    ./bin/build-split-preview-frontends.sh designer
+
+The script takes the shared nginx, Node, image-prefix, and image-version declarations from
+`bin/cedar-images-base.sh`, then uses the Dockerfile in each extracted frontend repository. The
+preview images are deliberately not in `CEDAR_DOCKER_IMAGES`; `build all` and the production image
+release loop therefore remain unchanged until staging acceptance explicitly promotes them.
+
 ### Releasing Images
 
 An included script called `./bin/release-all-images.sh` tags and releases all images after they have been built.
