@@ -14,6 +14,10 @@ FROM opensearchproject/opensearch-dashboards:${OPENSEARCH_VERSION}
 
 # cedar-infra-opensearch runs with plugins.security.disabled=true, so the matching dashboards
 # security plugin has to go or startup fails looking for a security backend.
-RUN /usr/share/opensearch-dashboards/bin/opensearch-dashboards-plugin remove securityDashboards
+RUN /usr/share/opensearch-dashboards/bin/opensearch-dashboards-plugin remove securityDashboards && \
+    sed -i \
+      -e '/^opensearch_security\./d' \
+      -e 's/^opensearch.requestHeadersWhitelist: \[authorization, securitytenant\]$/opensearch.requestHeadersAllowlist: [authorization]/' \
+      /usr/share/opensearch-dashboards/config/opensearch_dashboards.yml
 
 EXPOSE 5601
