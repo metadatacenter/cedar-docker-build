@@ -71,6 +71,7 @@ RUN set -eux; \
     test "$(node -p "require('./package.json').name")" = cedar-template-editor; \
     test "$(node -p "require('./package.json').version")" = "$PACKAGE_VERSION"; \
     source_commit="$(node -p "require('./package.json').gitHead || ''")"; \
+    [ -n "$source_commit" ] || source_commit="$(curl -fsSL "${CEDAR_NPM_NEXUS_REPO}/cedar-template-editor/${PACKAGE_VERSION}" | node -e "let s=''; process.stdin.on('data', d => s += d).on('end', () => process.stdout.write(JSON.parse(s).gitHead || ''))")"; \
     echo "$source_commit" | grep -Eq '^[0-9a-f]{40}$'; \
     printf '%s\n' "$source_commit" > /usr/local/share/cedar-source-commit
 

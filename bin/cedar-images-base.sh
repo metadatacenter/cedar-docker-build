@@ -9,18 +9,21 @@ export CEDAR_IMAGE_PREFIX="metadatacenter"
 export IMAGE_VERSION=2.9.2
 export CEDAR_APPLICATION_VERSION=2.9.2-SNAPSHOT
 
-# npm registries do not allow a version to be overwritten like a Maven SNAPSHOT. The extracted
-# frontend images therefore consume exact immutable prereleases published by
-# `cedar-development/ops/publish-frontend-package.sh`; never replace these with the moving `dev`
+# npm registries do not allow a version to be overwritten like a Maven SNAPSHOT. The frontend
+# images therefore consume exact immutable package versions: a release where one has been
+# published, otherwise a commit-specific prerelease produced by
+# `cedar-development/ops/publish-frontend-package.sh`. Never replace these with the moving `dev`
 # dist-tag. CEDAR_APPLICATION_VERSION remains the human-facing suite version; these seven inputs
 # identify the exact source payload assembled into each image.
-export CEDAR_TEMPLATE_EDITOR_NPM_VERSION=2.9.2-dev.20260820224241.ga6b295764835
+export CEDAR_TEMPLATE_EDITOR_NPM_VERSION=2.9.2
 export CEDAR_WORKSPACE_NPM_VERSION=2.9.2-dev.20260821173503.gc658a7ca06a8
 export CEDAR_TEMPLATE_DESIGNER_NPM_VERSION=2.9.2-dev.20260821173509.ga4bf8b6005f3
-export CEDAR_OPENVIEW_NPM_VERSION=2.9.2-dev.20260820211916.g606e66ae460a
+export CEDAR_OPENVIEW_NPM_VERSION=2.9.2
+export CEDAR_OPENVIEW_CEE_NPM_VERSION=2.0.1
+export CEDAR_OPENVIEW_WEBCOMPONENTS_NPM_VERSION=2.8.0
 export CEDAR_CONTENT_NPM_VERSION=2.9.2-dev.20260728231241.gd201ecfc9f7f
-export CEDAR_MONITORING_NPM_VERSION=2.9.2-dev.20260728231214.g909607e3dd41
-export CEDAR_BRIDGING_NPM_VERSION=2.9.2-dev.20260820211911.g7e10dcf58894
+export CEDAR_MONITORING_NPM_VERSION=2.9.2
+export CEDAR_BRIDGING_NPM_VERSION=2.9.2
 
 # The locked persistence and infrastructure server versions, declared once and inherited by the
 # images that install them: no Dockerfile spells a version out, each takes it as a build argument

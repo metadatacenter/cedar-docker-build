@@ -48,6 +48,7 @@ RUN set -eux; \
     test "$(jq -r .name package.json)" = "$PACKAGE_NAME"; \
     test "$(jq -r .version package.json)" = "$PACKAGE_VERSION"; \
     source_commit="$(jq -r '.gitHead // empty' package.json)"; \
+    [ -n "$source_commit" ] || source_commit="$(curl -fsSL "$CEDAR_NPM_NEXUS_REPO/$PACKAGE_NAME/$PACKAGE_VERSION" | jq -r '.gitHead // empty')"; \
     echo "$source_commit" | grep -Eq '^[0-9a-f]{40}$'; \
     printf '%s\n' "$source_commit" > /usr/local/share/cedar-source-commit
 
