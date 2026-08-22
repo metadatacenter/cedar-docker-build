@@ -1,4 +1,4 @@
-FROM metadatacenter/cedar-microservice:2.9.1
+FROM metadatacenter/cedar-microservice:2.9.2
 
 ENV CEDAR_SERVER_NAME=terminology
 
@@ -14,8 +14,9 @@ ENV CACHEDIR=${CEDAR_HOME}/cache/terminology/
 RUN mkdir -p ${CACHEDIR}
 VOLUME ${CACHEDIR}
 
-ADD scripts/pre-docker-entrypoint.sh ${CEDAR_HOME}/
-
 EXPOSE ${CEDAR_TERMINOLOGY_HTTP_PORT} ${CEDAR_TERMINOLOGY_ADMIN_PORT} ${CEDAR_TERMINOLOGY_STOP_PORT}
+
+# Empty unless bin/stage-local-jar.sh has staged a locally built jar here.
+COPY local/ ${CEDAR_HOME}/local/
 
 RUN ${CEDAR_HOME}/install_deps.sh

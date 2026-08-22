@@ -1,8 +1,8 @@
-FROM metadatacenter/cedar-java:2.9.1
+FROM metadatacenter/cedar-java:2.9.2
 
 ENV CEDAR_HOME=/cedar
 
-ENV CEDAR_VERSION=2.9.1
+ENV CEDAR_VERSION=2.9.2
 
 ENV CEDAR_RESOURCE_HTTP_PORT=9007
 
@@ -27,6 +27,9 @@ RUN microdnf clean all
 ADD config/m2/settings.xml /root/.m2/
 
 RUN echo 'alias cedarat="/cedar/app/cedarat.sh"' >> ~/.bashrc
+
+# Empty unless bin/stage-local-jar.sh has staged a locally built jar here.
+COPY local/ ${CEDAR_HOME}/local/
 
 RUN ${CEDAR_HOME}/install_deps.sh
 

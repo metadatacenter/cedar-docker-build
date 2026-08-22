@@ -1,0 +1,217 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - develop
+  pull_request:
+    branches:
+      - develop
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # Every image that carries CEDAR code fetches it from Nexus while it builds, so an
+  # unpublished artifact fails the build far from its cause: a curl 404 or a Maven error deep
+  # in a layer. Resolve them all first, and say plainly which ones are missing.
+  artifacts:
+    name: Resolve the artifacts the images need
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Check every Nexus coordinate
+        shell: bash
+        run: |
+          source bin/cedar-images-base.sh
+          echo "Image version: ${IMAGE_VERSION}"
+          echo
+
+          nexus=https://nexus.bmir.stanford.edu/repository
+          missing=0
+          missing_npm=0
+
+          check_maven() {
+              local url="${nexus}/snapshots/org/metadatacenter/$1/${IMAGE_VERSION}/maven-metadata.xml"
+              case "${IMAGE_VERSION}" in
+                  *SNAPSHOT) ;;
+                  *) url="${nexus}/releases/org/metadatacenter/$1/${IMAGE_VERSION}/" ;;
+              esac
+              code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 30 "${url}")
+              if [ "${code}" = 200 ]; then echo "OK      jar $1"
+              else echo "MISSING jar $1 (HTTP ${code})"; missing=$((missing+1)); fi
+          }
+
+          check_npm() {
+              local package=$1
+              local version=$2
+              local url="${nexus}/npm-cedar/${package}/-/${package}-${version}.tgz"
+              code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 30 "${url}")
+              if [ "${code}" = 200 ]; then echo "OK      npm ${package}@${version}"
+              else echo "MISSING npm ${package}@${version} (HTTP ${code})"; missing_npm=$((missing_npm+1)); fi
+          }
+
+          for image in "${CEDAR_DOCKER_IMAGES[@]}"; do
+              case "${image}" in
+                  cedar-server-*) check_maven "cedar-${image#cedar-server-}-server-application" ;;
+                  cedar-admin-tool) check_maven cedar-admin-tool ;;
+                  cedar-infra-keycloak) check_maven cedar-keycloak-event-listener ;;
+                  cedar-frontend-main) check_npm cedar-template-editor "${CEDAR_TEMPLATE_EDITOR_NPM_VERSION}" ;;
+                  cedar-frontend-workspace) check_npm cedar-workspace "${CEDAR_WORKSPACE_NPM_VERSION}" ;;
+                  cedar-frontend-template-designer) check_npm cedar-template-designer "${CEDAR_TEMPLATE_DESIGNER_NPM_VERSION}" ;;
+                  cedar-frontend-openview) check_npm cedar-openview-dist "${CEDAR_OPENVIEW_NPM_VERSION}" ;;
+                  cedar-frontend-monitoring) check_npm cedar-monitoring-dist "${CEDAR_MONITORING_NPM_VERSION}" ;;
+                  cedar-frontend-bridging) check_npm cedar-bridging-dist "${CEDAR_BRIDGING_NPM_VERSION}" ;;
+                  cedar-frontend-content) check_npm cedar-content-distribution "${CEDAR_CONTENT_NPM_VERSION}" ;;
+              esac
+          done
+
+          echo
+          if [ ${missing_npm} -gt 0 ]; then
+              echo "${missing_npm} pinned frontend tarball(s) are not published."
+              echo "Publish immutable packages with cedar-development/ops/publish-frontend-package.sh"
+              echo "and update the exact versions in bin/cedar-images-base.sh."
+              exit 1
+          fi
+          if [ ${missing} -gt 0 ]; then
+              echo "${missing} jar(s) are not published at ${IMAGE_VERSION}."
+              echo "Every Java repository publishes its snapshot on merge to develop, so this"
+              echo "means a build failed or never ran. The images that need them cannot build."
+              exit 1
+          fi
+          echo "Every jar resolves."
+
+  # The version lock is a set of pairs: a server version and the client CEDAR ships against it are
+  # locked to each other, and Renovate keeps each side current against its own upstream without any
+  # way to know the two are related. This is where that invariant is stated executably, and it runs
+  # here because the server versions are declared in this repository, so a bump is checked on the
+  # pull request that makes it.
+  pairing:
+    name: Check server versions still pair with their clients
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out cedar-docker-build
+        uses: actions/checkout@v6
+        with:
+          path: CEDAR/cedar-docker-build
+
+      - name: Check out cedar-development
+        uses: actions/checkout@v6
+        with:
+          repository: metadatacenter/cedar-development
+          ref: develop
+          path: CEDAR/cedar-development
+
+      - name: Check out cedar-parent
+        uses: actions/checkout@v6
+        with:
+          repository: metadatacenter/cedar-parent
+          ref: develop
+          path: CEDAR/cedar-parent
+
+      - name: Compare each pair
+        shell: bash
+        run: |
+          export CEDAR_HOME="${GITHUB_WORKSPACE}/CEDAR"
+          "${CEDAR_HOME}/cedar-development/ops/check_version_pairing.py"
+
+  # cedar-java and cedar-microservice are referenced by unqualified tag, so they have to exist
+  # in the local daemon before anything built on top of them. That forces one sequential job
+  # rather than a matrix.
+  java-chain:
+    name: Build the Java image chain
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Build base, then every image built on it
+        shell: bash
+        run: |
+          source bin/cedar-images-base.sh
+
+          build() {
+              echo "::group::$1"
+              docker build $(cedar_server_build_args) -t "${CEDAR_IMAGE_PREFIX}/$1:${IMAGE_VERSION}" "$1"
+              echo "::endgroup::"
+          }
+
+          build cedar-java
+          build cedar-microservice
+
+          failed=""
+          for image in "${CEDAR_DOCKER_IMAGES[@]}"; do
+              case "${image}" in
+                  cedar-server-*|cedar-admin-tool)
+                      build "${image}" || failed="${failed} ${image}"
+                      ;;
+              esac
+          done
+
+          if [ -n "${failed}" ]; then
+              echo "Failed to build:${failed}"
+              exit 1
+          fi
+
+  # Infrastructure and the three non-Java admin images depend on nothing CEDAR builds, so each
+  # is independent and each gates the run.
+  standalone:
+    name: Build ${{ matrix.image }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        image:
+          - cedar-infra-keycloak
+          - cedar-infra-mongo
+          - cedar-infra-mysql
+          - cedar-infra-neo4j
+          - cedar-infra-nginx
+          - cedar-infra-opensearch
+          - cedar-infra-redis-persistent
+          - cedar-admin-kibana
+          - cedar-admin-phpmyadmin
+          - cedar-admin-redis-commander
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Build
+        shell: bash
+        run: |
+          source bin/cedar-images-base.sh
+          docker build $(cedar_server_build_args) -t "${CEDAR_IMAGE_PREFIX}/${{ matrix.image }}:${IMAGE_VERSION}" "${{ matrix.image }}"
+
+  # Frontends consume exact immutable Nexus package versions from the manifest. The artifact job
+  # proves those inputs exist first; every one of the seven image builds is therefore a hard gate.
+  frontends:
+    name: Build ${{ matrix.image }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        image:
+          - cedar-frontend-main
+          - cedar-frontend-bridging
+          - cedar-frontend-content
+          - cedar-frontend-monitoring
+          - cedar-frontend-openview
+          - cedar-frontend-workspace
+          - cedar-frontend-template-designer
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Build
+        shell: bash
+        run: |
+          source bin/cedar-images-base.sh
+          docker build $(cedar_server_build_args) -t "${CEDAR_IMAGE_PREFIX}/${{ matrix.image }}:${IMAGE_VERSION}" "${{ matrix.image }}"

@@ -1,120 +1,20 @@
-FROM debian:bullseye-slim
+# check=skip=InvalidDefaultArgInFrom
+# The official nginx image, as cedar-frontend-content and the other dist frontends already use.
+# This used to install nginx from nginx.org on debian:bullseye-slim, fetching the repository signing
+# key by fingerprint; nginx rotated that key to 2FD21310B49F6B46 and apt began rejecting the
+# repository as unsigned, so the build failed in its second layer. The image is still bullseye-based,
+# so the Node install below is unaffected. None of the dynamic modules the old block added are used.
+ARG NGINX_VERSION
+FROM nginx:${NGINX_VERSION}
 
-ENV CEDAR_VERSION=2.9.1
+ARG CEDAR_APPLICATION_VERSION
+ARG CEDAR_TEMPLATE_EDITOR_NPM_VERSION
+
+ENV CEDAR_VERSION=2.9.2
+ENV PACKAGE_VERSION=${CEDAR_TEMPLATE_EDITOR_NPM_VERSION}
 ENV CEDAR_NPM_NEXUS_REPO=https://nexus.bmir.stanford.edu/repository/npm-cedar
 
-ENV NGINX_VERSION   1.23.4
-ENV NJS_VERSION     0.7.11
-ENV PKG_RELEASE     1~bullseye
-
-RUN set -x \
-# create nginx user/group first, to be consistent throughout docker variants
-    && addgroup --system --gid 101 nginx \
-    && adduser --system --disabled-login --ingroup nginx --no-create-home --home /nonexistent --gecos "nginx user" --shell /bin/false --uid 101 nginx \
-    && apt-get update \
-    && apt-get install --no-install-recommends --no-install-suggests -y gnupg1 ca-certificates \
-    && \
-    NGINX_GPGKEY=573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62; \
-    NGINX_GPGKEY_PATH=/usr/share/keyrings/nginx-archive-keyring.gpg; \
-    export GNUPGHOME="$(mktemp -d)"; \
-    found=''; \
-    for server in \
-        hkp://keyserver.ubuntu.com:80 \
-        pgp.mit.edu \
-    ; do \
-        echo "Fetching GPG key $NGINX_GPGKEY from $server"; \
-        gpg1 --keyserver "$server" --keyserver-options timeout=10 --recv-keys "$NGINX_GPGKEY" && found=yes && break; \
-    done; \
-    test -z "$found" && echo >&2 "error: failed to fetch GPG key $NGINX_GPGKEY" && exit 1; \
-    gpg1 --export "$NGINX_GPGKEY" > "$NGINX_GPGKEY_PATH" ; \
-    rm -rf "$GNUPGHOME"; \
-    apt-get remove --purge --auto-remove -y gnupg1 && rm -rf /var/lib/apt/lists/* \
-    && dpkgArch="$(dpkg --print-architecture)" \
-    && nginxPackages=" \
-        nginx=${NGINX_VERSION}-${PKG_RELEASE} \
-        nginx-module-xslt=${NGINX_VERSION}-${PKG_RELEASE} \
-        nginx-module-geoip=${NGINX_VERSION}-${PKG_RELEASE} \
-        nginx-module-image-filter=${NGINX_VERSION}-${PKG_RELEASE} \
-        nginx-module-njs=${NGINX_VERSION}+${NJS_VERSION}-${PKG_RELEASE} \
-    " \
-    && case "$dpkgArch" in \
-        amd64|arm64) \
-# arches officialy built by upstream
-            echo "deb [signed-by=$NGINX_GPGKEY_PATH] https://nginx.org/packages/mainline/debian/ bullseye nginx" >> /etc/apt/sources.list.d/nginx.list \
-            && apt-get update \
-            ;; \
-        *) \
-# we're on an architecture upstream doesn't officially build for
-# let's build binaries from the published source packages
-            echo "deb-src [signed-by=$NGINX_GPGKEY_PATH] https://nginx.org/packages/mainline/debian/ bullseye nginx" >> /etc/apt/sources.list.d/nginx.list \
-            \
-# new directory for storing sources and .deb files
-            && tempDir="$(mktemp -d)" \
-            && chmod 777 "$tempDir" \
-# (777 to ensure APT's "_apt" user can access it too)
-            \
-# save list of currently-installed packages so build dependencies can be cleanly removed later
-            && savedAptMark="$(apt-mark showmanual)" \
-            \
-# build .deb files from upstream's source packages (which are verified by apt-get)
-            && apt-get update \
-            && apt-get build-dep -y $nginxPackages \
-            && ( \
-                cd "$tempDir" \
-                && DEB_BUILD_OPTIONS="nocheck parallel=$(nproc)" \
-                    apt-get source --compile $nginxPackages \
-            ) \
-# we don't remove APT lists here because they get re-downloaded and removed later
-            \
-# reset apt-mark's "manual" list so that "purge --auto-remove" will remove all build dependencies
-# (which is done after we install the built packages so we don't have to redownload any overlapping dependencies)
-            && apt-mark showmanual | xargs apt-mark auto > /dev/null \
-            && { [ -z "$savedAptMark" ] || apt-mark manual $savedAptMark; } \
-            \
-# create a temporary local APT repo to install from (so that dependency resolution can be handled by APT, as it should be)
-            && ls -lAFh "$tempDir" \
-            && ( cd "$tempDir" && dpkg-scanpackages . > Packages ) \
-            && grep '^Package: ' "$tempDir/Packages" \
-            && echo "deb [ trusted=yes ] file://$tempDir ./" > /etc/apt/sources.list.d/temp.list \
-# work around the following APT issue by using "Acquire::GzipIndexes=false" (overriding "/etc/apt/apt.conf.d/docker-gzip-indexes")
-#   Could not open file /var/lib/apt/lists/partial/_tmp_tmp.ODWljpQfkE_._Packages - open (13: Permission denied)
-#   ...
-#   E: Failed to fetch store:/var/lib/apt/lists/partial/_tmp_tmp.ODWljpQfkE_._Packages  Could not open file /var/lib/apt/lists/partial/_tmp_tmp.ODWljpQfkE_._Packages - open (13: Permission denied)
-            && apt-get -o Acquire::GzipIndexes=false update \
-            ;; \
-    esac \
-    \
-    && apt-get install --no-install-recommends --no-install-suggests -y \
-                        $nginxPackages \
-                        gettext-base \
-                        curl \
-    && apt-get remove --purge --auto-remove -y && rm -rf /var/lib/apt/lists/* /etc/apt/sources.list.d/nginx.list \
-    \
-# if we have leftovers from building, let's purge them (including extra, unnecessary build deps)
-    && if [ -n "$tempDir" ]; then \
-        apt-get purge -y --auto-remove \
-        && rm -rf "$tempDir" /etc/apt/sources.list.d/temp.list; \
-    fi \
-# forward request and error logs to docker log collector
-    && ln -sf /dev/stdout /var/log/nginx/access.log \
-    && ln -sf /dev/stderr /var/log/nginx/error.log \
-# create a docker-entrypoint.d directory
-    && mkdir /docker-entrypoint.d
-
-#COPY docker-entrypoint.sh /
-#COPY 10-listen-on-ipv6-by-default.sh /docker-entrypoint.d
-#COPY 20-envsubst-on-templates.sh /docker-entrypoint.d
-#COPY 30-tune-worker-processes.sh /docker-entrypoint.d
-
-# forward request and error logs to docker log collector
-RUN ln -sf /dev/stdout /var/log/nginx/access.log \
-	&& ln -sf /dev/stderr /var/log/nginx/error.log
-
-STOPSIGNAL SIGQUIT
-
-#-------------------
-
-ENV DEBIAN_FRONTEND noninteractive
+ENV DEBIAN_FRONTEND=noninteractive
 
 USER root
 
@@ -122,19 +22,32 @@ USER root
 RUN \
 apt-get update && \
 apt-get install -y apt-utils && \
-apt-get install -y curl
+apt-get install -y curl xz-utils
 
-# Install nodejs
-RUN \
-apt-get install -y gnupg2 && \
-curl -sL https://deb.nodesource.com/setup_16.x | bash - && \
-apt-get install -y nodejs && \
-apt-get purge -y apt-transport-https && \
-apt-get autoremove -y && \
-apt-get clean all
+# Node used to arrive as `curl -sL https://deb.nodesource.com/setup_16.x | bash -`: whatever that URL
+# returned ran as root at build time, unverified. Take the official distribution instead and check it
+# against the SHASUMS256.txt nodejs.org publishes beside it, so a build either gets the bytes upstream
+# published or fails.
+ARG NODE_FRONTEND_VERSION
+RUN set -eux; \
+    test -n "$NODE_FRONTEND_VERSION" || { echo "NODE_FRONTEND_VERSION build argument is required"; exit 1; }; \
+    case "$(dpkg --print-architecture)" in \
+      amd64) nodearch=x64 ;; \
+      arm64) nodearch=arm64 ;; \
+      *) echo "unsupported architecture: $(dpkg --print-architecture)"; exit 1 ;; \
+    esac; \
+    tarball="node-v${NODE_FRONTEND_VERSION}-linux-${nodearch}.tar.xz"; \
+    cd /tmp; \
+    curl -fsSLO "https://nodejs.org/dist/v${NODE_FRONTEND_VERSION}/${tarball}"; \
+    curl -fsSLO "https://nodejs.org/dist/v${NODE_FRONTEND_VERSION}/SHASUMS256.txt"; \
+    grep " ${tarball}\$" SHASUMS256.txt | sha256sum -c -; \
+    tar -xJf "${tarball}" -C /usr/local --strip-components=1 --no-same-owner; \
+    rm "${tarball}" SHASUMS256.txt; \
+    node --version; \
+    npm --version
 
-ENV CEDAR_HOME /srv/cedar
-ENV CEDAR_TEMPLATE_EDITOR_HOME ${CEDAR_HOME}/cedar-template-editor/
+ENV CEDAR_HOME=/srv/cedar
+ENV CEDAR_TEMPLATE_EDITOR_HOME=${CEDAR_HOME}/cedar-template-editor/
 
 # Make CEDAR appplication home directory
 RUN mkdir -p ${CEDAR_TEMPLATE_EDITOR_HOME}
@@ -142,19 +55,28 @@ RUN mkdir -p ${CEDAR_TEMPLATE_EDITOR_HOME}
 # Make CEDAR home the default work directory
 WORKDIR ${CEDAR_TEMPLATE_EDITOR_HOME}
 
-ENV EDITOR_TARBALL cedar-template-editor-${CEDAR_VERSION}.tgz
-ENV EDITOR_URI ${CEDAR_NPM_NEXUS_REPO}/cedar-template-editor/-/${EDITOR_TARBALL}
+ENV EDITOR_TARBALL=cedar-template-editor-${PACKAGE_VERSION}.tgz
+ENV EDITOR_URI=${CEDAR_NPM_NEXUS_REPO}/cedar-template-editor/-/${EDITOR_TARBALL}
 
 RUN echo ${EDITOR_URI}
 
 # Download and extract the frontend source
-RUN \
-curl --fail --show-error --location --remote-name ${EDITOR_URI} && \
-tar --extract --file ${EDITOR_TARBALL} --directory ${CEDAR_TEMPLATE_EDITOR_HOME} --strip 1 && \
-rm ${EDITOR_TARBALL}
+RUN set -eux; \
+    test -n "$CEDAR_APPLICATION_VERSION"; \
+    test -n "$CEDAR_TEMPLATE_EDITOR_NPM_VERSION"; \
+    curl --fail --show-error --location --remote-name "$EDITOR_URI"; \
+    sha256sum "$EDITOR_TARBALL" | cut -d' ' -f1 > /usr/local/share/cedar-package-sha256; \
+    tar --extract --file "$EDITOR_TARBALL" --directory "$CEDAR_TEMPLATE_EDITOR_HOME" --strip 1; \
+    rm "$EDITOR_TARBALL"; \
+    test "$(node -p "require('./package.json').name")" = cedar-template-editor; \
+    test "$(node -p "require('./package.json').version")" = "$PACKAGE_VERSION"; \
+    source_commit="$(node -p "require('./package.json').gitHead || ''")"; \
+    echo "$source_commit" | grep -Eq '^[0-9a-f]{40}$'; \
+    printf '%s\n' "$source_commit" > /usr/local/share/cedar-source-commit
 
 # Install dependencies
 RUN \
+npm config set @org.metadatacenter:registry ${CEDAR_NPM_NEXUS_REPO} && \
 npm install && \
 npm install -g gulp
 
@@ -163,11 +85,8 @@ ADD scripts/docker-entrypoint.sh /
 # Add nginx config
 ADD config/default.conf /etc/nginx/conf.d/
 
-# Set env vars for the gulp task
-ENV CEDAR_ANALYTICS_KEY="false" CEDAR_GA4_TRACKING_ID="false" CEDAR_DATACITE_ENABLED="false" CEDAR_FRONTEND_BEHAVIOR="server" CEDAR_FRONTEND_TARGET="local" CEDAR_VERSION_MODIFIER="" CEDAR_FRONTEND_local_USER1_LOGIN="" CEDAR_FRONTEND_local_USER1_PASSWORD="" CEDAR_FRONTEND_local_USER1_NAME="" CEDAR_FRONTEND_local_USER2_LOGIN="" CEDAR_FRONTEND_local_USER2_PASSWORD="" CEDAR_FRONTEND_local_USER2_NAME=""
-
 # Set up log folder
-ENV LOGDIR /log
+ENV LOGDIR=/log
 RUN mkdir -p "$LOGDIR"
 VOLUME $LOGDIR
 

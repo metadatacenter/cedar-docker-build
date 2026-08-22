@@ -1,4 +1,4 @@
-FROM metadatacenter/cedar-microservice:2.9.1
+FROM metadatacenter/cedar-microservice:2.9.2
 
 ENV CEDAR_SERVER_NAME=group
 
@@ -12,8 +12,9 @@ VOLUME ${LOGDIR}
 
 RUN python3 -m pip install redis==2.10.6
 
-ADD scripts/pre-docker-entrypoint.sh ${CEDAR_HOME}/
-
 EXPOSE ${CEDAR_GROUP_HTTP_PORT} ${CEDAR_GROUP_ADMIN_PORT} ${CEDAR_GROUP_STOP_PORT}
+
+# Empty unless bin/stage-local-jar.sh has staged a locally built jar here.
+COPY local/ ${CEDAR_HOME}/local/
 
 RUN ${CEDAR_HOME}/install_deps.sh

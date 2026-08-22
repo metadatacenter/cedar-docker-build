@@ -1,4 +1,4 @@
-FROM metadatacenter/cedar-microservice:2.9.1
+FROM metadatacenter/cedar-microservice:2.9.2
 
 ENV CEDAR_SERVER_NAME=schema
 
@@ -11,5 +11,8 @@ RUN mkdir -p ${LOGDIR}
 VOLUME ${LOGDIR}
 
 EXPOSE ${CEDAR_SCHEMA_HTTP_PORT} ${CEDAR_SCHEMA_ADMIN_PORT} ${CEDAR_SCHEMA_STOP_PORT}
+
+# Empty unless bin/stage-local-jar.sh has staged a locally built jar here.
+COPY local/ ${CEDAR_HOME}/local/
 
 RUN ${CEDAR_HOME}/install_deps.sh

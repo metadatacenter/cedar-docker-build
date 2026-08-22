@@ -1,4 +1,4 @@
-FROM metadatacenter/cedar-microservice:2.9.1
+FROM metadatacenter/cedar-microservice:2.9.2
 
 ENV CEDAR_SERVER_NAME=openview
 
@@ -8,12 +8,15 @@ ENV CEDAR_OPENVIEW_STOP_PORT=9213
 
 ENV CEDAR_ARTIFACT_HTTP_PORT=9001
 
+# This server does not start usefully until the Artifact server answers its
+
 ENV LOGDIR=${CEDAR_HOME}/log/server-${CEDAR_SERVER_NAME}/
 RUN mkdir -p ${LOGDIR}
 VOLUME ${LOGDIR}
 
-ADD scripts/pre-docker-entrypoint.sh ${CEDAR_HOME}/
-
 EXPOSE ${CEDAR_OPENVIEW_HTTP_PORT} ${CEDAR_OPENVIEW_ADMIN_PORT} ${CEDAR_OPENVIEW_STOP_PORT}
+
+# Empty unless bin/stage-local-jar.sh has staged a locally built jar here.
+COPY local/ ${CEDAR_HOME}/local/
 
 RUN ${CEDAR_HOME}/install_deps.sh

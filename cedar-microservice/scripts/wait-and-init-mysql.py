@@ -1,17 +1,18 @@
 #!/usr/bin/python3
 import os
 
-import MySQLdb
+import pymysql
 import sys
 import time
-from MySQLdb import MySQLError
+from pymysql import MySQLError
 
 
 def execute_db_code(title_message, code_to_execute, error_message):
     print(title_message + '...')
     connection = None
     try:
-        connection = MySQLdb.connect(host=mysql_host, port=mysql_port, user=mysql_root_user, passwd=mysql_root_password)
+        connection = pymysql.connect(host=mysql_host, port=mysql_port, user=mysql_root_user,
+                                     password=mysql_root_password)
         if code_to_execute is not None:
             code_to_execute(connection)
     except MySQLError as e:

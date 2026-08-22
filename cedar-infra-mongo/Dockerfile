@@ -1,4 +1,9 @@
-FROM ubuntu:focal
+# check=skip=InvalidDefaultArgInFrom
+# Declared in bin/cedar-images-base.sh and supplied by `cedarcli docker build`. No default: a build
+# that was not given a version fails here rather than silently choosing one, which is exactly what
+# the skipped lint check objects to.
+ARG UBUNTU_VERSION
+FROM ubuntu:${UBUNTU_VERSION}
 
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
 RUN set -eux; \
@@ -21,8 +26,9 @@ RUN set -eux; \
 
 # grab gosu for easy step-down from root (https://github.com/tianon/gosu/releases)
 ENV GOSU_VERSION 1.12
-# grab "js-yaml" for parsing mongod's YAML config files (https://github.com/nodeca/js-yaml/releases)
-ENV JSYAML_VERSION 3.13.1
+# js-yaml used to be downloaded here from a raw GitHub URL with no verification, directly below a
+# gosu download that is GPG-verified. It was also unreachable: the entrypoint loads it only to parse
+# a --config file, and run.sh starts mongod with flags. Removed rather than verified.
 
 RUN set -ex; \
 	\
@@ -41,9 +47,6 @@ RUN set -ex; \
 	gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu; \
 	gpgconf --kill all; \
 	rm -rf "$GNUPGHOME" /usr/local/bin/gosu.asc; \
-	\
-	wget -O /js-yaml.js "https://github.com/nodeca/js-yaml/raw/${JSYAML_VERSION}/dist/js-yaml.js"; \
-# TODO some sort of download verification here
 	\
 	apt-mark auto '.*' > /dev/null; \
 	apt-mark manual $savedAptMark > /dev/null; \
@@ -75,12 +78,15 @@ ARG MONGO_PACKAGE=mongodb-org
 ARG MONGO_REPO=repo.mongodb.org
 ENV MONGO_PACKAGE=${MONGO_PACKAGE} MONGO_REPO=${MONGO_REPO}
 
-ENV MONGO_MAJOR 5.0
-RUN echo "deb [ signed-by=/etc/apt/keyrings/mongodb.gpg ] http://$MONGO_REPO/apt/ubuntu focal/${MONGO_PACKAGE%-unstable}/$MONGO_MAJOR multiverse" | tee "/etc/apt/sources.list.d/${MONGO_PACKAGE%-unstable}.list"
+# Declared in bin/cedar-images-base.sh and supplied by `cedarcli docker build`. No default: a build
+# that was not given a version fails rather than silently choosing one. The series the apt
+# repository is keyed on is derived from it, so there is still only one version to change.
+ARG MONGO_VERSION
+ENV MONGO_VERSION=${MONGO_VERSION}
 
-# https://docs.mongodb.org/master/release-notes/5.0/
-ENV MONGO_VERSION 5.0.14
-# 11/17/2022, https://github.com/mongodb/mongo/tree/1b3b0073a0b436a8a502b612f24fb2bd572772e5
+RUN test -n "$MONGO_VERSION" || { echo "MONGO_VERSION build argument is required"; exit 1; } \
+	&& MONGO_MAJOR="${MONGO_VERSION%.*}" \
+	&& echo "deb [ signed-by=/etc/apt/keyrings/mongodb.gpg ] http://$MONGO_REPO/apt/ubuntu focal/${MONGO_PACKAGE%-unstable}/$MONGO_MAJOR multiverse" | tee "/etc/apt/sources.list.d/${MONGO_PACKAGE%-unstable}.list"
 
 RUN set -x \
 # installing "mongodb-enterprise" pulls in "tzdata" which prompts for input

@@ -1,0 +1,75 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    ":semanticCommitsDisabled"
+  ],
+  "description": [
+    "The image versions in this repository drifted for years because nothing watched them: the",
+    "Docker pins were the only place any infrastructure server version was written down, and they",
+    "fell behind what the estate actually ran without anyone deciding to. Renovate turns that drift",
+    "into a pull request. It does not decide anything - the version lock still says what may move,",
+    "and the pairing check in CI still says what must move together."
+  ],
+  "labels": [
+    "dependencies"
+  ],
+  "prConcurrentLimit": 5,
+  "customManagers": [
+    {
+      "description": "The locked infrastructure server versions, declared once in the build manifest and inherited by the images as build arguments. Keyed on the '# renovate:' comment above each one.",
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/^bin/cedar-images-base\\.sh$/"
+      ],
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)\\s+export \\w+_VERSION=(?<currentValue>\\S+)"
+      ]
+    }
+  ],
+  "packageRules": [
+    {
+      "description": "The six locked servers, which is every server declared in the manifest except nginx. move only when someone decides to, and moving one is a migration rather than an upgrade: an image older than a running server cannot open its data files, and a newer one may write a format the old one cannot read. Group them so they arrive as one reviewable decision, and never merge them automatically.",
+      "matchFileNames": [
+        "bin/cedar-images-base.sh"
+      ],
+      "groupName": "locked infrastructure servers",
+      "automerge": false,
+      "minimumReleaseAge": "14 days",
+      "excludePackageNames": [
+        "nginx"
+      ]
+    },
+    {
+      "description": "nginx is declared in the same manifest but is not part of the version lock: it holds no data, so a bump is an upgrade rather than a migration and needs no rehearsal. Seven images are built on it, so one pull request moves all of them.",
+      "matchPackageNames": [
+        "nginx"
+      ],
+      "matchFileNames": [
+        "bin/cedar-images-base.sh"
+      ],
+      "groupName": "nginx",
+      "automerge": false
+    },
+    {
+      "description": "Keycloak is held at 22 by CEDAR's own code, not by the lock: keycloak-adapter-core, which the bearer-token path of every server is built on, was last published at 25.0.3. Raise the pull request anyway so the distance stays visible, but say why it cannot simply be merged.",
+      "matchPackageNames": [
+        "keycloak/keycloak"
+      ],
+      "groupName": "keycloak",
+      "dependencyDashboardApproval": true
+    },
+    {
+      "description": "Base images move on their own schedule and are not part of the version lock. These are the ones the roadmap wants pinned rather than floating.",
+      "matchManagers": [
+        "dockerfile"
+      ],
+      "pinDigests": true
+    }
+  ],
+  "vulnerabilityAlerts": {
+    "labels": [
+      "security"
+    ]
+  }
+}

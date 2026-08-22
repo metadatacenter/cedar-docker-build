@@ -1,37 +1,32 @@
 #!/bin/bash
 
-# Script to build all CEDAR Docker images
+# Script to build all CEDAR Docker images.
+#
+# This is a wrapper now. `cedarcli docker build` is the implementation: it reads the image list and
+# version from cedar-images-base.sh exactly as this script did, and adds what a shell loop cannot -
+# short names, groups, and building each image's CEDAR base first so a build can never pick up a
+# stale one. Two implementations of one behaviour is how things drift, so this one delegates.
+#
+#   cedarcli docker build all
+#   cedarcli docker build microservices
+#   cedarcli docker build artifact-server [--local]
 
-if [ -z "$CEDAR_DOCKER_SRC_HOME" ]; then
-    echo "Need to set CEDAR_DOCKER_SRC_HOME"
+if [ -z "$CEDAR_HOME" ]; then
+    echo "Need to set CEDAR_HOME"
     exit 1
 fi
 
-export CEDAR_DOCKER_BUILD_HOME=${CEDAR_DOCKER_SRC_HOME}/cedar-docker-build
+if command -v cedarcli > /dev/null 2>&1; then
+    cedarcli docker build all
+    exit $?
+fi
 
-echo ${CEDAR_DOCKER_BUILD_HOME}
+# cedarcli is a shell alias rather than a binary in some setups, so fall back to the CLI directly.
+CLI_HOME=${CEDAR_HOME}/cedar-cli
+PYTHON=${CLI_HOME}/.venv/bin/python
+if [ ! -x "${PYTHON}" ]; then
+    PYTHON=python3
+fi
 
-source ${CEDAR_DOCKER_BUILD_HOME}/bin/cedar-images-base.sh
-
-build_image()
-{
-    echo "Building image" $1:${IMAGE_VERSION}
-    docker build -t $1:${IMAGE_VERSION} .
-    
-}
-
-build_all_images()
-{
-    echo "Releasing all CEDAR Docker images..."
-    for i in "${CEDAR_DOCKER_IMAGES[@]}"
-    do
-        pushd ${CEDAR_DOCKER_BUILD_HOME}/$i
-        build_image ${CEDAR_IMAGE_PREFIX}/$i
-        popd
-    done
-}
-
-build_all_images
-
-
-
+cd "${CLI_HOME}" || exit 1
+exec "${PYTHON}" cedar.py docker build all
