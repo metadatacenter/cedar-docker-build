@@ -41,7 +41,7 @@ RUN keytool -genkeypair -storepass password -storetype PKCS12 -keyalg RSA -keysi
 RUN /opt/keycloak/bin/kc.sh build
 
 
-ENV CEDAR_VERSION=2.9.2-SNAPSHOT
+ENV CEDAR_VERSION=2.9.3-SNAPSHOT
 
 RUN dnf -y install python3
 RUN dnf -y install python3-PyMySQL
