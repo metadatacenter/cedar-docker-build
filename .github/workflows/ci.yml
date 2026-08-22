@@ -25,7 +25,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Check every Nexus coordinate
         shell: bash
@@ -99,19 +99,19 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: Check out cedar-docker-build
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           path: CEDAR/cedar-docker-build
 
       - name: Check out cedar-development
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           repository: metadatacenter/cedar-development
           ref: develop
           path: CEDAR/cedar-development
 
       - name: Check out cedar-parent
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           repository: metadatacenter/cedar-parent
           ref: develop
@@ -131,7 +131,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 90
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Build base, then every image built on it
         shell: bash
@@ -182,7 +182,7 @@ jobs:
           - cedar-admin-phpmyadmin
           - cedar-admin-redis-commander
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Build
         shell: bash
@@ -208,7 +208,7 @@ jobs:
           - cedar-frontend-workspace
           - cedar-frontend-template-designer
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Build
         shell: bash
