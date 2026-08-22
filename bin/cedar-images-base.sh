@@ -6,7 +6,7 @@
 
 export CEDAR_IMAGE_PREFIX="metadatacenter"
 
-export IMAGE_VERSION=2.9.2-SNAPSHOT
+export IMAGE_VERSION=2.9.3-SNAPSHOT
 export CEDAR_APPLICATION_VERSION=2.9.2-SNAPSHOT
 
 # npm registries do not allow a version to be overwritten like a Maven SNAPSHOT. The extracted
