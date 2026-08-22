@@ -49,14 +49,13 @@ jobs:
               else echo "MISSING jar $1 (HTTP ${code})"; missing=$((missing+1)); fi
           }
 
-          # The frontend tarballs are published by their own repos and routinely lag the
-          # current snapshot, so a miss here is a warning: it explains why the matching
-          # frontend image failed rather than failing the run on its own.
           check_npm() {
-              local url="${nexus}/npm-cedar/$1/-/$1-${IMAGE_VERSION}.tgz"
+              local package=$1
+              local version=$2
+              local url="${nexus}/npm-cedar/${package}/-/${package}-${version}.tgz"
               code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 30 "${url}")
-              if [ "${code}" = 200 ]; then echo "OK      npm $1"
-              else echo "WARN    npm $1 (HTTP ${code}) - the image that needs it cannot build"; missing_npm=$((missing_npm+1)); fi
+              if [ "${code}" = 200 ]; then echo "OK      npm ${package}@${version}"
+              else echo "MISSING npm ${package}@${version} (HTTP ${code})"; missing_npm=$((missing_npm+1)); fi
           }
 
           for image in "${CEDAR_DOCKER_IMAGES[@]}"; do
@@ -64,20 +63,22 @@ jobs:
                   cedar-server-*) check_maven "cedar-${image#cedar-server-}-server-application" ;;
                   cedar-admin-tool) check_maven cedar-admin-tool ;;
                   cedar-infra-keycloak) check_maven cedar-keycloak-event-listener ;;
-                  cedar-frontend-main) check_npm cedar-template-editor ;;
-                  cedar-frontend-openview) check_npm cedar-openview-dist ;;
-                  cedar-frontend-monitoring) check_npm cedar-monitoring-dist ;;
-                  cedar-frontend-bridging) check_npm cedar-bridging-dist ;;
-                  cedar-frontend-content) check_npm cedar-content-distribution ;;
+                  cedar-frontend-main) check_npm cedar-template-editor "${CEDAR_TEMPLATE_EDITOR_NPM_VERSION}" ;;
+                  cedar-frontend-workspace) check_npm cedar-workspace "${CEDAR_WORKSPACE_NPM_VERSION}" ;;
+                  cedar-frontend-template-designer) check_npm cedar-template-designer "${CEDAR_TEMPLATE_DESIGNER_NPM_VERSION}" ;;
+                  cedar-frontend-openview) check_npm cedar-openview-dist "${CEDAR_OPENVIEW_NPM_VERSION}" ;;
+                  cedar-frontend-monitoring) check_npm cedar-monitoring-dist "${CEDAR_MONITORING_NPM_VERSION}" ;;
+                  cedar-frontend-bridging) check_npm cedar-bridging-dist "${CEDAR_BRIDGING_NPM_VERSION}" ;;
+                  cedar-frontend-content) check_npm cedar-content-distribution "${CEDAR_CONTENT_NPM_VERSION}" ;;
               esac
           done
 
           echo
           if [ ${missing_npm} -gt 0 ]; then
-              echo "${missing_npm} frontend tarball(s) are not published at ${IMAGE_VERSION}."
-              echo "Those frontend images will fail to build. Publish them from their own"
-              echo "repositories, or move IMAGE_VERSION in bin/cedar-images-base.sh."
-              echo
+              echo "${missing_npm} pinned frontend tarball(s) are not published."
+              echo "Publish immutable packages with cedar-development/ops/publish-frontend-package.sh"
+              echo "and update the exact versions in bin/cedar-images-base.sh."
+              exit 1
           fi
           if [ ${missing} -gt 0 ]; then
               echo "${missing} jar(s) are not published at ${IMAGE_VERSION}."
@@ -189,14 +190,12 @@ jobs:
           source bin/cedar-images-base.sh
           docker build $(cedar_server_build_args) -t "${CEDAR_IMAGE_PREFIX}/${{ matrix.image }}:${IMAGE_VERSION}" "${{ matrix.image }}"
 
-  # The frontends download a tarball their own repository publishes, and those routinely lag
-  # the current snapshot. Report the failure without failing the run; the artifacts job above
-  # says which tarball is missing. Make this gate once publishing keeps up.
+  # Frontends consume exact immutable Nexus package versions from the manifest. The artifact job
+  # proves those inputs exist first; every one of the seven image builds is therefore a hard gate.
   frontends:
     name: Build ${{ matrix.image }}
     runs-on: ubuntu-latest
     timeout-minutes: 45
-    continue-on-error: true
     strategy:
       fail-fast: false
       matrix:
@@ -206,6 +205,8 @@ jobs:
           - cedar-frontend-content
           - cedar-frontend-monitoring
           - cedar-frontend-openview
+          - cedar-frontend-workspace
+          - cedar-frontend-template-designer
     steps:
       - uses: actions/checkout@v4
 

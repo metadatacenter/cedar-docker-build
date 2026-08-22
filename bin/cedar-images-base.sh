@@ -7,6 +7,20 @@
 export CEDAR_IMAGE_PREFIX="metadatacenter"
 
 export IMAGE_VERSION=2.9.2-SNAPSHOT
+export CEDAR_APPLICATION_VERSION=2.9.2-SNAPSHOT
+
+# npm registries do not allow a version to be overwritten like a Maven SNAPSHOT. The extracted
+# frontend images therefore consume exact immutable prereleases published by
+# `cedar-development/ops/publish-frontend-package.sh`; never replace these with the moving `dev`
+# dist-tag. CEDAR_APPLICATION_VERSION remains the human-facing suite version; these seven inputs
+# identify the exact source payload assembled into each image.
+export CEDAR_TEMPLATE_EDITOR_NPM_VERSION=2.9.2-dev.20260820224241.ga6b295764835
+export CEDAR_WORKSPACE_NPM_VERSION=2.9.2-dev.20260821173503.gc658a7ca06a8
+export CEDAR_TEMPLATE_DESIGNER_NPM_VERSION=2.9.2-dev.20260821173509.ga4bf8b6005f3
+export CEDAR_OPENVIEW_NPM_VERSION=2.9.2-dev.20260820211916.g606e66ae460a
+export CEDAR_CONTENT_NPM_VERSION=2.9.2-dev.20260728231241.gd201ecfc9f7f
+export CEDAR_MONITORING_NPM_VERSION=2.9.2-dev.20260728231214.g909607e3dd41
+export CEDAR_BRIDGING_NPM_VERSION=2.9.2-dev.20260820211911.g7e10dcf58894
 
 # The locked persistence and infrastructure server versions, declared once and inherited by the
 # images that install them: no Dockerfile spells a version out, each takes it as a build argument
@@ -40,8 +54,8 @@ export KEYCLOAK_SHA256=d00d88fc9dd73b022e0109f09353374049955de18dd089d2e2da927f1
 
 # nginx is declared here for the same reason but not locked for the same one. The six above are
 # locked because moving one is a data migration; nginx holds no data, so it is pinned only so a
-# rebuild produces the same bytes, and it may move whenever someone wants it to. Seven images are
-# built on it — the reverse proxy and all six frontends — and each used to restate the number.
+# rebuild produces the same bytes, and it may move whenever someone wants it to. Eight images are
+# built on it — the reverse proxy and all seven frontends — and each used to restate the number.
 # renovate: datasource=docker depName=nginx
 export NGINX_VERSION=1.23.4
 
@@ -56,10 +70,9 @@ export NODE_VERSION=20.20.2
 # renovate: datasource=docker depName=ubuntu
 export UBUNTU_VERSION=20.04
 
-# The Node the Template Designer image builds with, distinct from NODE_VERSION above because
-# they are genuinely two different Nodes. 16 left support in September 2023 and should move, but
-# that image cannot currently be built to completion — its npm tarball is unpublished — so the
-# bump cannot be tested and is not being made blind. Fixing the download was separable and done.
+# The Node the AngularJS frontend images build with, distinct from NODE_VERSION above because they
+# are genuinely two different Nodes. Node 16 left support in September 2023 and should move in a
+# separately tested frontend-compatibility change.
 # renovate: datasource=node-version depName=node
 export NODE_FRONTEND_VERSION=16.20.2
 
@@ -87,6 +100,8 @@ CEDAR_DOCKER_IMAGES=(
   "cedar-frontend-monitoring"
   "cedar-frontend-bridging"
   "cedar-frontend-openview"
+  "cedar-frontend-workspace"
+  "cedar-frontend-template-designer"
 
   "cedar-infra-keycloak"
   "cedar-infra-mongo"

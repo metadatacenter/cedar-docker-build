@@ -7,10 +7,14 @@
 ARG NGINX_VERSION
 FROM nginx:${NGINX_VERSION}
 
-ENV CEDAR_VERSION=2.9.2-SNAPSHOT
+ARG CEDAR_APPLICATION_VERSION
+ARG CEDAR_TEMPLATE_EDITOR_NPM_VERSION
+
+ENV CEDAR_VERSION=${CEDAR_APPLICATION_VERSION}
+ENV PACKAGE_VERSION=${CEDAR_TEMPLATE_EDITOR_NPM_VERSION}
 ENV CEDAR_NPM_NEXUS_REPO=https://nexus.bmir.stanford.edu/repository/npm-cedar
 
-ENV DEBIAN_FRONTEND noninteractive
+ENV DEBIAN_FRONTEND=noninteractive
 
 USER root
 
@@ -42,8 +46,8 @@ RUN set -eux; \
     node --version; \
     npm --version
 
-ENV CEDAR_HOME /srv/cedar
-ENV CEDAR_TEMPLATE_EDITOR_HOME ${CEDAR_HOME}/cedar-template-editor/
+ENV CEDAR_HOME=/srv/cedar
+ENV CEDAR_TEMPLATE_EDITOR_HOME=${CEDAR_HOME}/cedar-template-editor/
 
 # Make CEDAR appplication home directory
 RUN mkdir -p ${CEDAR_TEMPLATE_EDITOR_HOME}
@@ -51,19 +55,28 @@ RUN mkdir -p ${CEDAR_TEMPLATE_EDITOR_HOME}
 # Make CEDAR home the default work directory
 WORKDIR ${CEDAR_TEMPLATE_EDITOR_HOME}
 
-ENV EDITOR_TARBALL cedar-template-editor-${CEDAR_VERSION}.tgz
-ENV EDITOR_URI ${CEDAR_NPM_NEXUS_REPO}/cedar-template-editor/-/${EDITOR_TARBALL}
+ENV EDITOR_TARBALL=cedar-template-editor-${PACKAGE_VERSION}.tgz
+ENV EDITOR_URI=${CEDAR_NPM_NEXUS_REPO}/cedar-template-editor/-/${EDITOR_TARBALL}
 
 RUN echo ${EDITOR_URI}
 
 # Download and extract the frontend source
-RUN \
-curl --fail --show-error --location --remote-name ${EDITOR_URI} && \
-tar --extract --file ${EDITOR_TARBALL} --directory ${CEDAR_TEMPLATE_EDITOR_HOME} --strip 1 && \
-rm ${EDITOR_TARBALL}
+RUN set -eux; \
+    test -n "$CEDAR_APPLICATION_VERSION"; \
+    test -n "$CEDAR_TEMPLATE_EDITOR_NPM_VERSION"; \
+    curl --fail --show-error --location --remote-name "$EDITOR_URI"; \
+    sha256sum "$EDITOR_TARBALL" | cut -d' ' -f1 > /usr/local/share/cedar-package-sha256; \
+    tar --extract --file "$EDITOR_TARBALL" --directory "$CEDAR_TEMPLATE_EDITOR_HOME" --strip 1; \
+    rm "$EDITOR_TARBALL"; \
+    test "$(node -p "require('./package.json').name")" = cedar-template-editor; \
+    test "$(node -p "require('./package.json').version")" = "$PACKAGE_VERSION"; \
+    source_commit="$(node -p "require('./package.json').gitHead || ''")"; \
+    echo "$source_commit" | grep -Eq '^[0-9a-f]{40}$'; \
+    printf '%s\n' "$source_commit" > /usr/local/share/cedar-source-commit
 
 # Install dependencies
 RUN \
+npm config set @org.metadatacenter:registry ${CEDAR_NPM_NEXUS_REPO} && \
 npm install && \
 npm install -g gulp
 
@@ -72,11 +85,8 @@ ADD scripts/docker-entrypoint.sh /
 # Add nginx config
 ADD config/default.conf /etc/nginx/conf.d/
 
-# Set env vars for the gulp task
-ENV CEDAR_ANALYTICS_KEY="false" CEDAR_GA4_TRACKING_ID="false" CEDAR_DATACITE_ENABLED="false" CEDAR_FRONTEND_BEHAVIOR="server" CEDAR_FRONTEND_TARGET="local" CEDAR_VERSION_MODIFIER="" CEDAR_FRONTEND_local_USER1_LOGIN="" CEDAR_FRONTEND_local_USER1_PASSWORD="" CEDAR_FRONTEND_local_USER1_NAME="" CEDAR_FRONTEND_local_USER2_LOGIN="" CEDAR_FRONTEND_local_USER2_PASSWORD="" CEDAR_FRONTEND_local_USER2_NAME=""
-
 # Set up log folder
-ENV LOGDIR /log
+ENV LOGDIR=/log
 RUN mkdir -p "$LOGDIR"
 VOLUME $LOGDIR
 
