@@ -2,47 +2,54 @@
 
 This repository contains Docker specifications for building all CEDAR Docker images.
 
-### Building Images
+### Building images
 
-An included script called `./bin/build-all-images.sh` builds all images.
+`cedarcli docker build` is the authoritative builder. It reads the image/version manifest in this
+repository, understands image groups and short names, and adds CEDAR base images before their
+dependents:
 
-    ./bin/build-all-images 
+    cedarcli docker build all
+    cedarcli docker build infrastructure
+    cedarcli docker build microservices
+    cedarcli docker build frontends
+    cedarcli docker build admin
+    cedarcli docker build artifact-server
 
-This will build Docker images for all CEDAR components and set the image version to the current CEDAR release.
+`bin/build-all-images.sh` remains only as a compatibility wrapper around the CLI.
 
-### Building Against a Local Checkout
+### Building against a local Java checkout
 
 By default every image that carries CEDAR code downloads it from Nexus while it builds, so an image
 can only ever run code that has already been published. To build one against your own working copy,
-build the jar first and then stage it into the image's build context:
+build the jar first and ask the CLI to stage it for that one build:
 
     cedarcli build this                                  # in the server's checkout
-    ./bin/stage-local-jar.sh cedar-server-artifact
+    cedarcli docker build artifact-server --local
 
-`install_deps.sh` prefers a staged jar and skips the download. `--all` stages every server plus the
-admin tool; `--clear` removes them and restores the published-artifact behaviour. Staged jars are
-git-ignored, so nothing here changes what a release builds.
+`install_deps.sh` prefers the staged jar and skips the Nexus download. The CLI removes the staged
+file after the image build, including after a failed Docker build, so the checkout never remains in
+a hidden local-input mode. Omit `--local` to consume the Maven artifact pinned by the manifest.
 
-### Split Frontend Preview Images
+### Frontend images
 
-Workspace and Template Designer build directly from their local checkouts while they are in preview:
+All seven frontend images are normal members of the `frontends` group: Template Editor, Workspace,
+Template Designer, OpenView, Content, Monitoring, and Bridging. Docker construction lives here;
+the frontend source repositories contain no Dockerfiles.
 
-    ./bin/build-split-preview-frontends.sh
-    ./bin/build-split-preview-frontends.sh workspace
-    ./bin/build-split-preview-frontends.sh designer
+The images consume exact immutable npm prereleases pinned in `bin/cedar-images-base.sh`, verify the
+package name/version and full `gitHead`, and record source and tarball provenance in the image.
+Publish a new clean source commit with:
 
-The script takes the shared nginx, Node, image-prefix, and image-version declarations from
-`bin/cedar-images-base.sh`, then uses the Dockerfile in each extracted frontend repository. The
-preview images are deliberately not in `CEDAR_DOCKER_IMAGES`; `build all` and the production image
-release loop therefore remain unchanged until staging acceptance explicitly promotes them.
+    $CEDAR_HOME/cedar-development/ops/publish-frontend-package.sh workspace
+    cedarcli docker build workspace-frontend
 
 ### Releasing Images
 
-An included script called `./bin/release-all-images.sh` tags and releases all images after they have been built.
+`bin/release-all-images.sh` is a legacy BMIR Nexus/DockerHub script with a hard-coded registry. It is
+not yet the production release path for the current snapshot estate. Configurable registry prefixes,
+immutable image tags/digests, credentials, and CI publication remain tracked in the Docker roadmap.
 
     ./bin/release-all-images.sh 
-
-These images are released to CEDAR's Docker Hub.
 
 Note that Docker's `~/.docker/config.json` file must be configured to allow the invoking user to push images.
 For CEDAR's DockerHub, the relevant configuration instructions are [here](https://github.com/metadatacenter/cedar-conf/wiki/Configuring-Docker-to-use-the-CEDAR-Nexus-DockerHub).
