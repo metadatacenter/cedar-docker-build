@@ -2,9 +2,10 @@
 
 # Base script containing configuration information for CEDAR Docker images.
 # Lists all directories containing CEDAR Docker image specifications.
-# Assumption here is image name is same as directory name containing Dockerfile for image with "metadatacenter/" prepended to it.
+# Image names share one configurable repository prefix. Existing installations retain the Docker
+# Hub namespace unless they export a registry host and optional namespace before sourcing this file.
 
-export CEDAR_IMAGE_PREFIX="metadatacenter"
+export CEDAR_IMAGE_PREFIX="${CEDAR_IMAGE_PREFIX:-metadatacenter}"
 
 export IMAGE_VERSION=2.9.3-SNAPSHOT
 export CEDAR_APPLICATION_VERSION=2.9.2-SNAPSHOT
@@ -86,6 +87,8 @@ export NODE_FRONTEND_VERSION=16.20.2
 # declare, and the alternative is a second place recording which image installs which server.
 cedar_server_build_args() {
   local name
+  printf ' --build-arg CEDAR_IMAGE_PREFIX=%s' "${CEDAR_IMAGE_PREFIX}"
+  printf ' --build-arg CEDAR_DOCKER_VERSION=%s' "${IMAGE_VERSION}"
   for name in $(grep -oE '^export [A-Z0-9_]+(_VERSION|_SHA256)=' "${BASH_SOURCE[0]}" | sed 's/^export //; s/=$//'); do
     [ "${name}" = "IMAGE_VERSION" ] && continue
     printf ' --build-arg %s=%s' "${name}" "${!name}"

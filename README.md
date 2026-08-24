@@ -45,14 +45,18 @@ Publish a new clean source commit with:
 
 ### Releasing Images
 
-`bin/release-all-images.sh` is a legacy BMIR Nexus/DockerHub script with a hard-coded registry. It is
-not yet the production release path for the current snapshot estate. Configurable registry prefixes,
-immutable image tags/digests, credentials, and CI publication remain tracked in the Docker roadmap.
+`CEDAR_IMAGE_PREFIX` selects both the registry and namespace used by the builder. It defaults to
+`metadatacenter`; set it before building to use another registry. Do not include `https://`, a tag,
+or a trailing slash:
 
-    ./bin/release-all-images.sh 
+    export CEDAR_IMAGE_PREFIX=<registry-host>:<port>/<namespace>
+    cedarcli docker build all
+    ./bin/release-all-images.sh
 
-Note that Docker's `~/.docker/config.json` file must be configured to allow the invoking user to push images.
-For CEDAR's DockerHub, the relevant configuration instructions are [here](https://github.com/metadatacenter/cedar-conf/wiki/Configuring-Docker-to-use-the-CEDAR-Nexus-DockerHub).
+The release script pushes the already-prefixed local images; it does not retag them. Docker must be
+logged in to the selected registry before the push. This manual script is not yet the production
+release path: immutable image manifests, credentials, and CI publication remain in the Docker
+roadmap.
 
 BMIR's Nexus server can then be queried to verify that all images of the specified version are available, e.g.,
 

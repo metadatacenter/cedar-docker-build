@@ -17,6 +17,39 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  image-references:
+    name: Check configurable CEDAR image references
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Check namespace and base-image arguments
+        shell: bash
+        run: |
+          export CEDAR_IMAGE_PREFIX=nexus.example.org:5000/cedar
+          source bin/cedar-images-base.sh
+
+          if grep -R -nE '^FROM[[:space:]]+metadatacenter/cedar-' --include=Dockerfile .; then
+              echo 'CEDAR base-image references must use ${CEDAR_IMAGE_PREFIX}.'
+              exit 1
+          fi
+          if grep -R -n 'metadatacenter/cedar-' --include='*.sh' bin; then
+              echo 'Image tooling must use ${CEDAR_IMAGE_PREFIX}, not a fixed CEDAR namespace.'
+              exit 1
+          fi
+
+          references=$(grep -R -hE '^FROM[[:space:]]+\$\{CEDAR_IMAGE_PREFIX\}/cedar-' --include=Dockerfile . | wc -l | tr -d ' ')
+          if [ "${references}" -ne 17 ]; then
+              echo "Expected 17 configurable CEDAR base-image references, found ${references}."
+              exit 1
+          fi
+
+          build_args=$(cedar_server_build_args)
+          echo "${build_args}" | grep -q -- '--build-arg CEDAR_IMAGE_PREFIX=nexus.example.org:5000/cedar'
+          echo "${build_args}" | grep -q -- "--build-arg CEDAR_DOCKER_VERSION=${IMAGE_VERSION}"
+          echo 'All CEDAR base-image references use the configured prefix and version.'
+
   # Every image that carries CEDAR code fetches it from Nexus while it builds, so an
   # unpublished artifact fails the build far from its cause: a curl 404 or a Maven error deep
   # in a layer. Resolve them all first, and say plainly which ones are missing.
@@ -123,9 +156,9 @@ jobs:
           export CEDAR_HOME="${GITHUB_WORKSPACE}/CEDAR"
           "${CEDAR_HOME}/cedar-development/ops/check_version_pairing.py"
 
-  # cedar-java and cedar-microservice are referenced by unqualified tag, so they have to exist
-  # in the local daemon before anything built on top of them. That forces one sequential job
-  # rather than a matrix.
+  # cedar-java and cedar-microservice have to exist under the configured prefix and version in the
+  # local daemon before anything built on top of them. That forces one sequential job rather than
+  # a matrix.
   java-chain:
     name: Build the Java image chain
     runs-on: ubuntu-latest

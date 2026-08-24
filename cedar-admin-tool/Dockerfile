@@ -1,4 +1,7 @@
-FROM metadatacenter/cedar-java:2.9.3-SNAPSHOT
+# check=skip=InvalidDefaultArgInFrom
+ARG CEDAR_IMAGE_PREFIX=metadatacenter
+ARG CEDAR_DOCKER_VERSION
+FROM ${CEDAR_IMAGE_PREFIX}/cedar-java:${CEDAR_DOCKER_VERSION}
 
 ENV CEDAR_HOME=/cedar
 
