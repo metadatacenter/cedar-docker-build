@@ -9,6 +9,7 @@ repository, understands image groups and short names, and adds CEDAR base images
 dependents:
 
     cedarcli docker build all
+    cedarcli docker build core
     cedarcli docker build infrastructure
     cedarcli docker build microservices
     cedarcli docker build frontends
@@ -45,18 +46,21 @@ Publish a new clean source commit with:
 
 ### Releasing Images
 
-`CEDAR_IMAGE_PREFIX` selects both the registry and namespace used by the builder. It defaults to
-`metadatacenter`; set it before building to use another registry. Do not include `https://`, a tag,
-or a trailing slash:
+`CEDAR_IMAGE_PREFIX` selects the registry and namespace for the 29 runtime images. It defaults to
+`metadatacenter`; set it before building to use another registry. `CEDAR_BASE_IMAGE_PREFIX` can put
+the two non-runtime Java bases in an internal repository and defaults to the runtime prefix for
+compatibility. Do not include `https://`, a tag, or a trailing slash:
 
     export CEDAR_IMAGE_PREFIX=<registry-host>:<port>/<namespace>
+    export CEDAR_BASE_IMAGE_PREFIX=<registry-host>:<port>/<internal-namespace>
     cedarcli docker build all
     ./bin/release-all-images.sh
 
 The release script pushes the already-prefixed local images; it does not retag them. Docker must be
-logged in to the selected registry before the push. This manual script is not yet the production
-release path: immutable image manifests, credentials, and CI publication remain in the Docker
-roadmap.
+logged in to each selected registry before the push. Normal publication is performed by the
+`cedar-development` build-train workflow: it builds the two bases first, fans out the 29 runtime
+builds, pushes unique train tags, pulls every image into a clean verifier, records immutable
+digests, and advances the Docker current pointer only after the complete inventory passes.
 
 BMIR's Nexus server can then be queried to verify that all images of the specified version are available, e.g.,
 

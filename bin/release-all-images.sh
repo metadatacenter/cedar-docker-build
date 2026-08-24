@@ -17,8 +17,10 @@ source "${CEDAR_DOCKER_BUILD_HOME}/bin/cedar-images-base.sh"
 push_image()
 {
     local image=$1
-    echo "Pushing image ${image}:${IMAGE_VERSION}"
-    docker push "${image}:${IMAGE_VERSION}"
+    local prefix
+    prefix=$(cedar_image_prefix_for "${image}")
+    echo "Pushing image ${prefix}/${image}:${IMAGE_VERSION}"
+    docker push "${prefix}/${image}:${IMAGE_VERSION}"
 }
 
 release_all_images()
@@ -26,7 +28,7 @@ release_all_images()
     echo "Releasing all CEDAR Docker images..."
     local image
     for image in "${CEDAR_DOCKER_IMAGES[@]}"; do
-        push_image "${CEDAR_IMAGE_PREFIX}/${image}"
+        push_image "${image}"
     done
 }
 

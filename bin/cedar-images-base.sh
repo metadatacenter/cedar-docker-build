@@ -6,6 +6,9 @@
 # Hub namespace unless they export a registry host and optional namespace before sourcing this file.
 
 export CEDAR_IMAGE_PREFIX="${CEDAR_IMAGE_PREFIX:-metadatacenter}"
+# A registry-backed train can keep the two non-runtime Java bases in a separate repository. Local
+# and legacy builds retain one prefix because this defaults to the runtime prefix.
+export CEDAR_BASE_IMAGE_PREFIX="${CEDAR_BASE_IMAGE_PREFIX:-${CEDAR_IMAGE_PREFIX}}"
 
 export IMAGE_VERSION=2.9.3-SNAPSHOT
 export CEDAR_MAVEN_VERSION=2.9.3-SNAPSHOT
@@ -94,7 +97,7 @@ export NODE_FRONTEND_VERSION=16.20.2
 # declare, and the alternative is a second place recording which image installs which server.
 cedar_server_build_args() {
   local name
-  printf ' --build-arg CEDAR_IMAGE_PREFIX=%s' "${CEDAR_IMAGE_PREFIX}"
+  printf ' --build-arg CEDAR_IMAGE_PREFIX=%s' "${CEDAR_BASE_IMAGE_PREFIX}"
   printf ' --build-arg CEDAR_DOCKER_VERSION=%s' "${IMAGE_VERSION}"
   for name in $(grep -oE '^export [A-Z0-9_]+(_VERSION|_SHA256)=' "${BASH_SOURCE[0]}" | sed 's/^export //; s/=$//'); do
     [ "${name}" = "IMAGE_VERSION" ] && continue
@@ -143,3 +146,10 @@ CEDAR_DOCKER_IMAGES=(
   "cedar-server-valuerecommender"
   "cedar-server-worker"
 )
+
+cedar_image_prefix_for() {
+  case "$1" in
+    cedar-java|cedar-microservice) printf '%s' "${CEDAR_BASE_IMAGE_PREFIX}" ;;
+    *) printf '%s' "${CEDAR_IMAGE_PREFIX}" ;;
+  esac
+}
