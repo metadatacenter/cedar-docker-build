@@ -1,5 +1,7 @@
 # CEDAR Docker Images
 
+[![CI](https://github.com/metadatacenter/cedar-docker-build/actions/workflows/ci.yml/badge.svg?branch=develop)](https://github.com/metadatacenter/cedar-docker-build/actions/workflows/ci.yml)
+
 This repository contains Docker specifications for building all CEDAR Docker images.
 
 ### Building images
