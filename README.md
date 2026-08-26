@@ -2,73 +2,57 @@
 
 [![CI](https://github.com/metadatacenter/cedar-docker-build/actions/workflows/ci.yml/badge.svg?branch=develop)](https://github.com/metadatacenter/cedar-docker-build/actions/workflows/ci.yml)
 
-This repository contains Docker specifications for building all CEDAR Docker images.
+Start with the published documentation:
 
-### Building images
+- [Docker Install](https://metadatacenter.readthedocs.io/en/latest/install-docker/overview/)
+  explains how to configure, start, verify, and stop CEDAR in Docker.
+- [Docker Development](https://metadatacenter.readthedocs.io/en/latest/developer-guide/cedarcli/docker/)
+  explains the normal `cedarcli` image-build workflow.
+- [Publishing Artifacts and Build Trains](https://metadatacenter.readthedocs.io/en/latest/developer-guide/cedarcli/publishing/)
+  explains how Maven artifacts and Docker images are published as one verified set.
 
-`cedarcli docker build` is the authoritative builder. It reads the image/version manifest in this
-repository, understands image groups and short names, and adds CEDAR base images before their
-dependents:
+This repository contains image-construction inputs. It does not define the running deployment and
+is not an alternative Docker installation guide.
 
-    cedarcli docker build all
-    cedarcli docker build core
-    cedarcli docker build infrastructure
-    cedarcli docker build microservices
-    cedarcli docker build frontends
-    cedarcli docker build admin
-    cedarcli docker build artifact-server
+## Image Inventory and Build Inputs
 
-`bin/build-all-images.sh` remains only as a compatibility wrapper around the CLI.
+Each image has its own directory and Dockerfile. `bin/cedar-images-base.sh` is the shared build
+manifest: it records the image inventory, compatibility development version, immutable frontend
+package inputs, and pinned infrastructure versions. `cedarcli docker build` reads that same
+manifest, so the shell scripts and CLI do not maintain competing inventories.
 
-### Building against a local Java checkout
+The two internal Java bases are ordered dependencies:
 
-By default every image that carries CEDAR code downloads it from Nexus while it builds, so an image
-can only ever run code that has already been published. To build one against your own working copy,
-build the jar first and ask the CLI to stage it for that one build:
+```text
+cedar-java
+  -> cedar-microservice
+       -> cedar-server-*
+```
 
-    cedarcli build this                                  # in the server's checkout
-    cedarcli docker build artifact-server --local
+The infrastructure, frontend, and administration images do not become running services until the
+Compose projects in `cedar-docker-deploy` use them.
 
-`install_deps.sh` prefers the staged jar and skips the Nexus download. The CLI removes the staged
-file after the image build, including after a failed Docker build, so the checkout never remains in
-a hidden local-input mode. Omit `--local` to consume the Maven artifact pinned by the manifest.
+## Building While Working on This Repository
 
-### Frontend images
+Use `cedarcli docker build <target>` as described in the cedarcli manual. It resolves image groups
+and short names, selects the current completed train unless `--local` is requested, and builds CEDAR
+base images before their dependents. `bin/build-all-images.sh` remains as a compatibility wrapper
+and delegates to the CLI.
 
-All seven frontend images are normal members of the `frontends` group: Template Editor, Workspace,
-Template Designer, OpenView, Content, Monitoring, and Bridging. Docker construction lives here;
-the frontend source repositories contain no Dockerfiles.
+Java service images normally download the artifact recorded by the selected build train. For a
+local-source build, cedarcli stages the checked-out JAR under the image's ignored `local/` directory
+for the duration of the build and removes it afterward. `bin/stage-local-jar.sh` implements that
+low-level staging contract.
 
-The images consume exact immutable npm prereleases pinned in `bin/cedar-images-base.sh`, verify the
-package name/version and full `gitHead`, and record source and tarball provenance in the image.
-Publish a new clean source commit with:
+Frontend images consume the exact npm versions recorded in `bin/cedar-images-base.sh`. Their source
+repositories remain Docker-agnostic; package retrieval, payload generation, private nginx
+configuration, and provenance metadata are implemented here.
 
-    $CEDAR_HOME/cedar-development/ops/publish-frontend-package.sh workspace
-    cedarcli docker build workspace-frontend
+## Registry Publication
 
-### Releasing Images
+Normal publication is owned by the build-train workflow in `cedar-development`. It builds the Java
+bases first, publishes the runtime images under one immutable train ID, pulls every image back from
+the registry, verifies its provenance and digest, and only then advances the deployable pointer.
 
-`CEDAR_IMAGE_PREFIX` selects the registry and namespace for the 29 runtime images. It defaults to
-`metadatacenter`; set it before building to use another registry. `CEDAR_BASE_IMAGE_PREFIX` can put
-the two non-runtime Java bases in an internal repository and defaults to the runtime prefix for
-compatibility. Do not include `https://`, a tag, or a trailing slash:
-
-    export CEDAR_IMAGE_PREFIX=<registry-host>:<port>/<namespace>
-    export CEDAR_BASE_IMAGE_PREFIX=<registry-host>:<port>/<internal-namespace>
-    cedarcli docker build all
-    ./bin/release-all-images.sh
-
-The release script pushes the already-prefixed local images; it does not retag them. Docker must be
-logged in to each selected registry before the push. Normal publication is performed by the
-`cedar-development` build-train workflow: it builds the two bases first, fans out the 29 runtime
-builds, pushes unique train tags, pulls every image into a clean verifier, records immutable
-digests, and advances the Docker current pointer only after the complete inventory passes.
-
-BMIR's Nexus server can then be queried to verify that all images of the specified version are available, e.g.,
-
-    https://nexus.bmir.stanford.edu/#browse/search/docker=version%3D1.9.3
-
-### Deploying
-
-The [CEDAR Docker Deploy](https://github.com/metadatacenter/cedar-docker-deploy) repository contains instructions and 
-scripts for deploying a CEDAR system. 
+`bin/release-all-images.sh` is a low-level maintenance script. It pushes already-built images under
+their existing `CEDAR_IMAGE_PREFIX` or `CEDAR_BASE_IMAGE_PREFIX`; it neither builds nor retags them.
