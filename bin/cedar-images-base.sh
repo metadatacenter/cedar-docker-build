@@ -26,7 +26,7 @@ export CEDAR_APPLICATION_VERSION=2.9.2-SNAPSHOT
 # `cedar-development/ops/publish-frontend-package.sh`. Never replace these with the moving `dev`
 # dist-tag. CEDAR_APPLICATION_VERSION remains the human-facing suite version; these seven inputs
 # identify the exact source payload assembled into each image.
-export CEDAR_TEMPLATE_EDITOR_NPM_VERSION=2.9.2
+export CEDAR_TEMPLATE_EDITOR_NPM_VERSION=2.9.3-dev.20260825220423.g80b336b06509
 export CEDAR_WORKSPACE_NPM_VERSION=2.9.2-dev.20260821173503.gc658a7ca06a8
 export CEDAR_TEMPLATE_DESIGNER_NPM_VERSION=2.9.2-dev.20260821173509.ga4bf8b6005f3
 export CEDAR_OPENVIEW_NPM_VERSION=2.9.2
