@@ -8,6 +8,22 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class RuntimeHardeningTest(unittest.TestCase):
+    def test_keycloak_realm_seed_contains_no_generated_key_material(self):
+        realm = json.loads((
+            ROOT
+            / "cedar-infra-keycloak"
+            / "config"
+            / "keycloak-realm.CEDAR.development.2023-07-05.json"
+        ).read_text(encoding="utf-8"))
+        providers = realm.get("components", {}).get(
+            "org.keycloak.keys.KeyProvider", []
+        )
+        self.assertEqual(
+            [],
+            providers,
+            "Realm seeds must let each Keycloak installation generate unique providers",
+        )
+
     def test_microservice_base_runs_as_fixed_non_root_user_without_dead_toolchain(self):
         dockerfile = (ROOT / "cedar-microservice" / "Dockerfile").read_text(encoding="utf-8")
         self.assertIn("USER cedar:cedar", dockerfile)
