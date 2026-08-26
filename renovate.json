@@ -14,7 +14,15 @@
   "labels": [
     "dependencies"
   ],
+  "dependencyDashboard": true,
+  "dependencyDashboardTitle": "Dependency Dashboard",
+  "automerge": false,
   "prConcurrentLimit": 5,
+  "prHourlyLimit": 2,
+  "ignoreDeps": [
+    "metadatacenter/cedar-java",
+    "metadatacenter/cedar-microservice"
+  ],
   "customManagers": [
     {
       "description": "The locked infrastructure server versions, declared once in the build manifest and inherited by the images as build arguments. Keyed on the '# renovate:' comment above each one.",
@@ -29,6 +37,27 @@
   ],
   "packageRules": [
     {
+      "description": "CEDAR artifacts and images are versioned and promoted by the immutable build train, never by Renovate.",
+      "matchPackageNames": [
+        "/^@org\\.metadatacenter\\//",
+        "/^org\\.metadatacenter:/",
+        "/(?:^|\\/)cedar-(?:java|microservice)$/"
+      ],
+      "matchDepNames": [
+        "/^@org\\.metadatacenter\\//",
+        "/^cedar-/",
+        "/(?:^|\\/)cedar-(?:java|microservice)$/"
+      ],
+      "enabled": false
+    },
+    {
+      "description": "Major external upgrades require an explicit operator decision in the Dependency Dashboard.",
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "dependencyDashboardApproval": true
+    },
+    {
       "description": "The six locked servers, which is every server declared in the manifest except nginx. move only when someone decides to, and moving one is a migration rather than an upgrade: an image older than a running server cannot open its data files, and a newer one may write a format the old one cannot read. Group them so they arrive as one reviewable decision, and never merge them automatically.",
       "matchFileNames": [
         "bin/cedar-images-base.sh"
@@ -36,8 +65,8 @@
       "groupName": "locked infrastructure servers",
       "automerge": false,
       "minimumReleaseAge": "14 days",
-      "excludePackageNames": [
-        "nginx"
+      "matchPackageNames": [
+        "!nginx"
       ]
     },
     {
