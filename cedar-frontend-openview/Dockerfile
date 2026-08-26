@@ -14,14 +14,17 @@ WORKDIR /runtime-assets
 RUN set -eux; \
     test -n "$CEDAR_OPENVIEW_CEE_NPM_VERSION"; \
     test -n "$CEDAR_OPENVIEW_WEBCOMPONENTS_NPM_VERSION"; \
+    npm config set @org.metadatacenter:registry https://nexus.bmir.stanford.edu/repository/npm-cedar/; \
     npm install --ignore-scripts --no-audit --no-fund --no-save \
       --registry=https://registry.npmjs.org \
-      "cedar-embeddable-editor@${CEDAR_OPENVIEW_CEE_NPM_VERSION}" \
+      "cedar-embeddable-editor@npm:@org.metadatacenter/cedar-embeddable-editor@${CEDAR_OPENVIEW_CEE_NPM_VERSION}" \
       "@webcomponents/webcomponentsjs@${CEDAR_OPENVIEW_WEBCOMPONENTS_NPM_VERSION}"; \
     test "$(node -p "require('./node_modules/cedar-embeddable-editor/package.json').version")" = "$CEDAR_OPENVIEW_CEE_NPM_VERSION"; \
     test "$(node -p "require('./node_modules/@webcomponents/webcomponentsjs/package.json').version")" = "$CEDAR_OPENVIEW_WEBCOMPONENTS_NPM_VERSION"
 
 FROM nginx:${NGINX_VERSION}
+
+COPY cedar-build-manifest.json /usr/local/share/cedar-build-manifest.json
 
 ARG CEDAR_APPLICATION_VERSION
 ARG CEDAR_OPENVIEW_NPM_VERSION

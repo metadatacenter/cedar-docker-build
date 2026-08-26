@@ -7,6 +7,8 @@
 ARG NGINX_VERSION
 FROM nginx:${NGINX_VERSION}
 
+COPY cedar-build-manifest.json /usr/local/share/cedar-build-manifest.json
+
 ARG CEDAR_APPLICATION_VERSION
 ARG CEDAR_TEMPLATE_EDITOR_NPM_VERSION
 
