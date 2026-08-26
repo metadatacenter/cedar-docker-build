@@ -11,6 +11,9 @@
     "into a pull request. It does not decide anything - the version lock still says what may move,",
     "and the pairing check in CI still says what must move together."
   ],
+  "baseBranchPatterns": [
+    "develop"
+  ],
   "labels": [
     "dependencies"
   ],
