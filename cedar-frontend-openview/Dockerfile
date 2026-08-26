@@ -39,7 +39,6 @@ RUN set -eux; \
     else \
       npm config set @org.metadatacenter:registry https://nexus.bmir.stanford.edu/repository/npm-cedar/; \
       npm install --ignore-scripts --no-audit --no-fund --no-save \
-        --registry=https://registry.npmjs.org \
         "cedar-embeddable-editor@npm:@org.metadatacenter/cedar-embeddable-editor@${CEDAR_OPENVIEW_CEE_NPM_VERSION}" \
         "@webcomponents/webcomponentsjs@${CEDAR_OPENVIEW_WEBCOMPONENTS_NPM_VERSION}"; \
     fi; \
