@@ -19,8 +19,6 @@ ENV LOGDIR=${CEDAR_HOME}/log/server-${CEDAR_SERVER_NAME}/
 RUN mkdir -p ${LOGDIR}
 VOLUME ${LOGDIR}
 
-RUN python3 -m pip install redis==2.10.6
-
 # script to install jar
 ADD include/install_cedarat_deps.sh ${CEDAR_HOME}/
 

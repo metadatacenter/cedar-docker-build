@@ -14,6 +14,8 @@
   "labels": [
     "dependencies"
   ],
+  "dependencyDashboard": true,
+  "dependencyDashboardTitle": "Dependency Dashboard",
   "prConcurrentLimit": 5,
   "customManagers": [
     {
@@ -36,8 +38,8 @@
       "groupName": "locked infrastructure servers",
       "automerge": false,
       "minimumReleaseAge": "14 days",
-      "excludePackageNames": [
-        "nginx"
+      "matchPackageNames": [
+        "!nginx"
       ]
     },
     {

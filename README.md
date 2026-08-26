@@ -32,6 +32,12 @@ cedar-java
 The infrastructure, frontend, and administration images do not become running services until the
 Compose projects in `cedar-docker-deploy` use them.
 
+The fifteen Java service images declare `USER cedar:cedar` with fixed UID/GID 10001. Their shared
+Python bootstrap dependencies are installed once in `cedar-microservice`; child images must not
+downgrade them. The CA certificate volume remains read-only and each service imports it into a
+user-owned truststore. `cedarcli docker start` performs the one-time ownership migration needed by
+named volumes created by older root-running images.
+
 ## Building While Working on This Repository
 
 Use `cedarcli docker build <target>` as described in the cedarcli manual. It resolves image groups

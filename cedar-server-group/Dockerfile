@@ -13,8 +13,6 @@ ENV LOGDIR=${CEDAR_HOME}/log/server-${CEDAR_SERVER_NAME}/
 RUN mkdir -p ${LOGDIR}
 VOLUME ${LOGDIR}
 
-RUN python3 -m pip install redis==2.10.6
-
 EXPOSE ${CEDAR_GROUP_HTTP_PORT} ${CEDAR_GROUP_ADMIN_PORT} ${CEDAR_GROUP_STOP_PORT}
 
 # Empty unless bin/stage-local-jar.sh has staged a locally built jar here.

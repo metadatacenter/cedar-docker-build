@@ -4,20 +4,16 @@ ARG CEDAR_DOCKER_VERSION
 FROM ${CEDAR_IMAGE_PREFIX}/cedar-java:${CEDAR_DOCKER_VERSION}
 
 ENV CEDAR_HOME=/cedar
+ENV HOME=${CEDAR_HOME}
 
 ARG CEDAR_MAVEN_VERSION
 ENV CEDAR_VERSION=${CEDAR_MAVEN_VERSION}
 
 ENV CEDAR_USER_HTTP_PORT=9005
 
-RUN microdnf -y update
-
-RUN microdnf -y install yum-utils
-
-RUN microdnf -y install gcc
-RUN microdnf -y install python3
-RUN microdnf -y install python3-devel
-RUN microdnf -y install python3-pip
+RUN microdnf -y update && \
+    microdnf -y install python3 python3-pip && \
+    microdnf clean all
 
 ENV VIRTUAL_ENV=${CEDAR_HOME}/cedar-env
 RUN python3 -m venv $VIRTUAL_ENV
@@ -34,7 +30,7 @@ RUN python3 -m pip install --no-cache-dir \
       redis==5.2.1 \
       pymysql==1.1.1
 
-ADD config/m2/settings.xml /root/.m2/
+ADD config/m2/settings.xml ${CEDAR_HOME}/.m2/
 
 RUN mvn org.apache.maven.plugins:maven-dependency-plugin:3.5.0:get \
 -Dartifact=org.apache.maven.plugins:maven-dependency-plugin:3.5.0
@@ -50,11 +46,22 @@ ADD scripts/wait-for-redis.py ${CEDAR_HOME}/
 # script to install jar
 ADD include/install_deps.sh ${CEDAR_HOME}/
 
-RUN mkdir -p ${CEDAR_HOME}/app
+RUN groupadd --gid 10001 cedar && \
+    useradd --uid 10001 --gid 10001 --home-dir ${CEDAR_HOME} --shell /sbin/nologin cedar && \
+    mkdir -p ${CEDAR_HOME}/app ${CEDAR_HOME}/log ${CEDAR_HOME}/cache \
+      ${CEDAR_HOME}/truststore /state && \
+    cp ${JAVA_HOME}/lib/security/cacerts ${CEDAR_HOME}/truststore/cacerts && \
+    chown -R cedar:cedar ${CEDAR_HOME} /state
 WORKDIR ${CEDAR_HOME}/app/
 
 ENV CADIR=${CEDAR_HOME}/ca/
 RUN mkdir -p ${CADIR}
 VOLUME ${CADIR}
+
+ENV CEDAR_TRUSTSTORE=${CEDAR_HOME}/truststore/cacerts
+
+# Child images install their jars as this user, and the Java process retains the same identity at
+# runtime. UID/GID 10001 is fixed so named-volume ownership can be prepared consistently.
+USER cedar:cedar
 
 CMD ["/cedar/docker-entrypoint.sh"]

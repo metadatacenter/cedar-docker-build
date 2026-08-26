@@ -1,0 +1,52 @@
+import json
+from pathlib import Path
+import re
+import unittest
+
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+class RuntimeHardeningTest(unittest.TestCase):
+    def test_microservice_base_runs_as_fixed_non_root_user_without_dead_toolchain(self):
+        dockerfile = (ROOT / "cedar-microservice" / "Dockerfile").read_text(encoding="utf-8")
+        self.assertIn("USER cedar:cedar", dockerfile)
+        self.assertIn("useradd --uid 10001 --gid 10001", dockerfile)
+        for package in ("gcc", "python3-devel", "yum-utils"):
+            self.assertNotRegex(dockerfile, rf"microdnf[^\n]*install[^\n]*\b{package}\b")
+
+    def test_no_server_downgrades_the_shared_redis_client(self):
+        for dockerfile in sorted(ROOT.glob("cedar-server-*/Dockerfile")):
+            with self.subTest(dockerfile=dockerfile.parent.name):
+                self.assertNotIn("redis==2.10.6", dockerfile.read_text(encoding="utf-8"))
+
+    def test_runtime_uses_a_user_owned_ca_truststore(self):
+        dockerfile = (ROOT / "cedar-microservice" / "Dockerfile").read_text(encoding="utf-8")
+        entrypoint = (
+            ROOT / "cedar-microservice" / "scripts" / "docker-entrypoint.sh"
+        ).read_text(encoding="utf-8")
+        self.assertIn("CEDAR_TRUSTSTORE", dockerfile)
+        self.assertIn('-keystore "${CEDAR_TRUSTSTORE}"', entrypoint)
+        self.assertIn('-Djavax.net.ssl.trustStore="${CEDAR_TRUSTSTORE}"', entrypoint)
+        self.assertNotIn("${JAVA_HOME}/lib/security/cacerts", entrypoint)
+
+    def test_immediate_security_base_updates_are_applied(self):
+        java = (ROOT / "cedar-java" / "Dockerfile").read_text(encoding="utf-8")
+        manifest = (ROOT / "bin" / "cedar-images-base.sh").read_text(encoding="utf-8")
+        self.assertNotIn("17.0.8_7-jre-ubi9-minimal", java)
+        nginx = re.search(r"^export NGINX_VERSION=(\S+)$", manifest, re.MULTILINE)
+        self.assertIsNotNone(nginx)
+        self.assertNotEqual("1.23.4", nginx.group(1))
+
+    def test_renovate_configuration_exposes_a_dashboard_and_manages_base_pins(self):
+        config = json.loads((ROOT / "renovate.json").read_text(encoding="utf-8"))
+        self.assertTrue(config["dependencyDashboard"])
+        managers = config["customManagers"]
+        self.assertTrue(any("bin/cedar-images-base" in " ".join(
+            manager.get("managerFilePatterns", [])) for manager in managers))
+        java = (ROOT / "cedar-java" / "Dockerfile").read_text(encoding="utf-8")
+        self.assertRegex(java, r"^FROM eclipse-temurin:", re.MULTILINE)
+
+
+if __name__ == "__main__":
+    unittest.main()
