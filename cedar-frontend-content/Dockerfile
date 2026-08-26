@@ -44,7 +44,14 @@ RUN set -eux; \
     test -n "$CEDAR_APPLICATION_VERSION"; \
     test -n "$CEDAR_CONTENT_NPM_VERSION"; \
     curl --fail --show-error --location --remote-name "$PACKAGE_URI"; \
-    sha256sum "$TARBALL" | cut -d' ' -f1 > /usr/local/share/cedar-package-sha256; \
+    actual_sha="$(sha256sum "$TARBALL" | cut -d' ' -f1)"; \
+    train="$(jq -r '.train // empty' /usr/local/share/cedar-build-manifest.json)"; \
+    expected_sha="$(jq -r --arg name "$PACKAGE_NAME" --arg version "$PACKAGE_VERSION" '[.packages[]? | select(.name == $name and .version == $version)] | if length == 1 then .[0].tarballSha256 else empty end' /usr/local/share/cedar-build-manifest.json)"; \
+    if [ -n "$train" ]; then \
+      echo "$expected_sha" | grep -Eq '^[0-9a-f]{64}$'; \
+      printf '%s  %s\n' "$expected_sha" "$TARBALL" | sha256sum -c -; \
+    else expected_sha="$actual_sha"; fi; \
+    printf '%s\n' "$expected_sha" > /usr/local/share/cedar-package-sha256; \
     tar --extract --file "$TARBALL" --directory "$CEDAR_FRONTEND_HOME" --strip 1; \
     rm "$TARBALL"; \
     test "$(jq -r .name package.json)" = "$PACKAGE_NAME"; \

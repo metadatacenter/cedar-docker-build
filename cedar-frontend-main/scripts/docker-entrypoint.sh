@@ -26,7 +26,7 @@ export CEDAR_FRONTEND_local_USER2_NAME="${CEDAR_FRONTEND_local_USER2_NAME:-}"
 
 echo "Executing gulp"
 
-gulp
+./node_modules/.bin/gulp
 
 echo "Gulp terminated, content served by Nginx"
 

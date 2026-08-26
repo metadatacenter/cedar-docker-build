@@ -17,6 +17,16 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  frontend-reproducibility:
+    name: Check pinned frontend inputs
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Check tarball and dependency locks
+        run: python3 -m unittest discover -s tests -p 'test_*.py'
+
   image-references:
     name: Check configurable CEDAR image references
     runs-on: ubuntu-latest

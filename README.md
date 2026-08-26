@@ -46,7 +46,11 @@ low-level staging contract.
 
 Frontend images consume the exact npm versions recorded in `bin/cedar-images-base.sh`. Their source
 repositories remain Docker-agnostic; package retrieval, payload generation, private nginx
-configuration, and provenance metadata are implemented here.
+configuration, and provenance metadata are implemented here. For an immutable train, every
+downloaded application tarball must match the SHA-256 in the embedded build manifest. Source
+frontends install with `npm ci` from the shrinkwrap vendored by the train publisher; OpenView
+extracts its two verified runtime package tarballs directly. The non-train compatibility path is
+deliberately not described as reproducible.
 
 ## Registry Publication
 

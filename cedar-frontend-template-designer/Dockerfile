@@ -41,7 +41,14 @@ RUN set -eux; \
     tarball="${PACKAGE_NAME}-${PACKAGE_VERSION}.tgz"; \
     uri="${CEDAR_NPM_NEXUS_REPO}/${PACKAGE_NAME}/-/${tarball}"; \
     curl -fsSL "$uri" -o "/tmp/$tarball"; \
-    sha256sum "/tmp/$tarball" | cut -d' ' -f1 > /usr/local/share/cedar-package-sha256; \
+    actual_sha="$(sha256sum "/tmp/$tarball" | cut -d' ' -f1)"; \
+    train="$(node -p "require('/usr/local/share/cedar-build-manifest.json').train || ''")"; \
+    expected_sha="$(node -e 'const m=require("/usr/local/share/cedar-build-manifest.json"); const p=(m.packages||[]).filter(p=>p.name===process.env.PACKAGE_NAME&&p.version===process.env.PACKAGE_VERSION); if(p.length===1) process.stdout.write(p[0].tarballSha256||"")')"; \
+    if [ -n "$train" ]; then \
+      echo "$expected_sha" | grep -Eq '^[0-9a-f]{64}$'; \
+      printf '%s  %s\n' "$expected_sha" "/tmp/$tarball" | sha256sum -c -; \
+    else expected_sha="$actual_sha"; fi; \
+    printf '%s\n' "$expected_sha" > /usr/local/share/cedar-package-sha256; \
     tar -xzf "/tmp/$tarball" --strip-components=1; \
     rm "/tmp/$tarball"; \
     test "$(node -p "require('./package.json').name")" = "$PACKAGE_NAME"; \
@@ -51,7 +58,10 @@ RUN set -eux; \
     echo "$source_commit" | grep -Eq '^[0-9a-f]{40}$'; \
     printf '%s\n' "$source_commit" > /usr/local/share/cedar-source-commit; \
     npm config set @org.metadatacenter:registry "$CEDAR_NPM_NEXUS_REPO"; \
-    npm install
+    if [ -n "$train" ]; then \
+      test -f npm-shrinkwrap.json; \
+      npm ci; \
+    else npm install; fi
 
 COPY scripts/docker-entrypoint.sh /docker-entrypoint.sh
 COPY config/default.conf /etc/nginx/conf.d/default.conf
