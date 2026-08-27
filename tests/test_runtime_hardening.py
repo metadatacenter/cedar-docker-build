@@ -80,6 +80,11 @@ class RuntimeHardeningTest(unittest.TestCase):
         for dockerfile in sorted(ROOT.glob("cedar-frontend-*/Dockerfile")):
             with self.subTest(dockerfile=dockerfile.parent.name):
                 text = dockerfile.read_text(encoding="utf-8")
+                self.assertIn(
+                    "ENV CEDAR_HOME=/srv/cedar",
+                    text,
+                    "the app-home variable used during ownership setup must be defined",
+                )
                 self.assertIn("USER nginx:nginx", text)
                 self.assertIn("pid /tmp/nginx.pid;", text)
                 self.assertRegex(
