@@ -61,6 +61,14 @@ RUN set -eux; \
     echo "$source_commit" | grep -Eq '^[0-9a-f]{40}$'; \
     printf '%s\n' "$source_commit" > /usr/local/share/cedar-source-commit
 
+# nginx runs as the image's own unprivileged user: every vhost listens on a high port, the
+# runtime writes (gulp or the index.html sed) stay inside the app home, and the pid file moves
+# to /tmp because /var/run belongs to root.
+RUN sed -i 's|^pid .*|pid /tmp/nginx.pid;|' /etc/nginx/nginx.conf && \
+    mkdir -p /log && \
+    chown -R nginx:nginx /var/cache/nginx "${CEDAR_HOME}" /log
+USER nginx:nginx
+
 EXPOSE 4300
 
 CMD ["nginx", "-g", "daemon off;"]

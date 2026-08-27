@@ -71,6 +71,14 @@ ENV CEDAR_APPLICATION_ID=cedar-template-designer
 ENV CEDAR_FRONTEND_PORT=4202
 
 VOLUME ["/log"]
+# nginx runs as the image's own unprivileged user: every vhost listens on a high port, the
+# runtime writes (gulp or the index.html sed) stay inside the app home, and the pid file moves
+# to /tmp because /var/run belongs to root.
+RUN sed -i 's|^pid .*|pid /tmp/nginx.pid;|' /etc/nginx/nginx.conf && \
+    mkdir -p /log && \
+    chown -R nginx:nginx /var/cache/nginx "${CEDAR_HOME}" /log
+USER nginx:nginx
+
 EXPOSE 4202
 HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 \
   CMD curl -fsS http://127.0.0.1:4202/config/version.js >/dev/null || exit 1

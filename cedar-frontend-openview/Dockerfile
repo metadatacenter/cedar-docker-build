@@ -116,6 +116,14 @@ RUN set -eux; \
     test -s node_modules/@webcomponents/webcomponentsjs/custom-elements-es5-adapter.js; \
     test -s node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js
 
+# nginx runs as the image's own unprivileged user: every vhost listens on a high port, the
+# runtime writes (gulp or the index.html sed) stay inside the app home, and the pid file moves
+# to /tmp because /var/run belongs to root.
+RUN sed -i 's|^pid .*|pid /tmp/nginx.pid;|' /etc/nginx/nginx.conf && \
+    mkdir -p /log && \
+    chown -R nginx:nginx /var/cache/nginx "${CEDAR_HOME}" /log
+USER nginx:nginx
+
 EXPOSE 4220
 
 CMD ["nginx", "-g", "daemon off;"]

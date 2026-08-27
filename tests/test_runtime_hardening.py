@@ -55,6 +55,17 @@ class RuntimeHardeningTest(unittest.TestCase):
                     "the runtime stage must not run Maven",
                 )
 
+    def test_frontend_nginx_runs_unprivileged(self):
+        for dockerfile in sorted(ROOT.glob("cedar-frontend-*/Dockerfile")):
+            with self.subTest(dockerfile=dockerfile.parent.name):
+                text = dockerfile.read_text(encoding="utf-8")
+                self.assertIn("USER nginx:nginx", text)
+                self.assertIn("pid /tmp/nginx.pid;", text)
+                self.assertRegex(
+                    text, r"chown -R nginx:nginx [^\n]*/var/cache/nginx",
+                    "nginx's cache and the app home must belong to the unprivileged user",
+                )
+
     def test_no_server_downgrades_the_shared_redis_client(self):
         for dockerfile in sorted(ROOT.glob("cedar-server-*/Dockerfile")):
             with self.subTest(dockerfile=dockerfile.parent.name):

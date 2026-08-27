@@ -80,15 +80,16 @@ export NGINX_VERSION=1.30.4
 # renovate: datasource=docker depName=registry.access.redhat.com/ubi9
 export UBI9_VERSION=9.8
 # renovate: datasource=docker depName=node
-export NODE_VERSION=20.20.2
+export NODE_VERSION=24.19.0
 # renovate: datasource=docker depName=ubuntu
 export UBUNTU_VERSION=20.04
 
 # The Node the AngularJS frontend images build with, distinct from NODE_VERSION above because they
-# are genuinely two different Nodes. Node 16 left support in September 2023 and should move in a
-# separately tested frontend-compatibility change.
+# are genuinely two different Nodes. Moved off end-of-life Node 16 on 2026-08-27, verified by
+# building cedar-frontend-main on this version and watching its start-time gulp build complete and
+# nginx serve the result.
 # renovate: datasource=node-version depName=node
-export NODE_FRONTEND_VERSION=16.20.2
+export NODE_FRONTEND_VERSION=22.23.2
 
 # The build arguments those versions become, derived from the declarations above so that adding a
 # server stays a one-line change. `cedarcli docker build` reads the same declarations directly and
