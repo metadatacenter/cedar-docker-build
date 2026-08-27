@@ -15,6 +15,13 @@ export CEDAR_AUTH_URL="${CEDAR_AUTH_URL:-https://auth.${CEDAR_HOST}}"
 export CEDAR_WORKSPACE_FRONTEND_URL="${CEDAR_WORKSPACE_FRONTEND_URL:-https://workspace.${CEDAR_HOST}}"
 export CEDAR_TEMPLATE_DESIGNER_FRONTEND_URL="${CEDAR_TEMPLATE_DESIGNER_FRONTEND_URL:-https://designer.${CEDAR_HOST}}"
 
+source_commit=$(cat /usr/local/share/cedar-source-commit)
+if [[ ! "$source_commit" =~ ^[0-9a-f]{40}$ ]]; then
+  echo "image carries an invalid source commit" >&2
+  exit 1
+fi
+export CEDAR_SOURCE_COMMIT="$source_commit"
+
 if [[ ! "$CEDAR_FRONTEND_TARGET" =~ ^[A-Za-z0-9_]+$ ]]; then
   echo "CEDAR_FRONTEND_TARGET contains unsupported characters" >&2
   exit 1
@@ -36,12 +43,7 @@ done
 
 ./node_modules/.bin/gulp
 
-source_commit=$(cat /usr/local/share/cedar-source-commit)
 package_sha256=$(cat /usr/local/share/cedar-package-sha256)
-if [[ ! "$source_commit" =~ ^[0-9a-f]{40}$ ]]; then
-  echo "image carries an invalid source commit" >&2
-  exit 1
-fi
 if [[ ! "$package_sha256" =~ ^[0-9a-f]{64}$ ]]; then
   echo "image carries an invalid npm package digest" >&2
   exit 1
