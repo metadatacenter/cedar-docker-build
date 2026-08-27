@@ -26,7 +26,9 @@ RUN mkdir -p ${CADIR}
 VOLUME ${CADIR}
 
 RUN microdnf update -y
-RUN microdnf install -y vim iputils hostname
+# Maven fetches the admin-tool jar at build time; this optional operator image keeps it,
+# unlike the served microservices, whose runtime images no longer carry it.
+RUN microdnf install -y vim iputils hostname maven
 RUN microdnf clean all
 
 ADD config/m2/settings.xml /root/.m2/

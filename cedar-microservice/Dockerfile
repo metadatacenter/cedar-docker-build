@@ -30,10 +30,8 @@ RUN python3 -m pip install --no-cache-dir \
       redis==5.2.1 \
       pymysql==1.1.1
 
+# Read by the jar-fetch stage of each server's build; this image itself carries no Maven.
 ADD config/m2/settings.xml ${CEDAR_HOME}/.m2/
-
-RUN mvn org.apache.maven.plugins:maven-dependency-plugin:3.5.0:get \
--Dartifact=org.apache.maven.plugins:maven-dependency-plugin:3.5.0
 
 ADD scripts/docker-entrypoint.sh ${CEDAR_HOME}/
 ADD scripts/wait-for-dependencies.sh ${CEDAR_HOME}/

@@ -31,6 +31,30 @@ class RuntimeHardeningTest(unittest.TestCase):
         for package in ("gcc", "python3-devel", "yum-utils"):
             self.assertNotRegex(dockerfile, rf"microdnf[^\n]*install[^\n]*\b{package}\b")
 
+    def test_java_runtime_images_fetch_their_jars_in_a_throwaway_stage(self):
+        java = (ROOT / "cedar-java" / "Dockerfile").read_text(encoding="utf-8")
+        for package in ("maven", "wget", "bsdtar", "unzip"):
+            self.assertNotRegex(
+                java,
+                rf"microdnf[^\n]*install[^\n]*\b{package}\b",
+                "cedar-java is a runtime base; build tooling belongs in the jar-fetch stage",
+            )
+        for dockerfile in sorted(ROOT.glob("cedar-server-*/Dockerfile")):
+            with self.subTest(dockerfile=dockerfile.parent.name):
+                text = dockerfile.read_text(encoding="utf-8")
+                self.assertIn("AS jarfetch", text)
+                self.assertIn(
+                    "COPY --from=jarfetch --chown=cedar:cedar",
+                    text,
+                    "the runtime stage takes the fetched jars and nothing else from the fetch stage",
+                )
+                fetch, runtime = text.split("\nFROM ", 2)[1:]
+                self.assertIn("install_deps.sh", fetch)
+                self.assertNotIn(
+                    "install_deps.sh", runtime,
+                    "the runtime stage must not run Maven",
+                )
+
     def test_no_server_downgrades_the_shared_redis_client(self):
         for dockerfile in sorted(ROOT.glob("cedar-server-*/Dockerfile")):
             with self.subTest(dockerfile=dockerfile.parent.name):
