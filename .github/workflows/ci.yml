@@ -49,11 +49,8 @@ jobs:
               exit 1
           fi
 
-          references=$(grep -R -hE '^FROM[[:space:]]+\$\{CEDAR_IMAGE_PREFIX\}/cedar-' --include=Dockerfile . | wc -l | tr -d ' ')
-          if [ "${references}" -ne 17 ]; then
-              echo "Expected 17 configurable CEDAR base-image references, found ${references}."
-              exit 1
-          fi
+          python3 -m unittest \
+            tests.test_runtime_hardening.RuntimeHardeningTest.test_every_cedar_base_image_reference_uses_the_configurable_identity
 
           build_args=$(cedar_server_build_args)
           echo "${build_args}" | grep -q -- '--build-arg CEDAR_IMAGE_PREFIX=nexus.example.org:5000/cedar'

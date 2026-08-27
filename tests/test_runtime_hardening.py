@@ -8,6 +8,27 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class RuntimeHardeningTest(unittest.TestCase):
+    def test_every_cedar_base_image_reference_uses_the_configurable_identity(self):
+        cedar_base = re.compile(r"^FROM\s+\S*cedar-(?:java|microservice):\S+")
+        configurable = re.compile(
+            r"^FROM \$\{CEDAR_IMAGE_PREFIX\}/cedar-(?:java|microservice):"
+            r"\$\{CEDAR_DOCKER_VERSION\}(?: AS [A-Za-z0-9._-]+)?$"
+        )
+        references = []
+        for dockerfile in sorted(ROOT.glob("*/Dockerfile")):
+            for line_number, line in enumerate(
+                dockerfile.read_text(encoding="utf-8").splitlines(), start=1
+            ):
+                if cedar_base.match(line):
+                    references.append((dockerfile, line_number, line))
+                    self.assertRegex(
+                        line,
+                        configurable,
+                        f"{dockerfile.relative_to(ROOT)}:{line_number} must use the configurable "
+                        "CEDAR image prefix and version",
+                    )
+        self.assertTrue(references, "No internal CEDAR base-image references were found")
+
     def test_keycloak_realm_seed_contains_no_generated_key_material(self):
         realm = json.loads((
             ROOT
