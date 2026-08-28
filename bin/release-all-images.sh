@@ -1,51 +1,35 @@
 #!/bin/bash
 
-# Script to build and tag all CEDAR Docker images and push it to CEDAR's DockerHub.
+# Push all locally built CEDAR images to the registry and namespace selected by
+# CEDAR_IMAGE_PREFIX. Images are built with that same prefix, so publication does not retag them.
 
-if [ -z "$CEDAR_DOCKER_SRC_HOME" ]; then
+set -euo pipefail
+
+if [ -z "${CEDAR_DOCKER_SRC_HOME:-}" ]; then
     echo "Need to set CEDAR_DOCKER_SRC_HOME"
     exit 1
 fi
 
-export DOCKERHUB=cedar-dockerhub.bmir.stanford.edu
+export CEDAR_DOCKER_BUILD_HOME="${CEDAR_DOCKER_SRC_HOME}/cedar-docker-build"
 
-export CEDAR_DOCKER_BUILD_HOME=${CEDAR_DOCKER_SRC_HOME}/cedar-docker-build
-
-source ${CEDAR_DOCKER_BUILD_HOME}/bin/cedar-images-base.sh
-
-tag_image()
-{
-        echo "Tagging image" $1:${IMAGE_VERSION}
-        docker tag $1:${IMAGE_VERSION} ${DOCKERHUB}/$1:${IMAGE_VERSION}
-}
+source "${CEDAR_DOCKER_BUILD_HOME}/bin/cedar-images-base.sh"
 
 push_image()
 {
-        echo "Pushing image" $1:${IMAGE_VERSION}
-        docker push ${DOCKERHUB}/$1:${IMAGE_VERSION}
-}
-
-release_image()
-{
-  if [ -z $1 ]; then
-      echo "Need to pass an image name, e.g., metadatacenter/cedar-java"
-      exit 1
-  fi 
-  tag_image $1
-  push_image $1
+    local image=$1
+    local prefix
+    prefix=$(cedar_image_prefix_for "${image}")
+    echo "Pushing image ${prefix}/${image}:${IMAGE_VERSION}"
+    docker push "${prefix}/${image}:${IMAGE_VERSION}"
 }
 
 release_all_images()
 {
     echo "Releasing all CEDAR Docker images..."
-    for i in "${CEDAR_DOCKER_IMAGES[@]}"
-    do
-        pushd ${CEDAR_DOCKER_BUILD_HOME}/$i
-        release_image ${CEDAR_IMAGE_PREFIX}/$i
-        popd
+    local image
+    for image in "${CEDAR_DOCKER_IMAGES[@]}"; do
+        push_image "${image}"
     done
 }
 
 release_all_images
-
-

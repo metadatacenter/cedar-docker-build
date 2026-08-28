@@ -7,10 +7,13 @@
 ARG NGINX_VERSION
 FROM nginx:${NGINX_VERSION}
 
+COPY cedar-build-manifest.json /usr/local/share/cedar-build-manifest.json
+
 ARG CEDAR_APPLICATION_VERSION
 ARG CEDAR_TEMPLATE_EDITOR_NPM_VERSION
 
-ENV CEDAR_VERSION=2.9.2
+ENV CEDAR_VERSION=2.9.3
+ENV PACKAGE_NAME=cedar-template-editor
 ENV PACKAGE_VERSION=${CEDAR_TEMPLATE_EDITOR_NPM_VERSION}
 ENV CEDAR_NPM_NEXUS_REPO=https://nexus.bmir.stanford.edu/repository/npm-cedar
 
@@ -65,7 +68,14 @@ RUN set -eux; \
     test -n "$CEDAR_APPLICATION_VERSION"; \
     test -n "$CEDAR_TEMPLATE_EDITOR_NPM_VERSION"; \
     curl --fail --show-error --location --remote-name "$EDITOR_URI"; \
-    sha256sum "$EDITOR_TARBALL" | cut -d' ' -f1 > /usr/local/share/cedar-package-sha256; \
+    actual_sha="$(sha256sum "$EDITOR_TARBALL" | cut -d' ' -f1)"; \
+    train="$(node -p "require('/usr/local/share/cedar-build-manifest.json').train || ''")"; \
+    expected_sha="$(node -e 'const m=require("/usr/local/share/cedar-build-manifest.json"); const p=(m.packages||[]).filter(p=>p.name===process.env.PACKAGE_NAME&&p.version===process.env.PACKAGE_VERSION); if(p.length===1) process.stdout.write(p[0].tarballSha256||"")')"; \
+    if [ -n "$train" ]; then \
+      echo "$expected_sha" | grep -Eq '^[0-9a-f]{64}$'; \
+      printf '%s  %s\n' "$expected_sha" "$EDITOR_TARBALL" | sha256sum -c -; \
+    else expected_sha="$actual_sha"; fi; \
+    printf '%s\n' "$expected_sha" > /usr/local/share/cedar-package-sha256; \
     tar --extract --file "$EDITOR_TARBALL" --directory "$CEDAR_TEMPLATE_EDITOR_HOME" --strip 1; \
     rm "$EDITOR_TARBALL"; \
     test "$(node -p "require('./package.json').name")" = cedar-template-editor; \
@@ -76,10 +86,13 @@ RUN set -eux; \
     printf '%s\n' "$source_commit" > /usr/local/share/cedar-source-commit
 
 # Install dependencies
-RUN \
-npm config set @org.metadatacenter:registry ${CEDAR_NPM_NEXUS_REPO} && \
-npm install && \
-npm install -g gulp
+RUN set -eux; \
+    npm config set @org.metadatacenter:registry ${CEDAR_NPM_NEXUS_REPO}; \
+    train="$(node -p "require('/usr/local/share/cedar-build-manifest.json').train || ''")"; \
+    if [ -n "$train" ]; then \
+      test -f npm-shrinkwrap.json; \
+      npm ci; \
+    else npm install; fi
 
 # Add the entry point
 ADD scripts/docker-entrypoint.sh /
@@ -90,6 +103,13 @@ ADD config/default.conf /etc/nginx/conf.d/
 ENV LOGDIR=/log
 RUN mkdir -p "$LOGDIR"
 VOLUME $LOGDIR
+
+# nginx runs as the image's own unprivileged user: every vhost listens on a high port, the
+# runtime writes (gulp or the index.html sed) stay inside the app home, and the pid file moves
+# to /tmp because /var/run belongs to root.
+RUN sed -i 's|^pid .*|pid /tmp/nginx.pid;|' /etc/nginx/nginx.conf && \
+    chown -R nginx:nginx /var/cache/nginx "${CEDAR_HOME}" "$LOGDIR"
+USER nginx:nginx
 
 EXPOSE 4200
 

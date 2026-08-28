@@ -2,11 +2,22 @@
 
 # Base script containing configuration information for CEDAR Docker images.
 # Lists all directories containing CEDAR Docker image specifications.
-# Assumption here is image name is same as directory name containing Dockerfile for image with "metadatacenter/" prepended to it.
+# Image names share one configurable repository prefix. Existing installations retain the Docker
+# Hub namespace unless they export a registry host and optional namespace before sourcing this file.
 
-export CEDAR_IMAGE_PREFIX="metadatacenter"
+export CEDAR_IMAGE_PREFIX="${CEDAR_IMAGE_PREFIX:-metadatacenter}"
+# A registry-backed train can keep the two non-runtime Java bases in a separate repository. Local
+# and legacy builds retain one prefix because this defaults to the runtime prefix.
+export CEDAR_BASE_IMAGE_PREFIX="${CEDAR_BASE_IMAGE_PREFIX:-${CEDAR_IMAGE_PREFIX}}"
 
-export IMAGE_VERSION=2.9.2
+export IMAGE_VERSION=2.9.3
+export CEDAR_MAVEN_VERSION=2.9.3-SNAPSHOT
+# A completed immutable train overrides the compatibility development tag. cedarcli sets this for
+# ordinary published-artifact builds; --local deliberately leaves the snapshot tag in place.
+if [ -n "${CEDAR_TRAIN_VERSION:-}" ]; then
+  export IMAGE_VERSION="${CEDAR_TRAIN_VERSION}"
+  export CEDAR_MAVEN_VERSION="${CEDAR_TRAIN_VERSION}"
+fi
 export CEDAR_APPLICATION_VERSION=2.9.2-SNAPSHOT
 
 # npm registries do not allow a version to be overwritten like a Maven SNAPSHOT. The frontend
@@ -15,11 +26,11 @@ export CEDAR_APPLICATION_VERSION=2.9.2-SNAPSHOT
 # `cedar-development/ops/publish-frontend-package.sh`. Never replace these with the moving `dev`
 # dist-tag. CEDAR_APPLICATION_VERSION remains the human-facing suite version; these seven inputs
 # identify the exact source payload assembled into each image.
-export CEDAR_TEMPLATE_EDITOR_NPM_VERSION=2.9.2
+export CEDAR_TEMPLATE_EDITOR_NPM_VERSION=2.9.3-dev.20260825220423.g80b336b06509
 export CEDAR_WORKSPACE_NPM_VERSION=2.9.2-dev.20260821173503.gc658a7ca06a8
 export CEDAR_TEMPLATE_DESIGNER_NPM_VERSION=2.9.2-dev.20260821173509.ga4bf8b6005f3
 export CEDAR_OPENVIEW_NPM_VERSION=2.9.2
-export CEDAR_OPENVIEW_CEE_NPM_VERSION=2.0.1
+export CEDAR_OPENVIEW_CEE_NPM_VERSION=2.0.2-dev.20260824.48283fb
 export CEDAR_OPENVIEW_WEBCOMPONENTS_NPM_VERSION=2.8.0
 export CEDAR_CONTENT_NPM_VERSION=2.9.2-dev.20260728231241.gd201ecfc9f7f
 export CEDAR_MONITORING_NPM_VERSION=2.9.2
@@ -60,7 +71,7 @@ export KEYCLOAK_SHA256=d00d88fc9dd73b022e0109f09353374049955de18dd089d2e2da927f1
 # rebuild produces the same bytes, and it may move whenever someone wants it to. Eight images are
 # built on it — the reverse proxy and all seven frontends — and each used to restate the number.
 # renovate: datasource=docker depName=nginx
-export NGINX_VERSION=1.23.4
+export NGINX_VERSION=1.30.4
 
 # The OS bases, pinned to what the images were already resolving to rather than to a moving target.
 # `ubi9` carried no tag at all and `node:20-bookworm` floated within the Node 20 line, so a rebuild
@@ -69,15 +80,16 @@ export NGINX_VERSION=1.23.4
 # renovate: datasource=docker depName=registry.access.redhat.com/ubi9
 export UBI9_VERSION=9.8
 # renovate: datasource=docker depName=node
-export NODE_VERSION=20.20.2
+export NODE_VERSION=24.19.0
 # renovate: datasource=docker depName=ubuntu
 export UBUNTU_VERSION=20.04
 
 # The Node the AngularJS frontend images build with, distinct from NODE_VERSION above because they
-# are genuinely two different Nodes. Node 16 left support in September 2023 and should move in a
-# separately tested frontend-compatibility change.
+# are genuinely two different Nodes. Moved off end-of-life Node 16 on 2026-08-27, verified by
+# building cedar-frontend-main on this version and watching its start-time gulp build complete and
+# nginx serve the result.
 # renovate: datasource=node-version depName=node
-export NODE_FRONTEND_VERSION=16.20.2
+export NODE_FRONTEND_VERSION=22.23.2
 
 # The build arguments those versions become, derived from the declarations above so that adding a
 # server stays a one-line change. `cedarcli docker build` reads the same declarations directly and
@@ -86,6 +98,8 @@ export NODE_FRONTEND_VERSION=16.20.2
 # declare, and the alternative is a second place recording which image installs which server.
 cedar_server_build_args() {
   local name
+  printf ' --build-arg CEDAR_IMAGE_PREFIX=%s' "${CEDAR_BASE_IMAGE_PREFIX}"
+  printf ' --build-arg CEDAR_DOCKER_VERSION=%s' "${IMAGE_VERSION}"
   for name in $(grep -oE '^export [A-Z0-9_]+(_VERSION|_SHA256)=' "${BASH_SOURCE[0]}" | sed 's/^export //; s/=$//'); do
     [ "${name}" = "IMAGE_VERSION" ] && continue
     printf ' --build-arg %s=%s' "${name}" "${!name}"
@@ -133,3 +147,10 @@ CEDAR_DOCKER_IMAGES=(
   "cedar-server-valuerecommender"
   "cedar-server-worker"
 )
+
+cedar_image_prefix_for() {
+  case "$1" in
+    cedar-java|cedar-microservice) printf '%s' "${CEDAR_BASE_IMAGE_PREFIX}" ;;
+    *) printf '%s' "${CEDAR_IMAGE_PREFIX}" ;;
+  esac
+}

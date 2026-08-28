@@ -2,6 +2,8 @@
 *.iml
 .settings
 .DS_Store
+__pycache__/
+*.py[cod]
 
 # Jars staged into a build context by bin/stage-local-jar.sh. The directories themselves are
 # tracked through their .gitkeep, because each Dockerfile's COPY needs a source that exists.

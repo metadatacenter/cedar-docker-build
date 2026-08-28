@@ -1,59 +1,21 @@
-Docker version of Nginx for CEDAR 
+# `cedar-infra-nginx` image
 
-# For end-users
+For installation and runtime operation, use the
+[Docker Install](https://metadatacenter.readthedocs.io/en/latest/install-docker/overview/). For
+the supported image-builder interface, use the
+[Docker Development](https://metadatacenter.readthedocs.io/en/latest/developer-guide/cedarcli/docker/)
+chapter of the cedarcli manual.
 
-## Run the image for the first time
+This directory contains the Dockerfile and image-specific files for `cedar-infra-nginx`. It is an
+implementation unit of the managed CEDAR image build, not a standalone deployment path.
 
-**Remark:** You need to set the environment variables first! Please see the README in the parent folder for details.
+## Build Contract
 
-Execute the following command:
+The Dockerfile packages one infrastructure component. Its upstream version and any required
+checksum are supplied from the shared build manifest rather than repeated here. Runtime
+environment variables, ports, health checks, and volumes are defined by the infrastructure
+Compose project in `cedar-docker-deploy`.
 
-````
-docker run -d \
---name nginx \
---net cedarnet \
---mount 'type=volume,src=nginx_log,dst=/etc/nginx/log' \
---mount 'type=volume,src=cedar_cert,dst=/usr/local/etc/certificates' \
--p ${CEDAR_NGINX_HTTP_PORT}:80 \
--p ${CEDAR_NGINX_HTTPS_PORT}:443 \
--e CEDAR_HOST \
--e CEDAR_MICROSERVICE_HOST \
--e CEDAR_KEYCLOAK_HOST \
-metadatacenter/cedar-nginx
-````
-
-## Stop the container
-
-    docker stop nginx
-
-## Start the container
-
-    docker start nginx
-
-## Check the logs of the container
-
-    docker logs -f nginx
-
-## Connect to the container
-
-    docker exec -it nginx bash
-
-# For developers
-
-## Building the image
-
-With the current release version stored in the `CEDAR_RELEASE_VERSION` environment variable, the image can be built as follows:
-
-     docker build -t metadatacenter/cedar-nginx:${CEDAR_RELEASE_VERSION} .
-
-## Pushing the image to CEDAR's DockerHub
-
-Using the CEDAR DockerHub configuration instructions described [here](https://github.com/metadatacenter/cedar-conf/wiki/Configuring-Docker-to-use-the-CEDAR-Nexus-DockerHub) and with the `CEDAR_DOCKERHUB` environment variable pointing to CEDAR Nexus DockerHub host, the image can be tagged and pushed as follows:
-
-     docker tag metadatacenter/cedar-nginx:${CEDAR_RELEASE_VERSION} ${CEDAR_DOCKERHUB}/metadatacenter/cedar-nginx:${CEDAR_RELEASE_VERSION}
-
-     docker push ${CEDAR_DOCKERHUB}/metadatacenter/cedar-nginx:${CEDAR_RELEASE_VERSION}
-
-The image can subsequently be pulled as follows:
-
-     docker pull ${CEDAR_DOCKERHUB}/metadatacenter/cedar-nginx:${CEDAR_RELEASE_VERSION}
+The authoritative image inventory, version inputs, registry-prefix rules, and build mechanics are
+described in the [repository README](../README.md). Keep those shared facts there rather than
+adding standalone build, tag, push, or `docker run` recipes to this file.

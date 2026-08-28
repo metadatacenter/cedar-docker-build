@@ -24,9 +24,15 @@ export CEDAR_FRONTEND_local_USER2_LOGIN="${CEDAR_FRONTEND_local_USER2_LOGIN:-}"
 export CEDAR_FRONTEND_local_USER2_PASSWORD="${CEDAR_FRONTEND_local_USER2_PASSWORD:-}"
 export CEDAR_FRONTEND_local_USER2_NAME="${CEDAR_FRONTEND_local_USER2_NAME:-}"
 
+export CEDAR_SOURCE_COMMIT="$(cat /usr/local/share/cedar-source-commit)"
+if [[ ! "$CEDAR_SOURCE_COMMIT" =~ ^[0-9a-f]{40}$ ]]; then
+  echo "image carries an invalid source commit" >&2
+  exit 1
+fi
+
 echo "Executing gulp"
 
-gulp
+./node_modules/.bin/gulp
 
 echo "Gulp terminated, content served by Nginx"
 

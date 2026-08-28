@@ -13,6 +13,19 @@ if ! $WAIT_SCRIPT; then
   exit 1
 fi
 
+if [ ! -r "${CEDAR_HOME}/ca/ca.crt" ]; then
+  echo "CEDAR CA certificate is missing or unreadable: ${CEDAR_HOME}/ca/ca.crt"
+  exit 1
+fi
+"${JAVA_HOME}/bin/keytool" -delete -alias cedar \
+  -keystore "${CEDAR_TRUSTSTORE}" -storepass changeit >/dev/null 2>&1 || true
+if ! "${JAVA_HOME}/bin/keytool" -importcert -noprompt -trustcacerts \
+  -file "${CEDAR_HOME}/ca/ca.crt" -alias cedar \
+  -keystore "${CEDAR_TRUSTSTORE}" -storepass changeit; then
+  echo "Could not import the CEDAR CA certificate into ${CEDAR_TRUSTSTORE}"
+  exit 1
+fi
+
 # Optional per-server hook, for work that is not a dependency wait. Only the resource server has
 # one: it does the first-run database bootstrap.
 if [ -f $PRE_SCRIPT ]; then
@@ -25,9 +38,6 @@ else
   echo "Pre-Entrypoint script not found"
 fi
 
-echo "Import CA cert"
-echo "yes" | $JAVA_HOME/bin/keytool -import -trustcacerts -file ${CEDAR_HOME}/ca/ca.crt -alias cedar -keystore $JAVA_HOME/lib/security/cacerts -storepass changeit
-
 echo --------------------------------------------------------------------------------
 echo Starting CEDAR ${CEDAR_SERVER_NAME} server
 echo - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -37,6 +47,8 @@ echo - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # this way — the server reads terminologyStore.* system properties rather than the environment — so
 # without this hook a containerized server cannot be given it at all.
 exec java ${CEDAR_JAVA_OPTS} \
+  -Djavax.net.ssl.trustStore="${CEDAR_TRUSTSTORE}" \
+  -Djavax.net.ssl.trustStorePassword=changeit \
   -jar /cedar/app/cedar-server.jar \
   server \
   "/cedar/app/config.yml"

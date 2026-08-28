@@ -8,6 +8,12 @@
       <id>bmir</id>
       <repositories>
         <repository>
+          <id>cedar-maven-dev</id>
+          <url>https://nexus.bmir.stanford.edu/repository/cedar-maven-dev/</url>
+          <releases><enabled>true</enabled></releases>
+          <snapshots><enabled>false</enabled></snapshots>
+        </repository>
+        <repository>
           <id>bmir-nexus-snapshots</id>
           <url>https://nexus.bmir.stanford.edu/repository/snapshots</url>
         </repository>

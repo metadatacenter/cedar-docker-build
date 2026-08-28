@@ -2,14 +2,17 @@
 ARG NGINX_VERSION
 FROM nginx:${NGINX_VERSION}
 
+COPY cedar-build-manifest.json /usr/local/share/cedar-build-manifest.json
+
 ARG NODE_FRONTEND_VERSION
 ARG CEDAR_APPLICATION_VERSION
 ARG CEDAR_WORKSPACE_NPM_VERSION
 
 ENV CEDAR_NPM_NEXUS_REPO=https://nexus.bmir.stanford.edu/repository/npm-cedar
+ENV CEDAR_HOME=/srv/cedar
 ENV PACKAGE_NAME=cedar-workspace
 ENV PACKAGE_VERSION=${CEDAR_WORKSPACE_NPM_VERSION}
-ENV CEDAR_VERSION=2.9.2
+ENV CEDAR_VERSION=2.9.3
 
 USER root
 
@@ -39,7 +42,14 @@ RUN set -eux; \
     tarball="${PACKAGE_NAME}-${PACKAGE_VERSION}.tgz"; \
     uri="${CEDAR_NPM_NEXUS_REPO}/${PACKAGE_NAME}/-/${tarball}"; \
     curl -fsSL "$uri" -o "/tmp/$tarball"; \
-    sha256sum "/tmp/$tarball" | cut -d' ' -f1 > /usr/local/share/cedar-package-sha256; \
+    actual_sha="$(sha256sum "/tmp/$tarball" | cut -d' ' -f1)"; \
+    train="$(node -p "require('/usr/local/share/cedar-build-manifest.json').train || ''")"; \
+    expected_sha="$(node -e 'const m=require("/usr/local/share/cedar-build-manifest.json"); const p=(m.packages||[]).filter(p=>p.name===process.env.PACKAGE_NAME&&p.version===process.env.PACKAGE_VERSION); if(p.length===1) process.stdout.write(p[0].tarballSha256||"")')"; \
+    if [ -n "$train" ]; then \
+      echo "$expected_sha" | grep -Eq '^[0-9a-f]{64}$'; \
+      printf '%s  %s\n' "$expected_sha" "/tmp/$tarball" | sha256sum -c -; \
+    else expected_sha="$actual_sha"; fi; \
+    printf '%s\n' "$expected_sha" > /usr/local/share/cedar-package-sha256; \
     tar -xzf "/tmp/$tarball" --strip-components=1; \
     rm "/tmp/$tarball"; \
     test "$(node -p "require('./package.json').name")" = "$PACKAGE_NAME"; \
@@ -49,7 +59,10 @@ RUN set -eux; \
     echo "$source_commit" | grep -Eq '^[0-9a-f]{40}$'; \
     printf '%s\n' "$source_commit" > /usr/local/share/cedar-source-commit; \
     npm config set @org.metadatacenter:registry "$CEDAR_NPM_NEXUS_REPO"; \
-    npm install
+    if [ -n "$train" ]; then \
+      test -f npm-shrinkwrap.json; \
+      npm ci; \
+    else npm install; fi
 
 COPY scripts/docker-entrypoint.sh /docker-entrypoint.sh
 COPY config/default.conf /etc/nginx/conf.d/default.conf
@@ -59,6 +72,14 @@ ENV CEDAR_APPLICATION_ID=cedar-workspace
 ENV CEDAR_FRONTEND_PORT=4201
 
 VOLUME ["/log"]
+# nginx runs as the image's own unprivileged user: every vhost listens on a high port, the
+# runtime writes (gulp or the index.html sed) stay inside the app home, and the pid file moves
+# to /tmp because /var/run belongs to root.
+RUN sed -i 's|^pid .*|pid /tmp/nginx.pid;|' /etc/nginx/nginx.conf && \
+    mkdir -p /log && \
+    chown -R nginx:nginx /var/cache/nginx "${CEDAR_HOME}" /log
+USER nginx:nginx
+
 EXPOSE 4201
 HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 \
   CMD curl -fsS http://127.0.0.1:4201/config/version.js >/dev/null || exit 1

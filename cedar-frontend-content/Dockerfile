@@ -5,10 +5,12 @@
 ARG NGINX_VERSION
 FROM nginx:${NGINX_VERSION}
 
+COPY cedar-build-manifest.json /usr/local/share/cedar-build-manifest.json
+
 ARG CEDAR_APPLICATION_VERSION
 ARG CEDAR_CONTENT_NPM_VERSION
 
-ENV CEDAR_VERSION=2.9.2
+ENV CEDAR_VERSION=2.9.3
 ENV PACKAGE_VERSION=${CEDAR_CONTENT_NPM_VERSION}
 ENV CEDAR_NPM_NEXUS_REPO=https://nexus.bmir.stanford.edu/repository/npm-cedar
 ENV PACKAGE_NAME=cedar-content-distribution
@@ -42,7 +44,14 @@ RUN set -eux; \
     test -n "$CEDAR_APPLICATION_VERSION"; \
     test -n "$CEDAR_CONTENT_NPM_VERSION"; \
     curl --fail --show-error --location --remote-name "$PACKAGE_URI"; \
-    sha256sum "$TARBALL" | cut -d' ' -f1 > /usr/local/share/cedar-package-sha256; \
+    actual_sha="$(sha256sum "$TARBALL" | cut -d' ' -f1)"; \
+    train="$(jq -r '.train // empty' /usr/local/share/cedar-build-manifest.json)"; \
+    expected_sha="$(jq -r --arg name "$PACKAGE_NAME" --arg version "$PACKAGE_VERSION" '[.packages[]? | select(.name == $name and .version == $version)] | if length == 1 then .[0].tarballSha256 else empty end' /usr/local/share/cedar-build-manifest.json)"; \
+    if [ -n "$train" ]; then \
+      echo "$expected_sha" | grep -Eq '^[0-9a-f]{64}$'; \
+      printf '%s  %s\n' "$expected_sha" "$TARBALL" | sha256sum -c -; \
+    else expected_sha="$actual_sha"; fi; \
+    printf '%s\n' "$expected_sha" > /usr/local/share/cedar-package-sha256; \
     tar --extract --file "$TARBALL" --directory "$CEDAR_FRONTEND_HOME" --strip 1; \
     rm "$TARBALL"; \
     test "$(jq -r .name package.json)" = "$PACKAGE_NAME"; \
@@ -51,6 +60,14 @@ RUN set -eux; \
     [ -n "$source_commit" ] || source_commit="$(curl -fsSL "$CEDAR_NPM_NEXUS_REPO/$PACKAGE_NAME/$PACKAGE_VERSION" | jq -r '.gitHead // empty')"; \
     echo "$source_commit" | grep -Eq '^[0-9a-f]{40}$'; \
     printf '%s\n' "$source_commit" > /usr/local/share/cedar-source-commit
+
+# nginx runs as the image's own unprivileged user: every vhost listens on a high port, the
+# runtime writes (gulp or the index.html sed) stay inside the app home, and the pid file moves
+# to /tmp because /var/run belongs to root.
+RUN sed -i 's|^pid .*|pid /tmp/nginx.pid;|' /etc/nginx/nginx.conf && \
+    mkdir -p /log && \
+    chown -R nginx:nginx /var/cache/nginx "${CEDAR_HOME}" /log
+USER nginx:nginx
 
 EXPOSE 4240
 

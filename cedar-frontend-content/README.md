@@ -1,57 +1,20 @@
-Docker version of the CEDAR Content Distribution served by Nginx
+# `cedar-frontend-content` image
 
-# For end-users
+For installation and runtime operation, use the
+[Docker Install](https://metadatacenter.readthedocs.io/en/latest/install-docker/overview/). For
+the supported image-builder interface, use the
+[Docker Development](https://metadatacenter.readthedocs.io/en/latest/developer-guide/cedarcli/docker/)
+chapter of the cedarcli manual.
 
-## Run the image for the first time
+This directory contains the Dockerfile and image-specific files for `cedar-frontend-content`. It is an
+implementation unit of the managed CEDAR image build, not a standalone deployment path.
 
-**Remark:** You need to set the environment variables first! Please see the README in the parent folder for details.
+## Build Contract
 
-Execute the following command:
+The image consumes the exact immutable npm package selected by the shared build manifest. Image
+construction and the private nginx belong here; public routing and runtime configuration belong
+to the frontend and infrastructure Compose projects in `cedar-docker-deploy`.
 
-````
-docker run -d \
---name content \
---net cedarnet \
---mount 'type=volume,src=frontend_content_log,dst=/log' \
--p ${CEDAR_FRONTEND_CONTENT_PORT}:4240 \
--e CEDAR_HOST \
-metadatacenter/cedar-content
-````
-
-## Stop the container
-
-    docker stop content
-
-## Start the container
-
-    docker start content
-
-## Check the logs of the container
-
-    docker logs -f content
-
-## Connect to the container
-
-    docker exec -it content bash
-
-# For developers
-
-
-## Building the image
-
-With the current release version stored in the `CEDAR_RELEASE_VERSION` environment variable, the image can be built as follows:
-
-     chmod a+x scripts/docker-entrypoint.sh
-     docker build -t metadatacenter/cedar-content:${CEDAR_RELEASE_VERSION} .
-
-## Pushing the image to CEDAR's DockerHub
-
-Using the CEDAR DockerHub configuration instructions described [here](https://github.com/metadatacenter/cedar-conf/wiki/Configuring-Docker-to-use-the-CEDAR-Nexus-DockerHub) and with the `CEDAR_DOCKERHUB` environment variable pointing to CEDAR Nexus DockerHub host, the image can be tagged and pushed as follows:
-
-     docker tag metadatacenter/cedar-content:${CEDAR_RELEASE_VERSION} ${CEDAR_DOCKERHUB}/metadatacenter/cedar-content:${CEDAR_RELEASE_VERSION}
-
-     docker push ${CEDAR_DOCKERHUB}/metadatacenter/cedar-content:${CEDAR_RELEASE_VERSION}
-
-The image can subsequently be pulled as follows:
-
-     docker pull ${CEDAR_DOCKERHUB}/metadatacenter/cedar-content:${CEDAR_RELEASE_VERSION}
+The authoritative image inventory, version inputs, registry-prefix rules, and build mechanics are
+described in the [repository README](../README.md). Keep those shared facts there rather than
+adding standalone build, tag, push, or `docker run` recipes to this file.
