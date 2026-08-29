@@ -47,6 +47,18 @@ class FrontendReproducibilityTest(unittest.TestCase):
         self.assertIn("package_field", dockerfile)
         self.assertNotIn("--registry=https://registry.npmjs.org", dockerfile)
 
+    def test_openview_local_build_selects_the_cee_release_channel_from_the_version(self):
+        dockerfile = self.dockerfile("cedar-frontend-openview")
+        self.assertIn("grep -q -- '-dev\\.'", dockerfile)
+        self.assertIn(
+            "cedar-embeddable-editor@npm:@org.metadatacenter/cedar-embeddable-editor@",
+            dockerfile,
+        )
+        self.assertIn(
+            'cee_package="cedar-embeddable-editor@${CEDAR_OPENVIEW_CEE_NPM_VERSION}"',
+            dockerfile,
+        )
+
     def test_main_uses_the_lockfile_local_gulp_binary(self):
         entrypoint = (
             ROOT / "cedar-frontend-main" / "scripts" / "docker-entrypoint.sh"
