@@ -122,5 +122,7 @@ print("Application database:" + str(application_database))
 print("Wait for MySQL server to be available")
 
 wait_for_root()
-create_database()
-create_application_user()
+if not create_database():
+    sys.exit("Unable to create the Keycloak database")
+if not create_application_user():
+    sys.exit("Unable to create the Keycloak database user")
