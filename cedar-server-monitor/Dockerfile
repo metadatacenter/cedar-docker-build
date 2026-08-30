@@ -21,7 +21,7 @@ ENV CEDAR_MONITOR_HTTP_PORT=9014
 ENV CEDAR_MONITOR_ADMIN_PORT=9114
 ENV CEDAR_MONITOR_STOP_PORT=9214
 
-# This server does not start usefully until the Worker server answers its
+# This server does not start usefully until the Worker server answers its health check.
 
 ENV LOGDIR=${CEDAR_HOME}/log/cedar-${CEDAR_SERVER_NAME}-server/
 RUN mkdir -p ${LOGDIR}
