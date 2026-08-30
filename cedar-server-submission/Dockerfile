@@ -23,7 +23,7 @@ ENV CEDAR_SUBMISSION_STOP_PORT=9210
 
 # This server does not start usefully until the Messaging server answers its
 
-ENV LOGDIR=${CEDAR_HOME}/log/server-${CEDAR_SERVER_NAME}/
+ENV LOGDIR=${CEDAR_HOME}/log/cedar-${CEDAR_SERVER_NAME}-server/
 RUN mkdir -p ${LOGDIR}
 VOLUME ${LOGDIR}
 

@@ -84,6 +84,12 @@ class RuntimeHardeningTest(unittest.TestCase):
                     "the runtime stage must not run Maven",
                 )
 
+    def test_server_log_volumes_match_the_dropwizard_log_directories(self):
+        expected = "ENV LOGDIR=${CEDAR_HOME}/log/cedar-${CEDAR_SERVER_NAME}-server/"
+        for dockerfile in sorted(ROOT.glob("cedar-server-*/Dockerfile")):
+            with self.subTest(dockerfile=dockerfile.parent.name):
+                self.assertIn(expected, dockerfile.read_text(encoding="utf-8"))
+
     def test_frontend_nginx_runs_unprivileged(self):
         for dockerfile in sorted(ROOT.glob("cedar-frontend-*/Dockerfile")):
             with self.subTest(dockerfile=dockerfile.parent.name):

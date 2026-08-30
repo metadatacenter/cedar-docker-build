@@ -25,7 +25,7 @@ ENV CEDAR_ARTIFACT_HTTP_PORT=9001
 
 # This server does not start usefully until the Artifact server answers its
 
-ENV LOGDIR=${CEDAR_HOME}/log/server-${CEDAR_SERVER_NAME}/
+ENV LOGDIR=${CEDAR_HOME}/log/cedar-${CEDAR_SERVER_NAME}-server/
 RUN mkdir -p ${LOGDIR}
 VOLUME ${LOGDIR}
 

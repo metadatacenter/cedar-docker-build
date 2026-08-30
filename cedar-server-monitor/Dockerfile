@@ -23,7 +23,7 @@ ENV CEDAR_MONITOR_STOP_PORT=9214
 
 # This server does not start usefully until the Worker server answers its
 
-ENV LOGDIR=${CEDAR_HOME}/log/server-${CEDAR_SERVER_NAME}/
+ENV LOGDIR=${CEDAR_HOME}/log/cedar-${CEDAR_SERVER_NAME}-server/
 RUN mkdir -p ${LOGDIR}
 VOLUME ${LOGDIR}
 

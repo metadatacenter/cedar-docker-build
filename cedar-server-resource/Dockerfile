@@ -29,7 +29,7 @@ ENV CEDAR_ARTIFACT_HTTP_PORT=9001
 
 ADD scripts/pre-docker-entrypoint.sh ${CEDAR_HOME}/
 
-ENV LOGDIR=${CEDAR_HOME}/log/server-${CEDAR_SERVER_NAME}/
+ENV LOGDIR=${CEDAR_HOME}/log/cedar-${CEDAR_SERVER_NAME}-server/
 RUN mkdir -p ${LOGDIR}
 VOLUME ${LOGDIR}
 
