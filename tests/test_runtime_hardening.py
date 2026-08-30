@@ -8,6 +8,14 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class RuntimeHardeningTest(unittest.TestCase):
+    def test_default_image_and_maven_versions_are_aligned(self):
+        manifest = (ROOT / "bin" / "cedar-images-base.sh").read_text(encoding="utf-8")
+        image = re.search(r"^export IMAGE_VERSION=(\S+)$", manifest, re.MULTILINE)
+        maven = re.search(r"^export CEDAR_MAVEN_VERSION=(\S+)$", manifest, re.MULTILINE)
+        self.assertIsNotNone(image)
+        self.assertIsNotNone(maven)
+        self.assertEqual(image.group(1), maven.group(1))
+
     def test_every_cedar_base_image_reference_uses_the_configurable_identity(self):
         cedar_base = re.compile(r"^FROM\s+\S*cedar-(?:java|microservice):\S+")
         configurable = re.compile(
