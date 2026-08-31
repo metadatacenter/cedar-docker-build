@@ -10,7 +10,11 @@ echo "Waiting for MySQL"
 python3 -u /opt/keycloak/wait-and-init-mysql.py
 
 echo "JAVA version ---"
-echo "${JAVA_HOME}"
+# This image installs java-17-openjdk-headless with dnf and selects it through alternatives, so
+# java is on PATH and JAVA_HOME is never set. Naming it unguarded was harmless until this script
+# gained `set -u` in the same change, after which the diagnostic line aborted the entrypoint before
+# Keycloak ever started, and the container restarted forever.
+echo "JAVA_HOME=${JAVA_HOME:-unset; java is resolved from PATH by alternatives}"
 java -version
 echo "----------------"
 
