@@ -10,8 +10,8 @@ export CEDAR_IMAGE_PREFIX="${CEDAR_IMAGE_PREFIX:-metadatacenter}"
 # and legacy builds retain one prefix because this defaults to the runtime prefix.
 export CEDAR_BASE_IMAGE_PREFIX="${CEDAR_BASE_IMAGE_PREFIX:-${CEDAR_IMAGE_PREFIX}}"
 
-export IMAGE_VERSION=2.9.3
-export CEDAR_MAVEN_VERSION=2.9.3-SNAPSHOT
+export IMAGE_VERSION=2.9.4
+export CEDAR_MAVEN_VERSION=2.9.4-SNAPSHOT
 # A completed immutable train overrides the compatibility development tag. cedarcli sets this for
 # ordinary published-artifact builds; --local deliberately leaves the snapshot tag in place.
 if [ -n "${CEDAR_TRAIN_VERSION:-}" ]; then
@@ -30,7 +30,7 @@ export CEDAR_TEMPLATE_EDITOR_NPM_VERSION=2.9.3-dev.20260825220423.g80b336b06509
 export CEDAR_WORKSPACE_NPM_VERSION=2.9.2-dev.20260821173503.gc658a7ca06a8
 export CEDAR_TEMPLATE_DESIGNER_NPM_VERSION=2.9.2-dev.20260821173509.ga4bf8b6005f3
 export CEDAR_OPENVIEW_NPM_VERSION=2.9.2
-export CEDAR_OPENVIEW_CEE_NPM_VERSION=2.0.2-dev.20260824.48283fb
+export CEDAR_OPENVIEW_CEE_NPM_VERSION=2.0.3
 export CEDAR_OPENVIEW_WEBCOMPONENTS_NPM_VERSION=2.8.0
 export CEDAR_CONTENT_NPM_VERSION=2.9.2-dev.20260728231241.gd201ecfc9f7f
 export CEDAR_MONITORING_NPM_VERSION=2.9.2

@@ -23,9 +23,9 @@ ENV CEDAR_WORKER_STOP_PORT=9211
 
 ENV CEDAR_ARTIFACT_HTTP_PORT=9001
 
-# This server does not start usefully until the Resource server answers its
+# This server does not start usefully until the Resource server answers its health check.
 
-ENV LOGDIR=${CEDAR_HOME}/log/server-${CEDAR_SERVER_NAME}/
+ENV LOGDIR=${CEDAR_HOME}/log/cedar-${CEDAR_SERVER_NAME}-server/
 RUN mkdir -p ${LOGDIR}
 VOLUME ${LOGDIR}
 

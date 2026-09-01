@@ -25,11 +25,11 @@ ENV CEDAR_RESOURCE_STOP_PORT=9207
 
 ENV CEDAR_ARTIFACT_HTTP_PORT=9001
 
-# This server does not start usefully until the Artifact server answers its
+# This server does not start usefully until the Artifact server answers its health check.
 
 ADD scripts/pre-docker-entrypoint.sh ${CEDAR_HOME}/
 
-ENV LOGDIR=${CEDAR_HOME}/log/server-${CEDAR_SERVER_NAME}/
+ENV LOGDIR=${CEDAR_HOME}/log/cedar-${CEDAR_SERVER_NAME}-server/
 RUN mkdir -p ${LOGDIR}
 VOLUME ${LOGDIR}
 

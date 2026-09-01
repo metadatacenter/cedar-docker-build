@@ -21,9 +21,9 @@ ENV CEDAR_SUBMISSION_HTTP_PORT=9010
 ENV CEDAR_SUBMISSION_ADMIN_PORT=9110
 ENV CEDAR_SUBMISSION_STOP_PORT=9210
 
-# This server does not start usefully until the Messaging server answers its
+# This server does not start usefully until the Messaging server answers its health check.
 
-ENV LOGDIR=${CEDAR_HOME}/log/server-${CEDAR_SERVER_NAME}/
+ENV LOGDIR=${CEDAR_HOME}/log/cedar-${CEDAR_SERVER_NAME}-server/
 RUN mkdir -p ${LOGDIR}
 VOLUME ${LOGDIR}
 

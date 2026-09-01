@@ -37,9 +37,14 @@ RUN set -eux; \
       install_package "@webcomponents/webcomponentsjs" "$CEDAR_OPENVIEW_WEBCOMPONENTS_NPM_VERSION" node_modules/@webcomponents/webcomponentsjs; \
       rm -rf /var/lib/apt/lists/*; \
     else \
-      npm config set @org.metadatacenter:registry https://nexus.bmir.stanford.edu/repository/npm-cedar/; \
+      if echo "$CEDAR_OPENVIEW_CEE_NPM_VERSION" | grep -q -- '-dev\.'; then \
+        npm config set @org.metadatacenter:registry https://nexus.bmir.stanford.edu/repository/npm-cedar/; \
+        cee_package="cedar-embeddable-editor@npm:@org.metadatacenter/cedar-embeddable-editor@${CEDAR_OPENVIEW_CEE_NPM_VERSION}"; \
+      else \
+        cee_package="cedar-embeddable-editor@${CEDAR_OPENVIEW_CEE_NPM_VERSION}"; \
+      fi; \
       npm install --ignore-scripts --no-audit --no-fund --no-save \
-        "cedar-embeddable-editor@npm:@org.metadatacenter/cedar-embeddable-editor@${CEDAR_OPENVIEW_CEE_NPM_VERSION}" \
+        "$cee_package" \
         "@webcomponents/webcomponentsjs@${CEDAR_OPENVIEW_WEBCOMPONENTS_NPM_VERSION}"; \
     fi; \
     test "$(node -p "require('./node_modules/cedar-embeddable-editor/package.json').version")" = "$CEDAR_OPENVIEW_CEE_NPM_VERSION"; \
@@ -52,7 +57,7 @@ COPY cedar-build-manifest.json /usr/local/share/cedar-build-manifest.json
 ARG CEDAR_APPLICATION_VERSION
 ARG CEDAR_OPENVIEW_NPM_VERSION
 
-ENV CEDAR_VERSION=2.9.3
+ENV CEDAR_VERSION=2.9.4
 ENV PACKAGE_VERSION=${CEDAR_OPENVIEW_NPM_VERSION}
 ENV CEDAR_NPM_NEXUS_REPO=https://nexus.bmir.stanford.edu/repository/npm-cedar
 ENV PACKAGE_NAME=cedar-openview-dist

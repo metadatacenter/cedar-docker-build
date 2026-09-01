@@ -72,6 +72,7 @@ jobs:
         run: |
           source bin/cedar-images-base.sh
           echo "Image version: ${IMAGE_VERSION}"
+          echo "Maven version: ${CEDAR_MAVEN_VERSION}"
           echo
 
           nexus=https://nexus.bmir.stanford.edu/repository
@@ -79,10 +80,10 @@ jobs:
           missing_npm=0
 
           check_maven() {
-              local url="${nexus}/snapshots/org/metadatacenter/$1/${IMAGE_VERSION}/maven-metadata.xml"
-              case "${IMAGE_VERSION}" in
+              local url="${nexus}/snapshots/org/metadatacenter/$1/${CEDAR_MAVEN_VERSION}/maven-metadata.xml"
+              case "${CEDAR_MAVEN_VERSION}" in
                   *SNAPSHOT) ;;
-                  *) url="${nexus}/releases/org/metadatacenter/$1/${IMAGE_VERSION}/" ;;
+                  *) url="${nexus}/releases/org/metadatacenter/$1/${CEDAR_MAVEN_VERSION}/" ;;
               esac
               code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 30 "${url}")
               if [ "${code}" = 200 ]; then echo "OK      jar $1"
@@ -121,7 +122,7 @@ jobs:
               exit 1
           fi
           if [ ${missing} -gt 0 ]; then
-              echo "${missing} jar(s) are not published at ${IMAGE_VERSION}."
+              echo "${missing} jar(s) are not published at ${CEDAR_MAVEN_VERSION}."
               echo "Every Java repository publishes its snapshot on merge to develop, so this"
               echo "means a build failed or never ran. The images that need them cannot build."
               exit 1
