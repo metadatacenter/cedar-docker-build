@@ -12,7 +12,7 @@ COPY cedar-build-manifest.json /usr/local/share/cedar-build-manifest.json
 ARG CEDAR_APPLICATION_VERSION
 ARG CEDAR_TEMPLATE_EDITOR_NPM_VERSION
 
-ENV CEDAR_VERSION=2.9.4
+ENV CEDAR_VERSION=2.9.5
 ENV PACKAGE_NAME=cedar-template-editor
 ENV PACKAGE_VERSION=${CEDAR_TEMPLATE_EDITOR_NPM_VERSION}
 ENV CEDAR_NPM_NEXUS_REPO=https://nexus.bmir.stanford.edu/repository/npm-cedar
