@@ -91,6 +91,11 @@ export UBUNTU_VERSION=20.04
 # renovate: datasource=node-version depName=node
 export NODE_FRONTEND_VERSION=22.23.2
 
+# Maven exists only in the throwaway jar-fetch stage of each server image. Pin its maintained
+# builder image here so those 15 builds do not install an unversioned Maven RPM through UBI.
+# renovate: datasource=docker depName=maven
+export MAVEN_BUILDER_VERSION=3.9.11-eclipse-temurin-17
+
 # The build arguments those versions become, derived from the declarations above so that adding a
 # server stays a one-line change. `cedarcli docker build` reads the same declarations directly and
 # is the only builder; this exists for the CI jobs, which build images individually.

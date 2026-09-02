@@ -2,6 +2,8 @@
 ARG NGINX_VERSION
 FROM nginx:${NGINX_VERSION}
 
+ENV NPM_CONFIG_STRICT_ALLOW_SCRIPTS=true
+
 COPY cedar-build-manifest.json /usr/local/share/cedar-build-manifest.json
 
 ARG NODE_FRONTEND_VERSION
