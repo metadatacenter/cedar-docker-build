@@ -72,17 +72,30 @@ class RuntimeHardeningTest(unittest.TestCase):
             with self.subTest(dockerfile=dockerfile.parent.name):
                 text = dockerfile.read_text(encoding="utf-8")
                 self.assertIn("AS jarfetch", text)
+                self.assertIn("FROM maven:${MAVEN_BUILDER_VERSION} AS jarfetch", text)
+                self.assertNotRegex(text, r"microdnf[^\n]*install[^\n]*\bmaven\b")
                 self.assertIn(
                     "COPY --from=jarfetch --chown=cedar:cedar",
                     text,
                     "the runtime stage takes the fetched jars and nothing else from the fetch stage",
                 )
-                fetch, runtime = text.split("\nFROM ", 2)[1:]
+                fetch = text.split(" AS jarfetch", 1)[1].split("\nFROM cedar-runtime", 1)[0]
+                runtime = text.rsplit("\nFROM cedar-runtime", 1)[1]
                 self.assertIn("install_deps.sh", fetch)
                 self.assertNotIn(
                     "install_deps.sh", runtime,
                     "the runtime stage must not run Maven",
                 )
+
+        installer = (ROOT / "cedar-microservice" / "include" / "install_deps.sh").read_text(
+            encoding="utf-8"
+        )
+        self.assertEqual(
+            2,
+            installer.count('mvn --settings "${MAVEN_SETTINGS}"'),
+            "the Maven builder runs as root, so both fetch commands must explicitly select the "
+            "CEDAR repository settings copied from the runtime image",
+        )
 
     def test_server_log_volumes_match_the_dropwizard_log_directories(self):
         expected = "ENV LOGDIR=${CEDAR_HOME}/log/cedar-${CEDAR_SERVER_NAME}-server/"
@@ -137,6 +150,8 @@ class RuntimeHardeningTest(unittest.TestCase):
             manager.get("managerFilePatterns", [])) for manager in managers))
         java = (ROOT / "cedar-java" / "Dockerfile").read_text(encoding="utf-8")
         self.assertRegex(java, r"^FROM eclipse-temurin:", re.MULTILINE)
+        manifest = (ROOT / "bin" / "cedar-images-base.sh").read_text(encoding="utf-8")
+        self.assertRegex(manifest, r"(?m)^export MAVEN_BUILDER_VERSION=\S+$")
 
 
 if __name__ == "__main__":

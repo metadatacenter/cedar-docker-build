@@ -2,6 +2,8 @@
 ARG NGINX_VERSION
 FROM nginx:${NGINX_VERSION}
 
+ENV NPM_CONFIG_STRICT_ALLOW_SCRIPTS=true
+
 COPY cedar-build-manifest.json /usr/local/share/cedar-build-manifest.json
 
 ARG NODE_FRONTEND_VERSION
@@ -12,7 +14,7 @@ ENV CEDAR_NPM_NEXUS_REPO=https://nexus.bmir.stanford.edu/repository/npm-cedar
 ENV CEDAR_HOME=/srv/cedar
 ENV PACKAGE_NAME=cedar-template-designer
 ENV PACKAGE_VERSION=${CEDAR_TEMPLATE_DESIGNER_NPM_VERSION}
-ENV CEDAR_VERSION=2.9.5
+ENV CEDAR_VERSION=2.9.6
 
 USER root
 
