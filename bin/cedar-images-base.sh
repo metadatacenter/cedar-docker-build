@@ -10,15 +10,15 @@ export CEDAR_IMAGE_PREFIX="${CEDAR_IMAGE_PREFIX:-metadatacenter}"
 # and legacy builds retain one prefix because this defaults to the runtime prefix.
 export CEDAR_BASE_IMAGE_PREFIX="${CEDAR_BASE_IMAGE_PREFIX:-${CEDAR_IMAGE_PREFIX}}"
 
-export IMAGE_VERSION=2.9.7
-export CEDAR_MAVEN_VERSION=2.9.7
+export IMAGE_VERSION=2.9.8
+export CEDAR_MAVEN_VERSION=2.9.8
 # A completed immutable train overrides the compatibility development tag. cedarcli sets this for
 # ordinary published-artifact builds; --local deliberately leaves the snapshot tag in place.
 if [ -n "${CEDAR_TRAIN_VERSION:-}" ]; then
   export IMAGE_VERSION="${CEDAR_TRAIN_VERSION}"
   export CEDAR_MAVEN_VERSION="${CEDAR_TRAIN_VERSION}"
 fi
-export CEDAR_APPLICATION_VERSION=2.9.7
+export CEDAR_APPLICATION_VERSION=2.9.8
 
 # npm registries do not allow a version to be overwritten like a Maven SNAPSHOT. The frontend
 # images therefore consume exact immutable package versions: a release where one has been
@@ -26,15 +26,15 @@ export CEDAR_APPLICATION_VERSION=2.9.7
 # `cedar-development/ops/publish-frontend-package.sh`. Never replace these with the moving `dev`
 # dist-tag. CEDAR_APPLICATION_VERSION remains the human-facing suite version; these seven inputs
 # identify the exact source payload assembled into each image.
-export CEDAR_TEMPLATE_EDITOR_NPM_VERSION=2.9.4-dev.202609010555.g5c3ca8fbb089.p4
-export CEDAR_WORKSPACE_NPM_VERSION=2.9.3-dev.202609010555.g6dfefa3b785b.p4
-export CEDAR_TEMPLATE_DESIGNER_NPM_VERSION=2.9.3-dev.20260829155942.g1fa1c99c1e24.p3
-export CEDAR_OPENVIEW_NPM_VERSION=2.9.4-dev.202609010555.g5158eb261374.p4
-export CEDAR_OPENVIEW_CEE_NPM_VERSION=2.0.5-dev.202609010555.g415ae8a1d884
+export CEDAR_TEMPLATE_EDITOR_NPM_VERSION=2.9.7-dev.202609040620.g1bbac48d3bdf.p4
+export CEDAR_WORKSPACE_NPM_VERSION=2.9.3-dev.202609040620.gf2b6d12f7f78.p4
+export CEDAR_TEMPLATE_DESIGNER_NPM_VERSION=2.9.3-dev.20260903132125.g2410fabe424d.p3
+export CEDAR_OPENVIEW_NPM_VERSION=2.9.7-dev.202609040620.g389cde2a59a1.p4
+export CEDAR_OPENVIEW_CEE_NPM_VERSION=2.0.5-dev.202609040620.g27dec9fa4393
 export CEDAR_OPENVIEW_WEBCOMPONENTS_NPM_VERSION=2.8.0
 export CEDAR_CONTENT_NPM_VERSION=2.9.5
 export CEDAR_MONITORING_NPM_VERSION=2.9.5
-export CEDAR_BRIDGING_NPM_VERSION=2.9.4-dev.202609010555.gf2918bb122ae.p4
+export CEDAR_BRIDGING_NPM_VERSION=2.9.7-dev.202609040620.g724c363b6588.p4
 
 # The locked persistence and infrastructure server versions, declared once and inherited by the
 # images that install them: no Dockerfile spells a version out, each takes it as a build argument
