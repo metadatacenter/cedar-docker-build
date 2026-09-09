@@ -2,8 +2,8 @@
 # The official nginx image, as cedar-frontend-content and the other dist frontends already use.
 # This used to install nginx from nginx.org on debian:bullseye-slim, fetching the repository signing
 # key by fingerprint; nginx rotated that key to 2FD21310B49F6B46 and apt began rejecting the
-# repository as unsigned, so the build failed in its second layer. The image is still bullseye-based,
-# so the Node install below is unaffected. None of the dynamic modules the old block added are used.
+# repository as unsigned, so the build failed in its second layer. The image is Debian-based, so the
+# Node install below is unaffected. None of the dynamic modules the old block added are used.
 ARG NGINX_VERSION
 FROM nginx:${NGINX_VERSION}
 
