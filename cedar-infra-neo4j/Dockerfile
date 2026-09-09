@@ -5,8 +5,10 @@
 ARG NEO4J_VERSION
 FROM neo4j:${NEO4J_VERSION}-community
 
-RUN apt-get update
-RUN apt-get -y install curl netcat
+# No apt here. The base image is Debian bullseye, whose security suite's Release file expired on
+# 2026-09-07, and `apt-get update` treats an expired Release as fatal — it stopped every build of
+# this image. The two packages it installed, curl and netcat, had no user: the compose healthcheck
+# probes the browser port with wget, which the base image already carries.
 
 WORKDIR /var/lib/neo4j
 
