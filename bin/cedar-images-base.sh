@@ -71,7 +71,7 @@ export KEYCLOAK_SHA256=d00d88fc9dd73b022e0109f09353374049955de18dd089d2e2da927f1
 # rebuild produces the same bytes, and it may move whenever someone wants it to. Eight images are
 # built on it — the reverse proxy and all seven frontends — and each used to restate the number.
 # renovate: datasource=docker depName=nginx
-export NGINX_VERSION=1.30.4
+export NGINX_VERSION=1.31.5
 
 # The OS bases, pinned to what the images were already resolving to rather than to a moving target.
 # `ubi9` carried no tag at all and `node:20-bookworm` floated within the Node 20 line, so a rebuild
