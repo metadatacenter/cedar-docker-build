@@ -48,17 +48,17 @@ export CEDAR_BRIDGING_NPM_VERSION=2.9.11-dev.20260911.gc7dfbacc5c23.t1451.p4
 #
 # The `# renovate:` lines are what let Renovate maintain this file; keep them attached.
 # renovate: datasource=docker depName=mongo
-export MONGO_VERSION=5.0.31
+export MONGO_VERSION=5.0.33
 # The 8.4 LTS line, deliberately rather than the 9.x innovation line the native install drifted onto:
 # an innovation release is superseded roughly quarterly, which is the opposite of a locked version.
 # renovate: datasource=docker depName=mysql
 export MYSQL_VERSION=8.4.11
 # renovate: datasource=docker depName=neo4j
-export NEO4J_VERSION=5.26.0
+export NEO4J_VERSION=5.26.29
 # renovate: datasource=docker depName=redis
-export REDIS_VERSION=7.2.7
+export REDIS_VERSION=7.4.11
 # renovate: datasource=docker depName=opensearchproject/opensearch
-export OPENSEARCH_VERSION=2.19.1
+export OPENSEARCH_VERSION=2.19.6
 # renovate: datasource=github-releases depName=keycloak/keycloak
 export KEYCLOAK_VERSION=22.0.4
 # Keycloak publishes no checksum alongside its GitHub release, so the digest is pinned here instead
@@ -80,7 +80,7 @@ export NGINX_VERSION=1.30.4
 # renovate: datasource=docker depName=registry.access.redhat.com/ubi9
 export UBI9_VERSION=9.8
 # renovate: datasource=docker depName=node
-export NODE_VERSION=24.19.0
+export NODE_VERSION=24.20.0
 # renovate: datasource=docker depName=ubuntu
 export UBUNTU_VERSION=20.04
 
@@ -94,7 +94,7 @@ export NODE_FRONTEND_VERSION=22.23.2
 # Maven exists only in the throwaway jar-fetch stage of each server image. Pin its maintained
 # builder image here so those 15 builds do not install an unversioned Maven RPM through UBI.
 # renovate: datasource=docker depName=maven
-export MAVEN_BUILDER_VERSION=3.9.11-eclipse-temurin-17
+export MAVEN_BUILDER_VERSION=3.9.15-eclipse-temurin-17
 
 # The build arguments those versions become, derived from the declarations above so that adding a
 # server stays a one-line change. `cedarcli docker build` reads the same declarations directly and
