@@ -1,4 +1,4 @@
-FROM eclipse-temurin:17.0.20_8-jre-ubi9-minimal
+FROM eclipse-temurin:17.0.20_8-jre-ubi9-minimal@sha256:9681ae9802fd1482a504849ba658add54cc3236610bd04c8f2fabca67067ead5
 
 # Runtime only. Maven — and the full JDK its RPM drags in — lives in the throwaway jar-fetch
 # stage of each consumer's build, never in a served image. Nothing the entrypoints, wait
