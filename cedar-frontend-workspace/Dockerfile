@@ -13,7 +13,7 @@ ENV NPM_CONFIG_STRICT_ALLOW_SCRIPTS=true
 ENV CEDAR_HOME=/srv/cedar
 ENV PACKAGE_NAME=cedar-workspace
 ENV PACKAGE_VERSION=${CEDAR_WORKSPACE_NPM_VERSION}
-ENV CEDAR_VERSION=2.9.16
+ENV CEDAR_VERSION=2.9.17
 
 USER root
 
@@ -74,7 +74,7 @@ ENV CEDAR_FRONTEND_PORT=4201
 
 VOLUME ["/log"]
 # nginx runs as the image's own unprivileged user: every vhost listens on a high port, the
-# runtime writes (gulp or the index.html sed) stay inside the app home, and the pid file moves
+# runtime configuration writes stay inside the app home, and the pid file moves
 # to /tmp because /var/run belongs to root.
 RUN sed -i 's|^pid .*|pid /tmp/nginx.pid;|' /etc/nginx/nginx.conf && \
     mkdir -p /log && \
