@@ -41,7 +41,8 @@ for suffix in USER1_LOGIN USER1_PASSWORD USER1_NAME USER2_LOGIN USER2_PASSWORD U
   export "$name"
 done
 
-./node_modules/.bin/gulp
+# The package's start script configures and stages the payload; in server mode it serves nothing.
+npm start
 
 package_sha256=$(cat /usr/local/share/cedar-package-sha256)
 if [[ ! "$package_sha256" =~ ^[0-9a-f]{64}$ ]]; then
