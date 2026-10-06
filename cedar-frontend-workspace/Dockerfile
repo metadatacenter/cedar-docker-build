@@ -8,7 +8,8 @@ ARG NODE_FRONTEND_VERSION
 ARG CEDAR_APPLICATION_VERSION
 ARG CEDAR_WORKSPACE_NPM_VERSION
 
-ENV CEDAR_NPM_NEXUS_REPO=https://nexus.bmir.stanford.edu/repository/npm-cedar
+ARG CEDAR_NPM_REGISTRY
+ENV CEDAR_NPM_NEXUS_REPO=${CEDAR_NPM_REGISTRY}
 ENV NPM_CONFIG_STRICT_ALLOW_SCRIPTS=true
 ENV CEDAR_HOME=/srv/cedar
 ENV PACKAGE_NAME=cedar-workspace
@@ -20,6 +21,7 @@ USER root
 RUN set -eux; \
     test -n "$NODE_FRONTEND_VERSION"; \
     test -n "$CEDAR_APPLICATION_VERSION"; \
+    test -n "$CEDAR_NPM_NEXUS_REPO"; \
     test -n "$CEDAR_WORKSPACE_NPM_VERSION"; \
     apt-get update; \
     apt-get install -y --no-install-recommends ca-certificates curl xz-utils; \

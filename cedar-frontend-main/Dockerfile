@@ -15,7 +15,8 @@ ARG CEDAR_TEMPLATE_EDITOR_NPM_VERSION
 ENV CEDAR_VERSION=2.9.22-SNAPSHOT
 ENV PACKAGE_NAME=cedar-template-editor
 ENV PACKAGE_VERSION=${CEDAR_TEMPLATE_EDITOR_NPM_VERSION}
-ENV CEDAR_NPM_NEXUS_REPO=https://nexus.bmir.stanford.edu/repository/npm-cedar
+ARG CEDAR_NPM_REGISTRY
+ENV CEDAR_NPM_NEXUS_REPO=${CEDAR_NPM_REGISTRY}
 ENV NPM_CONFIG_STRICT_ALLOW_SCRIPTS=true
 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -67,6 +68,7 @@ RUN echo ${EDITOR_URI}
 # Download and extract the frontend source
 RUN set -eux; \
     test -n "$CEDAR_APPLICATION_VERSION"; \
+    test -n "$CEDAR_NPM_NEXUS_REPO"; \
     test -n "$CEDAR_TEMPLATE_EDITOR_NPM_VERSION"; \
     curl --fail --show-error --location --remote-name "$EDITOR_URI"; \
     actual_sha="$(sha256sum "$EDITOR_TARBALL" | cut -d' ' -f1)"; \
