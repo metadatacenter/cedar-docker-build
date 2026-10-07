@@ -10,9 +10,10 @@ COPY cedar-build-manifest.json /usr/local/share/cedar-build-manifest.json
 ARG CEDAR_APPLICATION_VERSION
 ARG CEDAR_MONITORING_NPM_VERSION
 
-ENV CEDAR_VERSION=2.9.21
+ENV CEDAR_VERSION=2.9.22
 ENV PACKAGE_VERSION=${CEDAR_MONITORING_NPM_VERSION}
-ENV CEDAR_NPM_NEXUS_REPO=https://nexus.bmir.stanford.edu/repository/npm-cedar
+ARG CEDAR_NPM_REGISTRY
+ENV CEDAR_NPM_NEXUS_REPO=${CEDAR_NPM_REGISTRY}
 ENV PACKAGE_NAME=cedar-monitoring-dist
 
 # Add the entry point
@@ -42,6 +43,7 @@ RUN echo ${PACKAGE_URI}
 # Download and extract the frontend source
 RUN set -eux; \
     test -n "$CEDAR_APPLICATION_VERSION"; \
+    test -n "$CEDAR_NPM_NEXUS_REPO"; \
     test -n "$CEDAR_MONITORING_NPM_VERSION"; \
     curl --fail --show-error --location --remote-name "$PACKAGE_URI"; \
     actual_sha="$(sha256sum "$TARBALL" | cut -d' ' -f1)"; \

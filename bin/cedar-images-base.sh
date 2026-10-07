@@ -10,15 +10,15 @@ export CEDAR_IMAGE_PREFIX="${CEDAR_IMAGE_PREFIX:-metadatacenter}"
 # and legacy builds retain one prefix because this defaults to the runtime prefix.
 export CEDAR_BASE_IMAGE_PREFIX="${CEDAR_BASE_IMAGE_PREFIX:-${CEDAR_IMAGE_PREFIX}}"
 
-export IMAGE_VERSION=2.9.21
-export CEDAR_MAVEN_VERSION=2.9.21
+export IMAGE_VERSION=2.9.22
+export CEDAR_MAVEN_VERSION=2.9.22
 # A completed immutable train overrides the compatibility development tag. cedarcli sets this for
 # ordinary published-artifact builds; --local deliberately leaves the snapshot tag in place.
 if [ -n "${CEDAR_TRAIN_VERSION:-}" ]; then
   export IMAGE_VERSION="${CEDAR_TRAIN_VERSION}"
   export CEDAR_MAVEN_VERSION="${CEDAR_TRAIN_VERSION}"
 fi
-export CEDAR_APPLICATION_VERSION=2.9.21
+export CEDAR_APPLICATION_VERSION=2.9.22
 
 # npm registries do not allow a version to be overwritten like a Maven SNAPSHOT. The frontend
 # images therefore consume exact immutable package versions: a release where one has been
@@ -26,15 +26,19 @@ export CEDAR_APPLICATION_VERSION=2.9.21
 # `cedar-development/ops/publish-frontend-package.sh`. Never replace these with the moving `dev`
 # dist-tag. CEDAR_APPLICATION_VERSION remains the human-facing suite version; these seven inputs
 # identify the exact source payload assembled into each image.
-export CEDAR_TEMPLATE_EDITOR_NPM_VERSION=2.9.21
-export CEDAR_WORKSPACE_NPM_VERSION=2.9.21
-export CEDAR_TEMPLATE_DESIGNER_NPM_VERSION=2.9.21
-export CEDAR_OPENVIEW_NPM_VERSION=2.9.21
-export CEDAR_OPENVIEW_CEE_NPM_VERSION=2.0.20
+export CEDAR_TEMPLATE_EDITOR_NPM_VERSION=2.9.22
+export CEDAR_WORKSPACE_NPM_VERSION=2.9.22
+export CEDAR_TEMPLATE_DESIGNER_NPM_VERSION=2.9.22
+export CEDAR_OPENVIEW_NPM_VERSION=2.9.22
+export CEDAR_OPENVIEW_CEE_NPM_VERSION=2.0.21
 export CEDAR_OPENVIEW_WEBCOMPONENTS_NPM_VERSION=2.8.0
-export CEDAR_CONTENT_NPM_VERSION=2.9.21
-export CEDAR_MONITORING_NPM_VERSION=2.9.21
-export CEDAR_BRIDGING_NPM_VERSION=2.9.21
+export CEDAR_CONTENT_NPM_VERSION=2.9.22
+export CEDAR_MONITORING_NPM_VERSION=2.9.22
+export CEDAR_BRIDGING_NPM_VERSION=2.9.22
+# The registry those packages, and the shared components they depend on, are installed from.
+# Nexus removes a prerelease from npm-cedar three days after upload and a release thirty days
+# after it, so a release rewrites this to npm-cedar-releases, which nothing cleans up.
+export CEDAR_NPM_REGISTRY=https://nexus.bmir.stanford.edu/repository/npm-cedar-releases
 
 # The locked persistence and infrastructure server versions, declared once and inherited by the
 # images that install them: no Dockerfile spells a version out, each takes it as a build argument
@@ -105,7 +109,7 @@ cedar_server_build_args() {
   local name
   printf ' --build-arg CEDAR_IMAGE_PREFIX=%s' "${CEDAR_BASE_IMAGE_PREFIX}"
   printf ' --build-arg CEDAR_DOCKER_VERSION=%s' "${IMAGE_VERSION}"
-  for name in $(grep -oE '^export [A-Z0-9_]+(_VERSION|_SHA256)=' "${BASH_SOURCE[0]}" | sed 's/^export //; s/=$//'); do
+  for name in $(grep -oE '^export [A-Z0-9_]+(_VERSION|_SHA256|_REGISTRY)=' "${BASH_SOURCE[0]}" | sed 's/^export //; s/=$//'); do
     [ "${name}" = "IMAGE_VERSION" ] && continue
     printf ' --build-arg %s=%s' "${name}" "${!name}"
   done
