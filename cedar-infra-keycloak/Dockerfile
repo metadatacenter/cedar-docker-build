@@ -56,7 +56,8 @@ ADD config/keycloak.conf /opt/keycloak/conf/.
 RUN mkdir /opt/keycloak/data/import/
 ADD config/keycloak-realm.CEDAR.development.2023-07-05.json /opt/keycloak/.
 
-RUN mvn org.apache.maven.plugins:maven-dependency-plugin:3.5.0:get -DrepoUrl=https://nexus.bmir.stanford.edu/ -Dartifact=org.metadatacenter:cedar-keycloak-event-listener:${CEDAR_VERSION} -Dmaven.wagon.http.retryHandler.count=5
+# Only the listener jar is copied, so only the jar is fetched, and from the repositories in settings.xml.
+RUN mvn org.apache.maven.plugins:maven-dependency-plugin:3.5.0:get -Dtransitive=false -Dartifact=org.metadatacenter:cedar-keycloak-event-listener:${CEDAR_VERSION} -Dmaven.wagon.http.retryHandler.count=5
 RUN mvn org.apache.maven.plugins:maven-dependency-plugin:3.5.0:copy -Dartifact=org.metadatacenter:cedar-keycloak-event-listener:${CEDAR_VERSION}:jar -DoutputDirectory=/opt/keycloak/providers -Dmdep.useBaseVersion=true
 
 ADD scripts/wait-and-init-mysql.py /opt/keycloak/

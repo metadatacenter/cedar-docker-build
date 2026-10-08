@@ -11,7 +11,6 @@ echo "Current working directory:"
 pwd
 
 ARTIFACT=cedar-${CEDAR_SERVER_NAME}-server-application
-REPO_URL=https://nexus.bmir.stanford.edu/
 ARTIFACT_FULL=org.metadatacenter:${ARTIFACT}:${CEDAR_VERSION}
 MAVEN_SETTINGS=${CEDAR_HOME}/.m2/settings.xml
 
@@ -25,11 +24,14 @@ if [ -f "${LOCAL_JAR}" ]; then
   ls -l "${LOCAL_JAR}"
   cp "${LOCAL_JAR}" ./cedar-server.jar
 else
+  # Only the jar is copied, so only the jar is fetched. A transitive get resolved the artifact's whole
+  # dependency tree, asking Nexus for each artifact first, and the old repoUrl named Nexus's root,
+  # which is not a repository and could only miss.
   echo "Downloading microservice jar:"
   n=0
   until [ "$n" -ge 5 ]
   do
-    mvn --settings "${MAVEN_SETTINGS}" org.apache.maven.plugins:maven-dependency-plugin:3.5.0:get -DrepoUrl=${REPO_URL} -Dartifact=${ARTIFACT_FULL} -Dmaven.wagon.http.retryHandler.count=5 && break
+    mvn --settings "${MAVEN_SETTINGS}" org.apache.maven.plugins:maven-dependency-plugin:3.5.0:get -Dtransitive=false -Dartifact=${ARTIFACT_FULL} -Dmaven.wagon.http.retryHandler.count=5 && break
     echo "Downloading of jar failed. Retrying soon..."
     n=$((n+1))
     sleep $((n+15))
