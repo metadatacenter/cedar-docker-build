@@ -84,7 +84,7 @@ export NGINX_VERSION=1.30.4
 # renovate: datasource=docker depName=registry.access.redhat.com/ubi9
 export UBI9_VERSION=9.8
 # renovate: datasource=docker depName=node
-export NODE_VERSION=24.19.0
+export NODE_VERSION=24.22.0
 # renovate: datasource=docker depName=ubuntu
 export UBUNTU_VERSION=20.04
 
