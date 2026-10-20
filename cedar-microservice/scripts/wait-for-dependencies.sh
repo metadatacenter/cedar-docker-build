@@ -2,8 +2,8 @@
 
 # Wait for the backends this container was actually given, before the server starts.
 #
-# This lives in the base image and is derived rather than written per server. Fifteen hand-written
-# copies of it drifted: cedar-server-schema had none at all and raced Mongo, Neo4j and Redis on
+# This lives in the base image and is derived rather than written per server. The hand-written
+# copies, one per server, drifted: one server had none at all and raced Mongo, Neo4j and Redis on
 # every start, and five others did not wait for the Redis they open a pool against. A container
 # waits for a backend when it is handed that backend's coordinates, so adding a server, or handing
 # an existing one a new dependency, cannot silently skip the wait.

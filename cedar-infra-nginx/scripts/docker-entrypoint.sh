@@ -15,11 +15,8 @@ mkdir -p nginx-monitor
 mkdir -p nginx-open
 mkdir -p nginx-repo
 mkdir -p nginx-resource
-mkdir -p nginx-schema
-mkdir -p nginx-submission
 mkdir -p nginx-terminology
 mkdir -p nginx-user
-mkdir -p nginx-valuerecommender
 mkdir -p nginx-worker 
 
 mkdir -p nginx-frontend-cedar

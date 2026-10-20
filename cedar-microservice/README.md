@@ -12,7 +12,7 @@ implementation unit of the managed CEDAR image build, not a standalone deploymen
 ## Build Contract
 
 This is an internal build base rather than a runtime service. It extends `cedar-java` with the
-filesystem and launch contract shared by the fifteen `cedar-server-*` images.
+filesystem and launch contract shared by the twelve `cedar-server-*` images.
 
 The authoritative image inventory, version inputs, registry-prefix rules, and build mechanics are
 described in the [repository README](../README.md). Keep those shared facts there rather than

@@ -149,11 +149,8 @@ CEDAR_DOCKER_IMAGES=(
   "cedar-server-openview"
   "cedar-server-repo"
   "cedar-server-resource"
-  "cedar-server-schema"
-  "cedar-server-submission"
   "cedar-server-terminology"
   "cedar-server-user"
-  "cedar-server-valuerecommender"
   "cedar-server-worker"
 )
 
