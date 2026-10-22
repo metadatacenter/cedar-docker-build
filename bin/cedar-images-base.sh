@@ -10,15 +10,15 @@ export CEDAR_IMAGE_PREFIX="${CEDAR_IMAGE_PREFIX:-metadatacenter}"
 # and legacy builds retain one prefix because this defaults to the runtime prefix.
 export CEDAR_BASE_IMAGE_PREFIX="${CEDAR_BASE_IMAGE_PREFIX:-${CEDAR_IMAGE_PREFIX}}"
 
-export IMAGE_VERSION=2.9.28-SNAPSHOT
-export CEDAR_MAVEN_VERSION=2.9.28-SNAPSHOT
+export IMAGE_VERSION=2.9.29-SNAPSHOT
+export CEDAR_MAVEN_VERSION=2.9.29-SNAPSHOT
 # A completed immutable train overrides the compatibility development tag. cedarcli sets this for
 # ordinary published-artifact builds; --local deliberately leaves the snapshot tag in place.
 if [ -n "${CEDAR_TRAIN_VERSION:-}" ]; then
   export IMAGE_VERSION="${CEDAR_TRAIN_VERSION}"
   export CEDAR_MAVEN_VERSION="${CEDAR_TRAIN_VERSION}"
 fi
-export CEDAR_APPLICATION_VERSION=2.9.28-SNAPSHOT
+export CEDAR_APPLICATION_VERSION=2.9.29-SNAPSHOT
 
 # npm registries do not allow a version to be overwritten like a Maven SNAPSHOT. The frontend
 # images therefore consume exact immutable package versions: a release where one has been
@@ -26,15 +26,15 @@ export CEDAR_APPLICATION_VERSION=2.9.28-SNAPSHOT
 # `cedar-development/ops/publish-frontend-package.sh`. Never replace these with the moving `dev`
 # dist-tag. CEDAR_APPLICATION_VERSION remains the human-facing suite version; these seven inputs
 # identify the exact source payload assembled into each image.
-export CEDAR_TEMPLATE_EDITOR_NPM_VERSION=2.9.27-dev.20261021.g03746b661597.t0711.p4
-export CEDAR_WORKSPACE_NPM_VERSION=2.9.27-dev.20261021.g4c2e0026bc96.t0711.p4
-export CEDAR_TEMPLATE_DESIGNER_NPM_VERSION=2.9.27-dev.20261021.g389ff879d4bc.t0711.p4
-export CEDAR_OPENVIEW_NPM_VERSION=2.9.27-dev.20261021.g5c6641b41594.t0711.p4
-export CEDAR_OPENVIEW_CEE_NPM_VERSION=2.0.28-dev.20261021.g24f6c64d93aa.t0711
+export CEDAR_TEMPLATE_EDITOR_NPM_VERSION=2.9.28-dev.20261022.g6f203b5e8287.t0102.p4
+export CEDAR_WORKSPACE_NPM_VERSION=2.9.28-dev.20261022.g5fe35fb89e8d.t0102.p4
+export CEDAR_TEMPLATE_DESIGNER_NPM_VERSION=2.9.28-dev.20261022.gfb949bb7b403.t0102.p4
+export CEDAR_OPENVIEW_NPM_VERSION=2.9.28-dev.20261022.gbf0134d8e60a.t0102.p4
+export CEDAR_OPENVIEW_CEE_NPM_VERSION=2.0.28-dev.20261022.g2c882afae89e.t0102
 export CEDAR_OPENVIEW_WEBCOMPONENTS_NPM_VERSION=2.8.0
-export CEDAR_CONTENT_NPM_VERSION=2.9.27-dev.20261019.ge6ace17187ce.t134545.p3
-export CEDAR_MONITORING_NPM_VERSION=2.9.27-dev.20261021.g55a19a34864c.t0711.p4
-export CEDAR_BRIDGING_NPM_VERSION=2.9.27-dev.20261021.g7198951a3675.t0711.p4
+export CEDAR_CONTENT_NPM_VERSION=2.9.28-dev.20261021.g271d100c21fc.t013042.p3
+export CEDAR_MONITORING_NPM_VERSION=2.9.28-dev.20261022.ge023dc7229e7.t0102.p4
+export CEDAR_BRIDGING_NPM_VERSION=2.9.28-dev.20261022.g98e522e56fb1.t0102.p4
 # The registry those packages, and the shared components they depend on, are installed from.
 # Nexus removes a prerelease from npm-cedar three days after upload and a release thirty days
 # after it, so a release rewrites this to npm-cedar-releases, which nothing cleans up.
