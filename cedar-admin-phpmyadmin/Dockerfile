@@ -1,6 +1,6 @@
 # The official image is published as phpmyadmin; phpmyadmin/phpmyadmin is the old name.
 # 5.0.0 predates MySQL 8 support settling and has no arm64 build.
-FROM phpmyadmin:5.2.1
+FROM phpmyadmin:5.2.3@sha256:62a50b1419fe55b9b4c3cd6f5aed03a18f8f5b4a236f24735d76400bea75a5ff
 
 # No config is added: the sample config.inc this image used to carry was the stock phpMyAdmin
 # example, with an empty host and an empty blowfish_secret, copied to /www/ where nothing reads it.
