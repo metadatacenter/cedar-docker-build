@@ -8,13 +8,11 @@ ARG NGINX_VERSION
 FROM node:${NODE_FRONTEND_VERSION}-bookworm AS openview-runtime-assets
 
 ARG CEDAR_OPENVIEW_CEE_NPM_VERSION
-ARG CEDAR_OPENVIEW_WEBCOMPONENTS_NPM_VERSION
 
 WORKDIR /runtime-assets
 COPY cedar-build-manifest.json /runtime-assets/cedar-build-manifest.json
 RUN set -eux; \
     test -n "$CEDAR_OPENVIEW_CEE_NPM_VERSION"; \
-    test -n "$CEDAR_OPENVIEW_WEBCOMPONENTS_NPM_VERSION"; \
     train="$(node -p "require('/runtime-assets/cedar-build-manifest.json').train || ''")"; \
     if [ -n "$train" ]; then \
       apt-get update; \
@@ -34,7 +32,6 @@ RUN set -eux; \
         rm "$archive"; \
       }; \
       install_package "@org.metadatacenter/cedar-embeddable-editor" "$CEDAR_OPENVIEW_CEE_NPM_VERSION" node_modules/cedar-embeddable-editor; \
-      install_package "@webcomponents/webcomponentsjs" "$CEDAR_OPENVIEW_WEBCOMPONENTS_NPM_VERSION" node_modules/@webcomponents/webcomponentsjs; \
       rm -rf /var/lib/apt/lists/*; \
     else \
       if echo "$CEDAR_OPENVIEW_CEE_NPM_VERSION" | grep -q -- '-dev\.'; then \
@@ -43,12 +40,9 @@ RUN set -eux; \
       else \
         cee_package="cedar-embeddable-editor@${CEDAR_OPENVIEW_CEE_NPM_VERSION}"; \
       fi; \
-      npm install --ignore-scripts --no-audit --no-fund --no-save \
-        "$cee_package" \
-        "@webcomponents/webcomponentsjs@${CEDAR_OPENVIEW_WEBCOMPONENTS_NPM_VERSION}"; \
+      npm install --ignore-scripts --no-audit --no-fund --no-save "$cee_package"; \
     fi; \
-    test "$(node -p "require('./node_modules/cedar-embeddable-editor/package.json').version")" = "$CEDAR_OPENVIEW_CEE_NPM_VERSION"; \
-    test "$(node -p "require('./node_modules/@webcomponents/webcomponentsjs/package.json').version")" = "$CEDAR_OPENVIEW_WEBCOMPONENTS_NPM_VERSION"
+    test "$(node -p "require('./node_modules/cedar-embeddable-editor/package.json').version")" = "$CEDAR_OPENVIEW_CEE_NPM_VERSION"
 
 FROM nginx:${NGINX_VERSION}
 
@@ -110,18 +104,14 @@ RUN set -eux; \
     echo "$source_commit" | grep -Eq '^[0-9a-f]{40}$'; \
     printf '%s\n' "$source_commit" > /usr/local/share/cedar-source-commit
 
-# The OpenView dist package references these two runtime packages directly from /node_modules, but
-# npm intentionally excludes node_modules from published tarballs. Assemble those immutable runtime
-# assets here so the released application package remains Docker-agnostic.
+# The OpenView dist package loads CEE directly from /node_modules, but npm intentionally excludes
+# node_modules from published tarballs. Assemble that immutable runtime asset here so the released
+# application package remains Docker-agnostic.
 COPY --from=openview-runtime-assets /runtime-assets/node_modules/cedar-embeddable-editor \
   /srv/cedar/cedar-openview-dist/node_modules/cedar-embeddable-editor
-COPY --from=openview-runtime-assets /runtime-assets/node_modules/@webcomponents/webcomponentsjs \
-  /srv/cedar/cedar-openview-dist/node_modules/@webcomponents/webcomponentsjs
 
 RUN set -eux; \
-    test -s node_modules/cedar-embeddable-editor/cedar-embeddable-editor.js; \
-    test -s node_modules/@webcomponents/webcomponentsjs/custom-elements-es5-adapter.js; \
-    test -s node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js
+    test -s node_modules/cedar-embeddable-editor/cedar-embeddable-editor.js
 
 # nginx runs as the image's own unprivileged user: every vhost listens on a high port, the
 # runtime writes (gulp or the index.html sed) stay inside the app home, and the pid file moves
