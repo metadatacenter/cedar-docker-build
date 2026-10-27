@@ -40,10 +40,11 @@ class FrontendReproducibilityTest(unittest.TestCase):
                 self.assertIn("npm ci", dockerfile)
                 self.assertNotIn("npm install -g", dockerfile)
 
-    def test_openview_extracts_both_verified_runtime_tarballs_without_train_npm_install(self):
+    def test_openview_extracts_the_verified_cee_tarball_without_train_npm_install(self):
         dockerfile = self.dockerfile("cedar-frontend-openview")
         self.assertIn('install_package "@org.metadatacenter/cedar-embeddable-editor"', dockerfile)
-        self.assertIn('install_package "@webcomponents/webcomponentsjs"', dockerfile)
+        # OpenView no longer loads web-component polyfills, so the image installs none.
+        self.assertNotIn("webcomponents", dockerfile)
         self.assertIn("package_field", dockerfile)
         self.assertNotIn("--registry=https://registry.npmjs.org", dockerfile)
 
