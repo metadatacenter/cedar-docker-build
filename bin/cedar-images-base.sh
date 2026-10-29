@@ -51,17 +51,17 @@ export CEDAR_NPM_REGISTRY=https://nexus.bmir.stanford.edu/repository/npm-cedar
 #
 # The `# renovate:` lines are what let Renovate maintain this file; keep them attached.
 # renovate: datasource=docker depName=mongo
-export MONGO_VERSION=5.0.31
+export MONGO_VERSION=5.0.33
 # The 8.4 LTS line, deliberately rather than the 9.x innovation line the native install drifted onto:
 # an innovation release is superseded roughly quarterly, which is the opposite of a locked version.
 # renovate: datasource=docker depName=mysql
 export MYSQL_VERSION=8.4.11
 # renovate: datasource=docker depName=neo4j
-export NEO4J_VERSION=5.26.0
+export NEO4J_VERSION=5.26.31
 # renovate: datasource=docker depName=redis
-export REDIS_VERSION=7.2.7
+export REDIS_VERSION=7.4.10
 # renovate: datasource=docker depName=opensearchproject/opensearch
-export OPENSEARCH_VERSION=2.19.1
+export OPENSEARCH_VERSION=2.19.6
 # renovate: datasource=github-releases depName=keycloak/keycloak
 export KEYCLOAK_VERSION=22.0.4
 # Keycloak publishes no checksum alongside its GitHub release, so the digest is pinned here instead
@@ -92,12 +92,12 @@ export UBUNTU_VERSION=20.04
 # building cedar-frontend-main on this version and watching its start-time gulp build complete and
 # nginx serve the result.
 # renovate: datasource=node-version depName=node
-export NODE_FRONTEND_VERSION=22.23.2
+export NODE_FRONTEND_VERSION=22.23.3
 
 # Maven exists only in the throwaway jar-fetch stage of each server image. Pin its maintained
 # builder image here so those 15 builds do not install an unversioned Maven RPM through UBI.
 # renovate: datasource=docker depName=maven
-export MAVEN_BUILDER_VERSION=3.9.11-eclipse-temurin-17
+export MAVEN_BUILDER_VERSION=3.9.16-eclipse-temurin-17
 
 # The build arguments those versions become, derived from the declarations above so that adding a
 # server stays a one-line change. `cedarcli docker build` reads the same declarations directly and
