@@ -9,7 +9,6 @@ mkdir -p nginx-artifact
 mkdir -p nginx-auth
 mkdir -p nginx-bridge
 mkdir -p nginx-group
-mkdir -p nginx-impex
 mkdir -p nginx-messaging
 mkdir -p nginx-monitor
 mkdir -p nginx-open

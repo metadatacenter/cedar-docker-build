@@ -142,7 +142,6 @@ CEDAR_DOCKER_IMAGES=(
   "cedar-server-artifact"
   "cedar-server-bridge"
   "cedar-server-group"
-  "cedar-server-impex"
   "cedar-server-messaging"
   "cedar-server-monitor"
   "cedar-server-openview"
