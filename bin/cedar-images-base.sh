@@ -26,18 +26,18 @@ export CEDAR_APPLICATION_VERSION=2.9.33-SNAPSHOT
 # `cedar-development/ops/publish-frontend-package.sh`. Never replace these with the moving `dev`
 # dist-tag. CEDAR_APPLICATION_VERSION remains the human-facing suite version; these seven inputs
 # identify the exact source payload assembled into each image.
-export CEDAR_TEMPLATE_EDITOR_NPM_VERSION=2.9.32-dev.20261106.g1d571c2d1e38.t1722.p4
-export CEDAR_WORKSPACE_NPM_VERSION=2.9.32-dev.20261106.g909626d8ceee.t1722.p4
-export CEDAR_TEMPLATE_DESIGNER_NPM_VERSION=2.9.32-dev.20261106.g0886a01e40ac.t1722.p4
-export CEDAR_OPENVIEW_NPM_VERSION=2.9.32-dev.20261106.g0f81654d9928.t1722.p4
-export CEDAR_OPENVIEW_CEE_NPM_VERSION=2.0.33-dev.20261106.g6aec24ed2828.t1722
-export CEDAR_CONTENT_NPM_VERSION=2.9.32-dev.20261105.gd7b9a2485436.t180353.p3
-export CEDAR_MONITORING_NPM_VERSION=2.9.32-dev.20261106.g682418bdc872.t1722.p4
-export CEDAR_BRIDGING_NPM_VERSION=2.9.32-dev.20261106.g5c0386ef4bb9.t1722.p4
+export CEDAR_TEMPLATE_EDITOR_NPM_VERSION=2.9.32
+export CEDAR_WORKSPACE_NPM_VERSION=2.9.32
+export CEDAR_TEMPLATE_DESIGNER_NPM_VERSION=2.9.32
+export CEDAR_OPENVIEW_NPM_VERSION=2.9.32
+export CEDAR_OPENVIEW_CEE_NPM_VERSION=2.0.32
+export CEDAR_CONTENT_NPM_VERSION=2.9.32
+export CEDAR_MONITORING_NPM_VERSION=2.9.32
+export CEDAR_BRIDGING_NPM_VERSION=2.9.32
 # The registry those packages, and the shared components they depend on, are installed from.
 # Nexus removes a prerelease from npm-cedar three days after upload and a release thirty days
-# after it, so a release rewrites this to npm-cedar-releases, which nothing cleans up.
-export CEDAR_NPM_REGISTRY=https://nexus.bmir.stanford.edu/repository/npm-cedar
+# after it. Compatibility builds use retained releases; trains supply their own registry and pins.
+export CEDAR_NPM_REGISTRY=https://nexus.bmir.stanford.edu/repository/npm-cedar-releases
 
 # The locked persistence and infrastructure server versions, declared once and inherited by the
 # images that install them: no Dockerfile spells a version out, each takes it as a build argument
