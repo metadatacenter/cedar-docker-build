@@ -93,7 +93,7 @@ jobs:
           check_npm() {
               local package=$1
               local version=$2
-              local url="${nexus}/npm-cedar/${package}/-/${package}-${version}.tgz"
+              local url="${CEDAR_NPM_REGISTRY}/${package}/-/${package}-${version}.tgz"
               code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 30 "${url}")
               if [ "${code}" = 200 ]; then echo "OK      npm ${package}@${version}"
               else echo "MISSING npm ${package}@${version} (HTTP ${code})"; missing_npm=$((missing_npm+1)); fi

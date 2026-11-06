@@ -26,18 +26,18 @@ export CEDAR_APPLICATION_VERSION=2.9.32-SNAPSHOT
 # `cedar-development/ops/publish-frontend-package.sh`. Never replace these with the moving `dev`
 # dist-tag. CEDAR_APPLICATION_VERSION remains the human-facing suite version; these seven inputs
 # identify the exact source payload assembled into each image.
-export CEDAR_TEMPLATE_EDITOR_NPM_VERSION=2.9.31-dev.20261029.g9172a57303bb.t2024.p4
-export CEDAR_WORKSPACE_NPM_VERSION=2.9.31-dev.20261029.ga2d98b250964.t2024.p4
-export CEDAR_TEMPLATE_DESIGNER_NPM_VERSION=2.9.31-dev.20261029.g7df872afdfef.t2024.p4
-export CEDAR_OPENVIEW_NPM_VERSION=2.9.31-dev.20261029.g79b3966072de.t2024.p4
-export CEDAR_OPENVIEW_CEE_NPM_VERSION=2.0.32-dev.20261029.g7bfd6c8de1e0.t2024
-export CEDAR_CONTENT_NPM_VERSION=2.9.31-dev.20261029.g6b0b8faff907.t113206.p3
-export CEDAR_MONITORING_NPM_VERSION=2.9.31-dev.20261029.gbacb865436d9.t2024.p4
-export CEDAR_BRIDGING_NPM_VERSION=2.9.31-dev.20261029.ge0fc842646d6.t2024.p4
+export CEDAR_TEMPLATE_EDITOR_NPM_VERSION=2.9.31
+export CEDAR_WORKSPACE_NPM_VERSION=2.9.31
+export CEDAR_TEMPLATE_DESIGNER_NPM_VERSION=2.9.31
+export CEDAR_OPENVIEW_NPM_VERSION=2.9.31
+export CEDAR_OPENVIEW_CEE_NPM_VERSION=2.0.31
+export CEDAR_CONTENT_NPM_VERSION=2.9.31
+export CEDAR_MONITORING_NPM_VERSION=2.9.31
+export CEDAR_BRIDGING_NPM_VERSION=2.9.31
 # The registry those packages, and the shared components they depend on, are installed from.
 # Nexus removes a prerelease from npm-cedar three days after upload and a release thirty days
 # after it, so a release rewrites this to npm-cedar-releases, which nothing cleans up.
-export CEDAR_NPM_REGISTRY=https://nexus.bmir.stanford.edu/repository/npm-cedar
+export CEDAR_NPM_REGISTRY=https://nexus.bmir.stanford.edu/repository/npm-cedar-releases
 
 # The locked persistence and infrastructure server versions, declared once and inherited by the
 # images that install them: no Dockerfile spells a version out, each takes it as a build argument
