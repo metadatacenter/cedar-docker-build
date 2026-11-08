@@ -256,3 +256,9 @@ jobs:
         run: |
           source bin/cedar-images-base.sh
           docker build $(cedar_server_build_args) -t "${CEDAR_IMAGE_PREFIX}/${{ matrix.image }}:${IMAGE_VERSION}" "${{ matrix.image }}"
+
+      - name: Verify Angular runtime configuration on the packaged image
+        if: contains(fromJSON('["cedar-frontend-openview","cedar-frontend-monitoring","cedar-frontend-bridging"]'), matrix.image)
+        run: |
+          source bin/cedar-images-base.sh
+          python3 tests/check_angular_image.py "${CEDAR_IMAGE_PREFIX}/${{ matrix.image }}:${IMAGE_VERSION}"
