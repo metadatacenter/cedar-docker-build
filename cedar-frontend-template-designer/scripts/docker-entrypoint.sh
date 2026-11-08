@@ -41,8 +41,24 @@ for suffix in USER1_LOGIN USER1_PASSWORD USER1_NAME USER2_LOGIN USER2_PASSWORD U
   export "$name"
 done
 
-# The package's start script configures and stages the payload; in server mode it serves nothing.
-npm start
+# A train already compiled and verified this payload. Runtime startup must not rebuild it:
+# npm packages carry a shrinkwrap, not the source checkout's package-lock.json or dist cache.
+# Verify the frozen page graph before applying environment-specific configuration.
+node <<'NODE'
+const fs = require('node:fs');
+const path = require('node:path');
+const crypto = require('node:crypto');
+const root = path.resolve('app');
+const inventory = JSON.parse(fs.readFileSync(path.join(root, 'components/page-size.json')));
+if (!Array.isArray(inventory.files) || !inventory.files.length) throw new Error('Missing frozen Designer page inventory');
+for (const entry of inventory.files) {
+  const file = path.resolve(root, entry.path);
+  if (!file.startsWith(root + path.sep)) throw new Error('Invalid frozen Designer asset path');
+  const digest = crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
+  if (digest !== entry.sha256) throw new Error('Frozen Designer asset differs: ' + entry.path);
+}
+NODE
+node scripts/designer.mjs configure
 
 package_sha256=$(cat /usr/local/share/cedar-package-sha256)
 if [[ ! "$package_sha256" =~ ^[0-9a-f]{64}$ ]]; then

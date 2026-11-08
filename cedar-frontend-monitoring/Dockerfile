@@ -10,7 +10,7 @@ COPY cedar-build-manifest.json /usr/local/share/cedar-build-manifest.json
 ARG CEDAR_APPLICATION_VERSION
 ARG CEDAR_MONITORING_NPM_VERSION
 
-ENV CEDAR_VERSION=2.9.33
+ENV CEDAR_VERSION=2.9.34
 ENV PACKAGE_VERSION=${CEDAR_MONITORING_NPM_VERSION}
 ARG CEDAR_NPM_REGISTRY
 ENV CEDAR_NPM_NEXUS_REPO=${CEDAR_NPM_REGISTRY}
@@ -26,7 +26,7 @@ ADD config/*.conf /etc/nginx/conf.d/
 RUN \
 apt-get update && \
 apt-get install -y apt-utils && \
-apt-get install -y curl jq
+apt-get install -y curl jq python3-minimal
 
 ENV CEDAR_HOME=/srv/cedar
 ENV CEDAR_FRONTEND_HOME=${CEDAR_HOME}/${PACKAGE_NAME}/
@@ -64,7 +64,7 @@ RUN set -eux; \
     printf '%s\n' "$source_commit" > /usr/local/share/cedar-source-commit
 
 # nginx runs as the image's own unprivileged user: every vhost listens on a high port, the
-# runtime writes (gulp or the index.html sed) stay inside the app home, and the pid file moves
+# runtime domain configuration writes stay inside the app home, and the pid file moves
 # to /tmp because /var/run belongs to root.
 RUN sed -i 's|^pid .*|pid /tmp/nginx.pid;|' /etc/nginx/nginx.conf && \
     mkdir -p /log && \
