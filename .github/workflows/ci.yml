@@ -262,3 +262,9 @@ jobs:
         run: |
           source bin/cedar-images-base.sh
           python3 tests/check_angular_image.py "${CEDAR_IMAGE_PREFIX}/${{ matrix.image }}:${IMAGE_VERSION}"
+
+      - name: Verify modern frontend JavaScript module responses
+        if: matrix.image != 'cedar-frontend-main'
+        run: |
+          source bin/cedar-images-base.sh
+          python3 tests/check_frontend_modules.py "${CEDAR_IMAGE_PREFIX}/${{ matrix.image }}:${IMAGE_VERSION}"
