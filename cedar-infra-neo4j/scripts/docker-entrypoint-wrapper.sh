@@ -13,7 +13,8 @@ if [ ! -f ${INIT_DONE_FLAG} ]; then
   tini -g -- /startup/docker-entrypoint.sh neo4j &
 
   echo "Waiting for Neo4j to be available on the REST port 7474"
-  while ! nc -z localhost 7474; do
+  # Probed with wget, which the base image carries and the Compose healthcheck already uses.
+  while ! wget -q -O /dev/null http://localhost:7474/; do
     echo "Port not open yet!Waiting ..."
     sleep 1
   done

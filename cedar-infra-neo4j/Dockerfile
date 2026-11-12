@@ -27,5 +27,9 @@ RUN mv /var/lib/neo4j/labs/apoc-*-core.jar /var/lib/neo4j/plugins/.
 
 RUN echo 'dbms.security.procedures.unrestricted=algo.*,apoc.*' >> conf/neo4j.conf
 
+# A transaction waits at most this long for a lock, where Neo4j's default is no limit. A wait that
+# outlasts it fails as a transient error, so a request ends instead of holding its thread.
+RUN echo 'db.lock.acquisition.timeout=30s' >> conf/neo4j.conf
+
 ENTRYPOINT ["/docker-entrypoint-wrapper.sh"]
 CMD ["neo4j"]
