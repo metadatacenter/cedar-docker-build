@@ -137,5 +137,6 @@ cedar_server_name = os.environ.get('CEDAR_SERVER_NAME')
 if cedar_server_name == "messaging":
     init_app_level_database('MESSAGING')
 elif cedar_server_name == "worker":
-    init_app_level_database('MESSAGING')
+    # The worker writes the log database and never opens the messaging one, which the messaging
+    # server's container initializes.
     init_app_level_database('LOG')
