@@ -134,6 +134,21 @@ class RuntimeHardeningTest(unittest.TestCase):
         self.assertIn('-Djavax.net.ssl.trustStore="${CEDAR_TRUSTSTORE}"', entrypoint)
         self.assertNotIn("${JAVA_HOME}/lib/security/cacerts", entrypoint)
 
+    def test_server_and_keycloak_jvms_start_with_the_base64_intrinsic_off(self):
+        """CVE-2026-114938: both entrypoints pass the flag to the JVM they exec."""
+        microservice = (
+            ROOT / "cedar-microservice" / "scripts" / "docker-entrypoint.sh"
+        ).read_text()
+        keycloak = (
+            ROOT / "cedar-infra-keycloak" / "scripts" / "docker-entrypoint.sh"
+        ).read_text()
+
+        self.assertIn("exec java -XX:-UseBASE64Intrinsics ${CEDAR_JAVA_OPTS}", microservice)
+        self.assertIn('export JAVA_OPTS_APPEND="-XX:-UseBASE64Intrinsics', keycloak)
+        self.assertLess(
+            keycloak.index("export JAVA_OPTS_APPEND="),
+            keycloak.index("exec /opt/keycloak/bin/kc.sh --verbose start"))
+
     def test_immediate_security_base_updates_are_applied(self):
         java = (ROOT / "cedar-java" / "Dockerfile").read_text(encoding="utf-8")
         manifest = (ROOT / "bin" / "cedar-images-base.sh").read_text(encoding="utf-8")

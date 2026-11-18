@@ -46,7 +46,12 @@ echo - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # native controller passes exactly the same ones with -D. The local terminology store is configured
 # this way — the server reads terminologyStore.* system properties rather than the environment — so
 # without this hook a containerized server cannot be given it at all.
-exec java ${CEDAR_JAVA_OPTS} \
+#
+# CVE-2026-114938 (Java4Shell): on x86-64 CPUs with AVX-512 VBMI, HotSpot's Base64 decode intrinsic
+# writes past its buffer when handed a crafted string. The flag turns the intrinsic off for every
+# server; it comes first so CEDAR_JAVA_OPTS can override it. Drop it only once cedar-java is built
+# on a JDK that has the fix.
+exec java -XX:-UseBASE64Intrinsics ${CEDAR_JAVA_OPTS} \
   -Djavax.net.ssl.trustStore="${CEDAR_TRUSTSTORE}" \
   -Djavax.net.ssl.trustStorePassword=changeit \
   -jar /cedar/app/cedar-server.jar \

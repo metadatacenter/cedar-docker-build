@@ -38,4 +38,7 @@ else
   echo "Keycloak realm is already imported!"
 fi
 
+# CVE-2026-114938 (Java4Shell): Keycloak decodes Base64 from requests that have not logged in, so
+# it is the server this flaw reaches first. kc.sh adds JAVA_OPTS_APPEND to the JVM's own options.
+export JAVA_OPTS_APPEND="-XX:-UseBASE64Intrinsics${JAVA_OPTS_APPEND:+ $JAVA_OPTS_APPEND}"
 exec /opt/keycloak/bin/kc.sh --verbose start
