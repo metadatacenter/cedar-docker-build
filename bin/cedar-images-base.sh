@@ -18,14 +18,12 @@ if [ -n "${CEDAR_TRAIN_VERSION:-}" ]; then
   export IMAGE_VERSION="${CEDAR_TRAIN_VERSION}"
   export CEDAR_MAVEN_VERSION="${CEDAR_TRAIN_VERSION}"
 fi
-export CEDAR_APPLICATION_VERSION=2.9.37-SNAPSHOT
 
 # npm registries do not allow a version to be overwritten like a Maven SNAPSHOT. The frontend
 # images therefore consume exact immutable package versions: a release where one has been
 # published, otherwise a commit-specific prerelease produced by
 # `cedar-development/ops/publish-frontend-package.sh`. Never replace these with the moving `dev`
-# dist-tag. CEDAR_APPLICATION_VERSION remains the human-facing suite version; these seven inputs
-# identify the exact source payload assembled into each image.
+# dist-tag. These inputs identify the exact source payload assembled into each image.
 export CEDAR_TEMPLATE_EDITOR_NPM_VERSION=2.9.32
 export CEDAR_WORKSPACE_NPM_VERSION=2.9.32
 export CEDAR_TEMPLATE_DESIGNER_NPM_VERSION=2.9.32

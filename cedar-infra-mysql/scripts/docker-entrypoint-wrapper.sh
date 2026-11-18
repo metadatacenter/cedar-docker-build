@@ -6,9 +6,6 @@ export MYSQL_ROOT_HOST="%"
 
 env
 
-echo "CEDAR: changing owner of logs ..."
-chown -R mysql:mysql "/var/log/mysql"
-
 echo "CEDAR: executing original entrypoint:" "$@"
 # The Docker Official image installs its entrypoint on PATH as docker-entrypoint.sh. Oracle's
 # abandoned mysql/mysql-server image, which this used to be built on, also symlinked it to

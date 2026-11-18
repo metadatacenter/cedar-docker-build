@@ -9,7 +9,6 @@ FROM nginx:${NGINX_VERSION}
 
 COPY cedar-build-manifest.json /usr/local/share/cedar-build-manifest.json
 
-ARG CEDAR_APPLICATION_VERSION
 ARG CEDAR_TEMPLATE_EDITOR_NPM_VERSION
 
 ENV CEDAR_VERSION=2.9.37-SNAPSHOT
@@ -67,7 +66,6 @@ RUN echo ${EDITOR_URI}
 
 # Download and extract the frontend source
 RUN set -eux; \
-    test -n "$CEDAR_APPLICATION_VERSION"; \
     test -n "$CEDAR_NPM_NEXUS_REPO"; \
     test -n "$CEDAR_TEMPLATE_EDITOR_NPM_VERSION"; \
     curl --fail --show-error --location --remote-name "$EDITOR_URI"; \

@@ -109,12 +109,7 @@ VOLUME /data/db /data/configdb
 ENV HOME /data/db
 
 ENV MONGO_SCRIPTS_DIR /opt/mongo/scripts
-ENV MONGO_INCLUDE_DIR /opt/mongo/include
 ENV MONGO_CONFIG_DIR /opt/mongo/config
-
-# install dependencies
-#ADD include $MONGO_INCLUDE_DIR
-#RUN $MONGO_INCLUDE_DIR/install_deps.sh
 
 # add resources
 ADD scripts $MONGO_SCRIPTS_DIR

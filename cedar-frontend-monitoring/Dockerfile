@@ -7,10 +7,8 @@ FROM nginx:${NGINX_VERSION}
 
 COPY cedar-build-manifest.json /usr/local/share/cedar-build-manifest.json
 
-ARG CEDAR_APPLICATION_VERSION
 ARG CEDAR_MONITORING_NPM_VERSION
 
-ENV CEDAR_VERSION=2.9.37-SNAPSHOT
 ENV PACKAGE_VERSION=${CEDAR_MONITORING_NPM_VERSION}
 ARG CEDAR_NPM_REGISTRY
 ENV CEDAR_NPM_NEXUS_REPO=${CEDAR_NPM_REGISTRY}
@@ -42,7 +40,6 @@ RUN echo ${PACKAGE_URI}
 
 # Download and extract the frontend source
 RUN set -eux; \
-    test -n "$CEDAR_APPLICATION_VERSION"; \
     test -n "$CEDAR_NPM_NEXUS_REPO"; \
     test -n "$CEDAR_MONITORING_NPM_VERSION"; \
     curl --fail --show-error --location --remote-name "$PACKAGE_URI"; \
