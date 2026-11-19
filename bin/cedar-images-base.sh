@@ -10,8 +10,8 @@ export CEDAR_IMAGE_PREFIX="${CEDAR_IMAGE_PREFIX:-metadatacenter}"
 # and legacy builds retain one prefix because this defaults to the runtime prefix.
 export CEDAR_BASE_IMAGE_PREFIX="${CEDAR_BASE_IMAGE_PREFIX:-${CEDAR_IMAGE_PREFIX}}"
 
-export IMAGE_VERSION=2.9.37-SNAPSHOT
-export CEDAR_MAVEN_VERSION=2.9.37-SNAPSHOT
+export IMAGE_VERSION=2.9.37
+export CEDAR_MAVEN_VERSION=2.9.37
 # A completed immutable train overrides the compatibility development tag. cedarcli sets this for
 # ordinary published-artifact builds; --local deliberately leaves the snapshot tag in place.
 if [ -n "${CEDAR_TRAIN_VERSION:-}" ]; then
@@ -24,14 +24,14 @@ fi
 # published, otherwise a commit-specific prerelease produced by
 # `cedar-development/ops/publish-frontend-package.sh`. Never replace these with the moving `dev`
 # dist-tag. These inputs identify the exact source payload assembled into each image.
-export CEDAR_TEMPLATE_EDITOR_NPM_VERSION=2.9.32
-export CEDAR_WORKSPACE_NPM_VERSION=2.9.32
-export CEDAR_TEMPLATE_DESIGNER_NPM_VERSION=2.9.32
-export CEDAR_OPENVIEW_NPM_VERSION=2.9.32
-export CEDAR_OPENVIEW_CEE_NPM_VERSION=2.0.32
-export CEDAR_CONTENT_NPM_VERSION=2.9.32
-export CEDAR_MONITORING_NPM_VERSION=2.9.32
-export CEDAR_BRIDGING_NPM_VERSION=2.9.32
+export CEDAR_TEMPLATE_EDITOR_NPM_VERSION=2.9.37
+export CEDAR_WORKSPACE_NPM_VERSION=2.9.37
+export CEDAR_TEMPLATE_DESIGNER_NPM_VERSION=2.9.37
+export CEDAR_OPENVIEW_NPM_VERSION=2.9.37
+export CEDAR_OPENVIEW_CEE_NPM_VERSION=2.0.36
+export CEDAR_CONTENT_NPM_VERSION=2.9.37
+export CEDAR_MONITORING_NPM_VERSION=2.9.37
+export CEDAR_BRIDGING_NPM_VERSION=2.9.37
 # The registry those packages, and the shared components they depend on, are installed from.
 # Nexus removes a prerelease from npm-cedar three days after upload and a release thirty days
 # after it. Compatibility builds use retained releases; trains supply their own registry and pins.
