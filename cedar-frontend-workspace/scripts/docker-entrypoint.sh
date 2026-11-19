@@ -5,7 +5,6 @@ set -euo pipefail
 : "${CEDAR_APPLICATION_ID:?CEDAR_APPLICATION_ID must identify the frontend}"
 : "${PACKAGE_VERSION:?PACKAGE_VERSION must identify the npm artifact}"
 
-export CEDAR_ANALYTICS_KEY="${CEDAR_ANALYTICS_KEY:-false}"
 export CEDAR_GA4_TRACKING_ID="${CEDAR_GA4_TRACKING_ID:-false}"
 export CEDAR_DATACITE_ENABLED="${CEDAR_DATACITE_ENABLED:-false}"
 export CEDAR_FRONTEND_BEHAVIOR=server
@@ -30,13 +29,6 @@ fi
 for suffix in UI_HOST REST_HOST; do
   name="CEDAR_FRONTEND_${CEDAR_FRONTEND_TARGET}_${suffix}"
   value="${!name:-$CEDAR_HOST}"
-  printf -v "$name" '%s' "$value"
-  export "$name"
-done
-
-for suffix in USER1_LOGIN USER1_PASSWORD USER1_NAME USER2_LOGIN USER2_PASSWORD USER2_NAME; do
-  name="CEDAR_FRONTEND_${CEDAR_FRONTEND_TARGET}_${suffix}"
-  value="${!name:-}"
   printf -v "$name" '%s' "$value"
   export "$name"
 done

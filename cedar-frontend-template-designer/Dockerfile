@@ -7,7 +7,6 @@ ENV NPM_CONFIG_STRICT_ALLOW_SCRIPTS=true
 COPY cedar-build-manifest.json /usr/local/share/cedar-build-manifest.json
 
 ARG NODE_FRONTEND_VERSION
-ARG CEDAR_APPLICATION_VERSION
 ARG CEDAR_TEMPLATE_DESIGNER_NPM_VERSION
 
 ARG CEDAR_NPM_REGISTRY
@@ -15,13 +14,12 @@ ENV CEDAR_NPM_NEXUS_REPO=${CEDAR_NPM_REGISTRY}
 ENV CEDAR_HOME=/srv/cedar
 ENV PACKAGE_NAME=cedar-template-designer
 ENV PACKAGE_VERSION=${CEDAR_TEMPLATE_DESIGNER_NPM_VERSION}
-ENV CEDAR_VERSION=2.9.36
+ENV CEDAR_VERSION=2.9.37
 
 USER root
 
 RUN set -eux; \
     test -n "$NODE_FRONTEND_VERSION"; \
-    test -n "$CEDAR_APPLICATION_VERSION"; \
     test -n "$CEDAR_NPM_NEXUS_REPO"; \
     test -n "$CEDAR_TEMPLATE_DESIGNER_NPM_VERSION"; \
     apt-get update; \
@@ -73,7 +71,6 @@ COPY config/default.conf /etc/nginx/conf.d/default.conf
 RUN chmod 0755 /docker-entrypoint.sh && mkdir -p /log
 
 ENV CEDAR_APPLICATION_ID=cedar-template-designer
-ENV CEDAR_FRONTEND_PORT=4202
 
 VOLUME ["/log"]
 # nginx runs as the image's own unprivileged user: every vhost listens on a high port, the

@@ -32,7 +32,7 @@ if [ "$MONGO_JOURNALING" == false ]; then
 fi
 
 if [[ "$MONGO_OPLOG_SIZE" ]]; then
-  cmd="$cmd --oplogSize $OPLOG_SIZE"
+  cmd="$cmd --oplogSize $MONGO_OPLOG_SIZE"
 fi
 
 if [ ! -d "$MONGO_DB_PATH" ]; then

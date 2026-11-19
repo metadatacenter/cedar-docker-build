@@ -11,9 +11,5 @@ FROM mysql:${MYSQL_VERSION}
 
 ADD scripts/docker-entrypoint-wrapper.sh /
 
-#ADD config/my.cnf /etc
-
-VOLUME /var/log/mysql
-
 ENTRYPOINT ["/docker-entrypoint-wrapper.sh"]
 CMD ["mysqld"]

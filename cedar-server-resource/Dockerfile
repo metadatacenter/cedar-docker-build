@@ -27,11 +27,8 @@ ENV CEDAR_SERVER_NAME=resource
 
 ENV CEDAR_RESOURCE_HTTP_PORT=9007
 ENV CEDAR_RESOURCE_ADMIN_PORT=9107
-ENV CEDAR_RESOURCE_STOP_PORT=9207
 
 ENV CEDAR_ARTIFACT_HTTP_PORT=9001
-
-# This server does not start usefully until the Artifact server answers its health check.
 
 ADD scripts/pre-docker-entrypoint.sh ${CEDAR_HOME}/
 
@@ -41,6 +38,6 @@ VOLUME ${LOGDIR}
 
 ADD scripts/cedarat.sh ${CEDAR_HOME}/app
 
-EXPOSE ${CEDAR_RESOURCE_HTTP_PORT} ${CEDAR_RESOURCE_ADMIN_PORT} ${CEDAR_RESOURCE_STOP_PORT}
+EXPOSE ${CEDAR_RESOURCE_HTTP_PORT} ${CEDAR_RESOURCE_ADMIN_PORT}
 
 COPY --from=jarfetch --chown=cedar:cedar ${CEDAR_HOME}/app/ ${CEDAR_HOME}/app/
