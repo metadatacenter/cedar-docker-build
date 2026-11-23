@@ -49,13 +49,13 @@ export CEDAR_NPM_REGISTRY=https://nexus.bmir.stanford.edu/repository/npm-cedar-r
 #
 # The `# renovate:` lines are what let Renovate maintain this file; keep them attached.
 # renovate: datasource=docker depName=mongo
-export MONGO_VERSION=5.0.31
+export MONGO_VERSION=8.0.38
 # The 8.4 LTS line, deliberately rather than the 9.x innovation line the native install drifted onto:
 # an innovation release is superseded roughly quarterly, which is the opposite of a locked version.
 # renovate: datasource=docker depName=mysql
 export MYSQL_VERSION=8.4.11
 # renovate: datasource=docker depName=neo4j
-export NEO4J_VERSION=5.26.0
+export NEO4J_VERSION=5.26.32
 # renovate: datasource=docker depName=redis
 export REDIS_VERSION=7.2.7
 # renovate: datasource=docker depName=opensearchproject/opensearch
@@ -72,7 +72,7 @@ export KEYCLOAK_SHA256=d00d88fc9dd73b022e0109f09353374049955de18dd089d2e2da927f1
 # rebuild produces the same bytes, and it may move whenever someone wants it to. Eight images are
 # built on it — the reverse proxy and all seven frontends — and each used to restate the number.
 # renovate: datasource=docker depName=nginx
-export NGINX_VERSION=1.30.4
+export NGINX_VERSION=1.30.7
 
 # The OS bases, pinned to what the images were already resolving to rather than to a moving target.
 # `ubi9` carried no tag at all and `node:20-bookworm` floated within the Node 20 line, so a rebuild

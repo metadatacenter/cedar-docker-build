@@ -16,12 +16,12 @@ echo $mongodb_setup_cmd
 $mongodb_setup_cmd &
 
 
-gosu mongodb mongo admin --eval "help" > /dev/null 2>&1
+gosu mongodb mongosh admin --eval "help" > /dev/null 2>&1
 RET=$?
 
 while [[ RET -ne 0 ]]; do
   echo "Waiting for MongoDB to start..."
-  gosu mongodb mongo admin --eval "help" > /dev/null 2>&1
+  gosu mongodb mongosh admin --eval "help" > /dev/null 2>&1
   RET=$?
   sleep 1
 done
@@ -32,16 +32,16 @@ echo "************************************************************"
 
 # create root user
 echo "Creating root user"
-gosu mongodb mongo admin --eval "db.createUser({user: '$CEDAR_MONGO_ROOT_USER_NAME', pwd: '$CEDAR_MONGO_ROOT_USER_PASSWORD', roles:[{ role: 'root', db: 'admin' }]});"
+gosu mongodb mongosh admin --eval "db.createUser({user: '$CEDAR_MONGO_ROOT_USER_NAME', pwd: '$CEDAR_MONGO_ROOT_USER_PASSWORD', roles:[{ role: 'root', db: 'admin' }]});"
 
 # create app user/database
 echo "Creating app user"
-gosu mongodb mongo $CEDAR_MONGO_APP_DATABASE_NAME --eval "db.createUser({ user: '$CEDAR_MONGO_APP_USER_NAME', pwd: '$CEDAR_MONGO_APP_USER_PASSWORD', roles: [{ role: 'readWrite', db: '$CEDAR_MONGO_APP_DATABASE_NAME' }, { role: 'read', db: 'local' }]});"
+gosu mongodb mongosh $CEDAR_MONGO_APP_DATABASE_NAME --eval "db.createUser({ user: '$CEDAR_MONGO_APP_USER_NAME', pwd: '$CEDAR_MONGO_APP_USER_PASSWORD', roles: [{ role: 'readWrite', db: '$CEDAR_MONGO_APP_DATABASE_NAME' }, { role: 'read', db: 'local' }]});"
 
 
 echo "************************************************************"
 echo "Shutting down"
 echo "************************************************************"
-gosu mongodb mongo admin --eval "db.shutdownServer();"
+gosu mongodb mongosh admin --eval "db.shutdownServer();"
 
 sleep 3
