@@ -61,11 +61,11 @@ export REDIS_VERSION=7.2.7
 # renovate: datasource=docker depName=opensearchproject/opensearch
 export OPENSEARCH_VERSION=2.19.1
 # renovate: datasource=github-releases depName=keycloak/keycloak
-export KEYCLOAK_VERSION=22.0.4
+export KEYCLOAK_VERSION=26.8.2
 # Keycloak publishes no checksum alongside its GitHub release, so the digest is pinned here instead
 # and verified at build time. It is version-specific: change one of these two and you must change
 # the other, which is why they sit together. sha256sum of keycloak-${KEYCLOAK_VERSION}.tar.gz.
-export KEYCLOAK_SHA256=d00d88fc9dd73b022e0109f09353374049955de18dd089d2e2da927f1ba52434
+export KEYCLOAK_SHA256=dd124787283918bc597628887168333465ee2a811a389e0003569e52be7e487f
 
 # nginx is declared here for the same reason but not locked for the same one. The six above are
 # locked because moving one is a data migration; nginx holds no data, so it is pinned only so a
