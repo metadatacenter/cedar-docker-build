@@ -60,11 +60,15 @@ RUN set -eux; \
     [ -n "$source_commit" ] || source_commit="$(curl -fsSL "$CEDAR_NPM_NEXUS_REPO/$PACKAGE_NAME/$PACKAGE_VERSION" | node -e "let s=''; process.stdin.on('data', d => s += d).on('end', () => process.stdout.write(JSON.parse(s).gitHead || ''))")"; \
     echo "$source_commit" | grep -Eq '^[0-9a-f]{40}$'; \
     printf '%s\n' "$source_commit" > /usr/local/share/cedar-source-commit; \
+    # A train package carries a shrinkwrap whose install scripts were each reviewed, so npm ci
+    # refuses any script allowScripts does not name. A released package carries none, and a fresh
+    # resolution can reach a newer patch its allowScripts never named; npm still runs only the
+    # approved scripts and skips that one with a warning.
     npm config set @org.metadatacenter:registry "$CEDAR_NPM_NEXUS_REPO"; \
     if [ -n "$train" ]; then \
       test -f npm-shrinkwrap.json; \
       npm ci; \
-    else npm install; fi
+    else npm install --strict-allow-scripts=false; fi
 
 COPY scripts/docker-entrypoint.sh /docker-entrypoint.sh
 COPY config/default.conf /etc/nginx/conf.d/default.conf
