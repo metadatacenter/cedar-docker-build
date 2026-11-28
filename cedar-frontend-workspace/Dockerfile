@@ -4,7 +4,7 @@ FROM nginx:${NGINX_VERSION}
 
 COPY cedar-build-manifest.json /usr/local/share/cedar-build-manifest.json
 
-ARG NODE_FRONTEND_VERSION
+ARG NODE_VERSION
 ARG CEDAR_WORKSPACE_NPM_VERSION
 
 ARG CEDAR_NPM_REGISTRY
@@ -18,7 +18,7 @@ ENV CEDAR_VERSION=2.9.38-SNAPSHOT
 USER root
 
 RUN set -eux; \
-    test -n "$NODE_FRONTEND_VERSION"; \
+    test -n "$NODE_VERSION"; \
     test -n "$CEDAR_NPM_NEXUS_REPO"; \
     test -n "$CEDAR_WORKSPACE_NPM_VERSION"; \
     apt-get update; \
@@ -28,10 +28,10 @@ RUN set -eux; \
       arm64) nodearch=arm64 ;; \
       *) echo "unsupported architecture: $(dpkg --print-architecture)"; exit 1 ;; \
     esac; \
-    tarball="node-v${NODE_FRONTEND_VERSION}-linux-${nodearch}.tar.xz"; \
+    tarball="node-v${NODE_VERSION}-linux-${nodearch}.tar.xz"; \
     cd /tmp; \
-    curl -fsSLO "https://nodejs.org/dist/v${NODE_FRONTEND_VERSION}/${tarball}"; \
-    curl -fsSLO "https://nodejs.org/dist/v${NODE_FRONTEND_VERSION}/SHASUMS256.txt"; \
+    curl -fsSLO "https://nodejs.org/dist/v${NODE_VERSION}/${tarball}"; \
+    curl -fsSLO "https://nodejs.org/dist/v${NODE_VERSION}/SHASUMS256.txt"; \
     grep " ${tarball}\$" SHASUMS256.txt | sha256sum -c -; \
     tar -xJf "$tarball" -C /usr/local --strip-components=1 --no-same-owner; \
     rm "$tarball" SHASUMS256.txt; \
