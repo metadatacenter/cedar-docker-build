@@ -36,10 +36,17 @@ else
     n=$((n+1))
     sleep $((n+15))
   done
-  mvn --settings "${MAVEN_SETTINGS}" org.apache.maven.plugins:maven-dependency-plugin:3.5.0:copy -Dartifact=${ARTIFACT_FULL}:jar -DoutputDirectory=. -Dmdep.useBaseVersion=true -Dmdep.stripVersion=true
+  # Without these checks an image whose download failed every attempt was still built and
+  # published, with no server jar, and its container restarted forever.
+  if [ "$n" -ge 5 ]; then
+    echo "Downloading ${ARTIFACT_FULL} failed after $n attempts" >&2
+    exit 1
+  fi
+  mvn --settings "${MAVEN_SETTINGS}" org.apache.maven.plugins:maven-dependency-plugin:3.5.0:copy -Dartifact=${ARTIFACT_FULL}:jar -DoutputDirectory=. -Dmdep.useBaseVersion=true -Dmdep.stripVersion=true || exit 1
   echo "Renaming microservice jar:"
-  mv ./${ARTIFACT}.jar ./cedar-server.jar
+  mv ./${ARTIFACT}.jar ./cedar-server.jar || exit 1
 fi
+test -s ./cedar-server.jar || { echo "No server jar at $(pwd)/cedar-server.jar" >&2; exit 1; }
 echo "Contents of current directory:"
 ls -ls
 
